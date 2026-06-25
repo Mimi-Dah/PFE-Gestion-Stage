@@ -176,10 +176,11 @@ const MesOffres = () => {
                 {filtered.map((offre) => {
                   const id = offre.id || offre.id_offre;
                   const wks = offre.duree_semaines ? Math.ceil(offre.duree_semaines / 4) : 0;
-                  const duree = offre.duree_semaines
-                    ? (offre.duree_semaines >= 4
-                        ? `${wks} ${t('pages.entreprise.mesOffres.month_other')}`
-                        : `${offre.duree_semaines} ${t('pages.entreprise.mesOffres.wk')}`)
+                  const sw  = offre.duree_semaines;
+                  const duree = sw
+                    ? (sw >= 4
+                        ? `${wks} ${t('pages.entreprise.mesOffres.month', { count: wks })}`
+                        : `${sw} ${t('pages.entreprise.mesOffres.wk', { count: sw })}`)
                     : '—';
                   const isActive = offre.statut === 'Active';
                   return (

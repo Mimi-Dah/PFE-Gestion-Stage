@@ -1352,6 +1352,8 @@
         "colStatus": "Statut",
         "colActions": "Actions",
         "wk": "sem.",
+        "wk_one": "sem.",
+        "wk_other": "sem.",
         "month_one": "mois",
         "month_other": "mois",
         "statusActive": "Active",

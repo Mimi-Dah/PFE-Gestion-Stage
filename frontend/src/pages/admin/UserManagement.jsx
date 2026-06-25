@@ -9,6 +9,7 @@ import {
   ShieldAlert, ChevronRight, ChevronLeft, UserCheck, Pencil, X,
 } from 'lucide-react';
 import api from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZE = 15;
 
@@ -76,7 +77,7 @@ const ROLES = {
 /* ── main component ───────────────────────────────────────────── */
 
 const UserManagement = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const location    = useLocation();
   const initialRole = new URLSearchParams(location.search).get('role') || 'All';
@@ -253,7 +254,7 @@ const UserManagement = () => {
                         </div>
                         <div>
                           <div className="vl-name">{user.courriel}</div>
-                          <div className="vl-sub"><Calendar size={11} />{new Date(user.cree_le).toLocaleDateString()}</div>
+                          <div className="vl-sub"><Calendar size={11} />{new Date(user.cree_le).toLocaleDateString(dateLocale(i18n.language))}</div>
                         </div>
                       </div>
                     </td>

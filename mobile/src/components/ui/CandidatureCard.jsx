@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Building, Calendar } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
 import { typography, shadow, radius } from '../../theme/tokens';
@@ -27,11 +28,12 @@ export default function CandidatureCard({
   onWithdraw,
   style,
 }) {
+  const { t } = useTranslation();
   const isDark = useLayoutStore((s) => s.isDarkMode);
   const C = getColors(isDark);
 
   const formattedDate = date
-    ? new Date(date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
+    ? new Date(date).toLocaleDateString(t('dashboard.dateLocale'), { day: '2-digit', month: 'short', year: 'numeric' })
     : null;
 
   return (

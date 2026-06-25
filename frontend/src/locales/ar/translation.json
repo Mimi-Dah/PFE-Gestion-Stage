@@ -1352,6 +1352,8 @@
         "colStatus": "الحالة",
         "colActions": "الإجراءات",
         "wk": "أسبوع",
+        "wk_one": "أسبوع",
+        "wk_other": "أسابيع",
         "month_one": "شهر",
         "month_other": "أشهر",
         "statusActive": "نشط",

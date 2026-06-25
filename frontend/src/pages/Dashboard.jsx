@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import api from '../services/api';
+import { dateLocale } from '../utils/dateLocale';
 import PageHeader from '../components/PageHeader';
 
 const AVATAR_PALETTE = [
@@ -230,7 +231,7 @@ const Dashboard = () => {
   const doneCount = config.nextSteps?.filter(s => s.done).length ?? 0;
   const progressPct = Math.round((doneCount / (config.nextSteps?.length ?? 1)) * 100);
 
-  const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const today = new Date().toLocaleDateString(dateLocale(i18n.language), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: '1400px', margin: '0 auto' }}>

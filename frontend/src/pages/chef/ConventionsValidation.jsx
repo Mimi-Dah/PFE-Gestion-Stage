@@ -7,6 +7,7 @@ import {
   Clock, Upload, User, Building, FileSearch,
 } from 'lucide-react';
 import api from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const SLABadge = ({ joursRestants }) => {
   const { t } = useTranslation();
@@ -72,7 +73,7 @@ const RejectionModal = ({ isOpen, onClose, onConfirm, studentName, isPending }) 
 };
 
 const ConventionCard = ({ conv, queryClient }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const convId = conv.id || conv.id_convention;
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [fileName, setFileName] = useState('');
@@ -127,8 +128,8 @@ const ConventionCard = ({ conv, queryClient }) => {
               <SLABadge joursRestants={conv.jours_restants} />
             </div>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
-              {t('pages.chefConventions.receivedOn', { date: new Date(conv.cree_le).toLocaleDateString() })}
-              {conv.deadline && ` · ${t('pages.chefConventions.expiresOn', { date: new Date(conv.deadline).toLocaleDateString() })}`}
+              {t('pages.chefConventions.receivedOn', { date: new Date(conv.cree_le).toLocaleDateString(dateLocale(i18n.language)) })}
+              {conv.deadline && ` · ${t('pages.chefConventions.expiresOn', { date: new Date(conv.deadline).toLocaleDateString(dateLocale(i18n.language)) })}`}
             </div>
           </div>
         </div>

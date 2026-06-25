@@ -24,7 +24,7 @@ const TYPE_STYLE = {
 };
 const DEFAULT_STYLE = { bg: '#f3f4f6', color: 'var(--text-color)', dot: 'var(--text-subtle)' };
 
-const LOCALE_MAP = { fr: 'fr-FR', en: 'en-US', ar: 'ar-DZ' };
+const LOCALE_MAP = { fr: 'fr-FR', en: 'en-US', ar: 'ar-EG' };
 
 function timeAgo(iso, t, lang) {
   const secs = Math.floor((Date.now() - new Date(iso)) / 1000);

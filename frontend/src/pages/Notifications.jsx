@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { dateLocale } from '../utils/dateLocale';
 
 /* ── Type config (icons/colors only — labels come from i18n) ── */
 const TYPE_CFG = {
@@ -52,8 +53,8 @@ const Notifications = () => {
         return rtf.format(-Math.floor(diffSec / 3600), 'hour');
       } catch { /* fallback */ }
     }
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) +
-      ' · ' + d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'short' }) +
+      ' · ' + d.toLocaleTimeString(dateLocale(i18n.language), { hour: '2-digit', minute: '2-digit' });
   };
 
   const groupByDate = (list) => {
@@ -65,7 +66,7 @@ const Notifications = () => {
       const key =
         d.toDateString() === today.toDateString()     ? t('pages.notifications.groups.today')     :
         d.toDateString() === yesterday.toDateString() ? t('pages.notifications.groups.yesterday') :
-        d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+        d.toLocaleDateString(dateLocale(i18n.language), { weekday: 'long', day: 'numeric', month: 'long' });
       (groups[key] = groups[key] || []).push(n);
     });
     return Object.entries(groups);

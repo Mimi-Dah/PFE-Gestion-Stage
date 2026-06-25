@@ -10,6 +10,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../services/api';
 import ErrorToast from '../../components/common/ErrorToast';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZES = [5, 10, 25, 50];
 
@@ -65,7 +66,7 @@ const StatusBadge = ({ statut, label }) => {
 };
 
 export default function OfferModeration() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
@@ -291,7 +292,7 @@ export default function OfferModeration() {
                     </td>
                     <td style={{ padding: '0.85rem 1rem', fontSize: '0.875rem', color: 'var(--text-color)', whiteSpace: 'nowrap' }}>
                       {offer.publie_le
-                        ? <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Calendar size={13} color="#9ca3af" />{new Date(offer.publie_le).toLocaleDateString()}</span>
+                        ? <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Calendar size={13} color="#9ca3af" />{new Date(offer.publie_le).toLocaleDateString(dateLocale(i18n.language))}</span>
                         : <span style={{ color: 'var(--text-subtle)' }}>—</span>}
                     </td>
                     <td style={{ padding: '0.85rem 1rem' }}>

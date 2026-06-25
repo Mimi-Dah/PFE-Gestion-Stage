@@ -9,6 +9,7 @@ import {
   ChevronLeft, ChevronRight, CalendarX, Clock,
 } from 'lucide-react';
 import api from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZES = [10, 25, 50];
 
@@ -58,7 +59,7 @@ const Badge = ({ color, dot, children }) => (
 );
 
 const AbsencesModal = ({ data, onClose }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   if (!data) return null;
   const { student, absences } = data;
   const prenom = student.etudiant_detail?.prenom || '';
@@ -104,7 +105,7 @@ const AbsencesModal = ({ data, onClose }) => {
                 {a.date_signalement && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.71rem', color: '#b91c1c', marginTop: '0.3rem', opacity: 0.75 }}>
                     <Clock size={11} />
-                    {new Date(a.date_signalement).toLocaleDateString([], { day: '2-digit', month: 'long', year: 'numeric' })}
+                    {new Date(a.date_signalement).toLocaleDateString(dateLocale(i18n.language), { day: '2-digit', month: 'long', year: 'numeric' })}
                   </div>
                 )}
               </div>

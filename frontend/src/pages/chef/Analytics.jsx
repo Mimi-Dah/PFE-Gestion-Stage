@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import api from '../../services/api';
 import SkeletonLoader from '../../components/ui/SkeletonLoader';
+import { dateLocale } from '../../utils/dateLocale';
 
 const StatCard = ({ icon: Icon, label, value, trend, subtext, iconBg, iconColor, to }) => {
   const [hovered, setHovered] = useState(false);
@@ -277,7 +278,7 @@ const LevelPerformance = ({ data }) => {
 };
 
 const Analytics = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: stats, isLoading, isError, error } = useQuery({
     queryKey: ['chef-analytics'],
     queryFn: async () => {
@@ -408,7 +409,7 @@ const Analytics = () => {
                         </span>
                       </td>
                       <td style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                        {p.date ? new Date(p.date).toLocaleDateString([], { month: 'short', day: 'numeric' }) : '—'}
+                        {p.date ? new Date(p.date).toLocaleDateString(dateLocale(i18n.language), { month: 'short', day: 'numeric' }) : '—'}
                       </td>
                     </tr>
                   );

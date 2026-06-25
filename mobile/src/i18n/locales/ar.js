@@ -145,7 +145,7 @@ const ar = {
 
   dashboard: {
     greeting: 'مرحباً',
-    dateLocale: 'ar-DZ',
+    dateLocale: 'ar-EG',
     searchPlaceholder: 'البحث عن عرض…',
     tiles: {
       offers: 'عروض\nالتدريب',

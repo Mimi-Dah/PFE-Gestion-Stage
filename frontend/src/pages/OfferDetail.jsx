@@ -53,7 +53,7 @@ const getInitials = (name) => {
     : name.substring(0, 2).toUpperCase();
 };
 
-const LOCALE_MAP = { fr: 'fr-FR', en: 'en-US', ar: 'ar-DZ' };
+const LOCALE_MAP = { fr: 'fr-FR', en: 'en-US', ar: 'ar-EG' };
 
 /* ── Shared label style ─────────────────────────────────────── */
 const fieldLabel = {

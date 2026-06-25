@@ -202,7 +202,7 @@ function CandidatureCard({ item, C, isDark, statusMap, labelFollow, labelView, l
   const isPending   = item.statut === 'En_attente' || item.statut === 'en_attente';
   const isActive    = item.statut === 'Acceptée' || item.statut === 'Stage_actif';
   const appliedDate = item.postule_le
-    ? new Date(item.postule_le).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
+    ? new Date(item.postule_le).toLocaleDateString(t('dashboard.dateLocale'), { day: '2-digit', month: 'short', year: 'numeric' })
     : '—';
 
   return (

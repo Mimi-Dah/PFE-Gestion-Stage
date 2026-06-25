@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+import { dateLocale } from '../utils/dateLocale';
 
 /* ── helpers ── */
 const getStatusStyle = (statut, t) => {
@@ -32,7 +33,7 @@ const getStatusStyle = (statut, t) => {
 
 /* ── component ── */
 const Absences = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const [justMessage, setJustMessage] = useState('');
   const [justFile, setJustFile]       = useState(null);
@@ -152,7 +153,7 @@ const Absences = () => {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.3rem' }}>
                     <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>
-                      {new Date(abs.date_absence).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}
+                      {new Date(abs.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
                     </span>
                     <span style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', padding: '0.2rem 0.6rem', borderRadius: '100px', backgroundColor: s.bg, color: s.color }}>
                       {t('pages.absences.status.' + abs.statut)}
@@ -244,7 +245,7 @@ const Absences = () => {
               <p style={{ margin: '0 0 0.25rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                 {t('pages.absences.modal.absenceDate')}{' '}
                 <strong style={{ color: 'var(--text-main)' }}>
-                  {new Date(selectedAbsence.date_absence).toLocaleDateString(undefined, { day: 'numeric', month: 'long' })}
+                  {new Date(selectedAbsence.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long' })}
                 </strong>.
               </p>
               {selectedAbsence.jours_restants !== null && (

@@ -21,6 +21,7 @@ import {
 import api from '../services/api';
 import OfferDetail from './OfferDetail';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+import { dateLocale } from '../utils/dateLocale';
 import './Offers.css';
 import './Candidatures.css';
 
@@ -59,7 +60,7 @@ const getInitials = (name) => {
    CANDIDATURES PAGE
 ══════════════════════════════════════════════════════════════ */
 const Candidatures = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate    = useNavigate();
   const queryClient = useQueryClient();
 
@@ -236,7 +237,7 @@ const Candidatures = () => {
                 const isPending   = cand.statut === 'En_attente';
                 const isActive    = ['Acceptée', 'Stage_actif', 'Validée'].includes(cand.statut);
                 const appliedDate = cand.postule_le
-                  ? new Date(cand.postule_le).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
+                  ? new Date(cand.postule_le).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'short', year: 'numeric' })
                   : '—';
 
                 return (

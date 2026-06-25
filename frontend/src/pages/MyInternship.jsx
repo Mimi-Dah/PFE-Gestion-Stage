@@ -11,14 +11,15 @@ import {
   X,
 } from 'lucide-react';
 import api, { mediaUrl } from '../services/api';
+import { dateLocale } from '../utils/dateLocale';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import './MonStage.css';
 
 /* ── Helpers ───────────────────────────────────────────────────── */
 const getStepState = (done, isNext) => done ? 'done' : isNext ? 'current' : 'pending';
 
-const fmtDate = (d) =>
-  d ? new Date(d).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+const fmtDate = (d, lang = 'fr') =>
+  d ? new Date(d).toLocaleDateString(dateLocale(lang), { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
 
 /* ── Step item ─────────────────────────────────────────────────── */
 const StepItem = ({ icon: Icon, label, state }) => {
@@ -68,7 +69,8 @@ const IconBtn = ({ icon: Icon, title, onClick, color, border, bg }) => (
    MAIN PAGE
 ══════════════════════════════════════════════════════════════════ */
 const MyInternship = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const fmt = (d) => fmtDate(d, i18n.language);
   const queryClient = useQueryClient();
   const [convFile,      setConvFile]      = useState(null);
   const [reportFile,    setReportFile]    = useState(null);
@@ -269,8 +271,8 @@ const MyInternship = () => {
           {t('pages.myInternship.convWith')} <strong>{activeConv.numero_convention || `#${activeConvId}`}</strong>{' '}
           {t('pages.myInternship.convWithCompany')} <strong>{activeConv.entreprise_nom || '—'}</strong>
           {activeConv.date_debut && (
-            <>, {t('pages.myInternship.convFrom')} <strong>{fmtDate(activeConv.date_debut)}</strong>{' '}
-            {t('pages.myInternship.convTo')} <strong>{fmtDate(activeConv.date_fin)}</strong>
+            <>, {t('pages.myInternship.convFrom')} <strong>{fmt(activeConv.date_debut)}</strong>{' '}
+            {t('pages.myInternship.convTo')} <strong>{fmt(activeConv.date_fin)}</strong>
             {duration && <> — {t('pages.myInternship.convDuration')}&nbsp;: <strong>{duration}</strong></>}
             </>
           )}.{' '}
@@ -284,14 +286,14 @@ const MyInternship = () => {
             <span className="ms-sign-dot" style={{ background: activeConv.signe_par_etudiant_le ? '#16a34a' : '#e2e8f0' }} />
             <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{t('pages.myInternship.signedStudent')}</span>
             <span style={{ fontSize: '0.78rem', fontWeight: 600, color: activeConv.signe_par_etudiant_le ? '#16a34a' : '#94a3b8' }}>
-              {activeConv.signe_par_etudiant_le ? fmtDate(activeConv.signe_par_etudiant_le) : t('pages.myInternship.waitingSignature')}
+              {activeConv.signe_par_etudiant_le ? fmt(activeConv.signe_par_etudiant_le) : t('pages.myInternship.waitingSignature')}
             </span>
           </span>
           <span className="ms-sign-row" style={{ gap: 5 }}>
             <span className="ms-sign-dot" style={{ background: activeConv.signe_par_entreprise_le ? '#16a34a' : '#e2e8f0' }} />
             <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{t('pages.myInternship.signedCompany')}</span>
             <span style={{ fontSize: '0.78rem', fontWeight: 600, color: activeConv.signe_par_entreprise_le ? '#16a34a' : '#94a3b8' }}>
-              {activeConv.signe_par_entreprise_le ? fmtDate(activeConv.signe_par_entreprise_le) : t('pages.myInternship.waitingSignature')}
+              {activeConv.signe_par_entreprise_le ? fmt(activeConv.signe_par_entreprise_le) : t('pages.myInternship.waitingSignature')}
             </span>
           </span>
         </span>

@@ -17,6 +17,7 @@ import {
 import api from '../services/api';
 import OfferDetail from './OfferDetail';
 import './Offers.css';
+import { dateLocale } from '../utils/dateLocale';
 
 /* ── Color palettes ──────────────────────────────────────────── */
 const CO_PALETTES = [
@@ -51,7 +52,7 @@ const getInitials = (name) => {
    FAVORIS PAGE
 ══════════════════════════════════════════════════════════════ */
 const Favoris = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedOfferId, setSelectedOfferId] = useState(null);
   const [searchTerm, setSearchTerm]           = useState('');
   const [hoveredId, setHoveredId]             = useState(null);
@@ -188,7 +189,7 @@ const Favoris = () => {
             const domain  = getDomainPalette(offre.domaine);
             const isHov   = hoveredId === id;
             const pubDate = offre.publie_le
-              ? new Date(offre.publie_le).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+              ? new Date(offre.publie_le).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'short' })
               : null;
 
             return (

@@ -8,6 +8,7 @@ import {
   X, ChevronLeft, ChevronRight, Download, Building2,
 } from 'lucide-react';
 import api, { mediaUrl } from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZES = [10, 25, 50];
 
@@ -68,7 +69,7 @@ const StatCard = ({ icon: Icon, label, value, iconBg, iconColor }) => (
 );
 
 const Rapports = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selected, setSelected]       = useState(null);
   const [filter, setFilter]           = useState('all');
   const [search, setSearch]           = useState('');
@@ -239,7 +240,7 @@ const Rapports = () => {
                     <td style={{ padding: '0.9rem 1.25rem', whiteSpace: 'nowrap' }}>
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.83rem', color: 'var(--text-color)' }}>
                         <Calendar size={13} color="#94a3b8" />
-                        {new Date(rap.soumis_le).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        {new Date(rap.soumis_le).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </td>
                     <td style={{ padding: '0.9rem 1.25rem' }}>
@@ -354,7 +355,7 @@ const Rapports = () => {
               <div style={{ borderTop: '1px solid #e2e8f0', padding: '0.75rem 1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0, background: '#f8fafc' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid #e2e8f0', background: '#fff', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
                   <Calendar size={12} color="#94a3b8" />
-                  {new Date(selected.soumis_le).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {new Date(selected.soumis_le).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
               </div>
 

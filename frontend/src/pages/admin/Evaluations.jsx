@@ -9,6 +9,7 @@ import {
   ClipboardCheck, TrendingUp, ThumbsUp, Award,
 } from 'lucide-react';
 import api from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZES = [5, 10, 25, 50];
 
@@ -57,7 +58,7 @@ const Stars = ({ value, max = 5, size = 13 }) => (
 );
 
 export default function AdminEvaluations() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selected, setSelected] = useState(null);
   const [search, setSearch]     = useState('');
   const [sort, setSort]         = useState({ col: 'cree_le', dir: 'desc' });
@@ -217,7 +218,7 @@ export default function AdminEvaluations() {
                     onMouseLeave={e => e.currentTarget.style.background = ''}
                   >
                     <td style={{ padding: '0.85rem 1rem', fontSize: '0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                      {ev.cree_le ? new Date(ev.cree_le).toLocaleDateString() : '—'}
+                      {ev.cree_le ? new Date(ev.cree_le).toLocaleDateString(dateLocale(i18n.language)) : '—'}
                     </td>
                     <td style={{ padding: '0.85rem 1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>

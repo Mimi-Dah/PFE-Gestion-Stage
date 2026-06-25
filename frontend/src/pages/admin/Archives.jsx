@@ -8,6 +8,7 @@ import {
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZES = [5, 10, 25, 50];
 
@@ -40,7 +41,7 @@ const TH = ({ children, col, sort, onSort, style = {} }) => {
 };
 
 export default function AdminArchives() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [search, setSearch]     = useState('');
   const [sort, setSort]         = useState({ col: 'publie_le', dir: 'desc' });
   const [page, setPage]         = useState(1);
@@ -180,7 +181,7 @@ export default function AdminArchives() {
                     </td>
                     <td style={{ padding: '0.85rem 1rem', fontSize: '0.875rem', color: 'var(--text-color)', whiteSpace: 'nowrap' }}>
                       {offer.publie_le
-                        ? <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Calendar size={13} color="#9ca3af" />{new Date(offer.publie_le).toLocaleDateString()}</span>
+                        ? <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><Calendar size={13} color="#9ca3af" />{new Date(offer.publie_le).toLocaleDateString(dateLocale(i18n.language))}</span>
                         : <span style={{ color: 'var(--text-subtle)' }}>—</span>}
                     </td>
                     <td style={{ padding: '0.85rem 1rem' }}>

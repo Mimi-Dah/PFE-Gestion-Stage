@@ -23,8 +23,8 @@ const CreerOffre = () => {
     const weeks = Math.floor((diffDays % 30) / 7);
     const days = diffDays % 7;
     const parts = [];
-    if (months > 0) parts.push(t('pages.entreprise.mesOffres.month_other', { count: months }));
-    if (weeks > 0)  parts.push(t('pages.entreprise.mesOffres.wk'));
+    if (months > 0) parts.push(`${months} ${t('pages.entreprise.mesOffres.month', { count: months })}`);
+    if (weeks > 0)  parts.push(`${weeks} ${t('pages.entreprise.mesOffres.wk', { count: weeks })}`);
     if (months === 0 && weeks === 0 && days > 0) parts.push(`${days}d`);
     return parts.join(' ');
   };

@@ -99,7 +99,7 @@ function NotifRow({ item, C, isDark, onDelete, deleteLabel }) {
             <Clock size={11} color={C.textMuted} strokeWidth={1.8} />
             <Text style={[s.notifDate, { color: C.textMuted }]}>
               {item.cree_le
-                ? new Date(item.cree_le).toLocaleDateString(undefined, {
+                ? new Date(item.cree_le).toLocaleDateString(t('dashboard.dateLocale'), {
                     day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit',
                   })
                 : ''}

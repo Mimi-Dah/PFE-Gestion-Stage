@@ -9,7 +9,7 @@ import {
 import useAuthStore from '../store/authStore';
 import api, { mediaUrl } from '../services/api';
 
-const LOCALE_MAP = { fr: 'fr-FR', en: 'en-US', ar: 'ar-DZ' };
+const LOCALE_MAP = { fr: 'fr-FR', en: 'en-US', ar: 'ar-EG' };
 
 const TH = ({ children }) => (
   <th style={{ padding: '0.6rem 0.85rem', fontSize: '0.68rem', fontWeight: '600', color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.07em', textAlign: 'left', background: 'var(--surface-section)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>

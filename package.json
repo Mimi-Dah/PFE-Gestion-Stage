@@ -1,0 +1,18 @@
+{
+  "name": "pfe",
+  "version": "1.0.0",
+  "description": "django stagems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "expo": "~54.0.35",
+    "expo-font": "~14.0.12",
+    "playwright": "^1.60.0"
+  }
+}

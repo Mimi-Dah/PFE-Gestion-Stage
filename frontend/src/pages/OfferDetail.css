@@ -1,0 +1,538 @@
+/* ── OfferDetail — Verona blog detail inspired ───────────────── */
+
+/* Back nav */
+.od-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.15s;
+  padding: 4px 0;
+}
+.od-back:hover { color: var(--primary); }
+
+/* ── Hero card ───────────────────────────────────────────────── */
+.od-hero {
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+/* Colored banner strip (blog cover-image equivalent) */
+.od-hero-banner {
+  height: 130px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 2.5rem;
+}
+.od-hero-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.55) 100%);
+  pointer-events: none;
+}
+
+/* Company avatar — overlaps banner by half its height */
+.od-hero-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  border: 4px solid var(--surface-card);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+  position: relative;
+  bottom: -40px;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.od-hero-body {
+  padding: 52px 2.5rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Chips row */
+.od-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 0.875rem;
+}
+
+.od-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.od-chip-remote {
+  background: #ECFDF5;
+  color: #059669;
+}
+.od-chip-muted {
+  background: var(--n100);
+  color: var(--n500);
+}
+.od-chip-active {
+  background: rgba(16,185,129,0.10);
+  color: #059669;
+}
+.od-chip-inactive {
+  background: var(--n100);
+  color: var(--n500);
+}
+
+/* Title (blog post title equivalent) */
+.od-hero-title {
+  font-size: clamp(1.5rem, 3vw, 2.375rem);
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin: 0 0 0.875rem;
+  overflow-wrap: break-word;
+}
+
+/* Author row (company = "author") */
+.od-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 1.375rem;
+}
+.od-author-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.od-author-item.company {
+  font-weight: 700;
+  color: var(--primary);
+}
+.od-author-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--n300);
+  flex-shrink: 0;
+}
+
+/* Hero action buttons */
+.od-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.od-btn-fav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--n200);
+  background: var(--surface-card);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.od-btn-fav:hover            { border-color: #E11D48; color: #E11D48; }
+.od-btn-fav.favorited        { border-color: #E11D48; color: #E11D48; background: #FFF1F2; }
+.od-btn-apply-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, gap 0.15s;
+}
+.od-btn-apply-hero:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  gap: 10px;
+}
+.od-btn-apply-hero:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Content sections ────────────────────────────────────────── */
+.od-section {
+  border-radius: 14px;
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+}
+.od-section:last-child { margin-bottom: 0; }
+
+.od-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 1.25rem;
+}
+.od-section-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.od-section-heading h2 {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* Article body text */
+.od-body-text {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-color);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Company card */
+.od-company-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+.od-company-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.od-company-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 5px;
+}
+.od-company-desc {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.od-sidebar {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Details card */
+.od-details-card {
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+.od-details-card-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 1.25rem;
+}
+
+.od-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--surface-border);
+}
+.od-detail-row:first-of-type { padding-top: 0; }
+.od-detail-row:last-of-type  { border-bottom: none; padding-bottom: 0; }
+
+.od-detail-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.od-detail-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-subtle);
+  margin-bottom: 2px;
+}
+.od-detail-value {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+.od-detail-value.paid { color: #059669; }
+
+/* Divider before CTA */
+.od-card-divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 1.25rem 0;
+}
+
+/* Full-width apply button */
+.od-btn-apply-full {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.15s;
+}
+.od-btn-apply-full:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+.od-btn-apply-full:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Not-student message */
+.od-not-student {
+  text-align: center;
+  padding: 1.125rem;
+  background: var(--surface-section);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--surface-border);
+}
+
+/* Success banner */
+.od-success {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background: #ECFDF5;
+  border: 1px solid #BBF7D0;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #059669;
+  margin-bottom: 12px;
+}
+
+/* Tip card */
+.od-tip {
+  border-radius: 14px;
+  padding: 1.375rem 1.5rem;
+  background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(139,92,246,0.06) 100%);
+  border: 1px solid rgba(99,102,241,0.14) !important;
+}
+.od-tip-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.od-tip-text {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Application modal ───────────────────────────────────────── */
+.od-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+.od-modal {
+  width: 100%;
+  max-width: 540px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  padding: 2.25rem 2.5rem;
+  position: relative;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.30);
+  animation: fadeIn 0.2s ease;
+}
+.od-modal-close {
+  position: absolute;
+  top: 1.125rem;
+  right: 1.125rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--n100);
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+}
+.od-modal-close:hover { background: var(--n200); }
+.od-modal-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+  margin: 0 0 5px;
+}
+.od-modal-sub {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0 0 1.75rem;
+}
+.od-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 11px 14px;
+  background: var(--error-light);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--error);
+  margin-bottom: 1.25rem;
+  line-height: 1.45;
+}
+.od-modal-field { margin-bottom: 1.5rem; }
+.od-modal-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 7px;
+}
+.od-modal-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+.od-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+.od-btn-cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: 11px;
+  background: var(--n100);
+  border: none;
+  color: var(--n600);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.od-btn-cancel:hover { background: var(--n200); }
+.od-btn-submit {
+  flex: 2;
+  padding: 11px;
+  border-radius: 11px;
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.od-btn-submit:hover:not(:disabled) { background: var(--primary-hover); }
+.od-btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Dark mode ───────────────────────────────────────────────── */
+.dark .od-hero-avatar  { border-color: var(--surface-card); }
+.dark .od-btn-fav      { border-color: rgba(255,255,255,0.1); }
+.dark .od-detail-row   { border-bottom-color: rgba(255,255,255,0.07); }
+.dark .od-chip-remote  { background: rgba(5,150,105,0.15); }
+.dark .od-chip-muted   { background: rgba(255,255,255,0.07); color: var(--n400); }
+.dark .od-chip-active  { background: rgba(16,185,129,0.15); }
+.dark .od-not-student  { border-color: rgba(255,255,255,0.07); }
+.dark .od-tip          { border-color: rgba(99,102,241,0.22) !important; }
+.dark .od-modal        { border-color: rgba(255,255,255,0.10); }
+.dark .od-success      { background: rgba(5,150,105,0.12); border-color: rgba(5,150,105,0.25); }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .od-hero-banner  { height: 100px; padding: 0 1.5rem; }
+  .od-hero-avatar  { width: 64px; height: 64px; font-size: 18px; bottom: -32px; border-radius: 14px; }
+  .od-hero-body    { padding: 44px 1.5rem 1.75rem; }
+  .od-hero-title   { font-size: 1.5rem; }
+  .od-section      { padding: 1.5rem; }
+  .od-details-card { padding: 1.25rem; }
+  .od-modal        { padding: 1.75rem; }
+}

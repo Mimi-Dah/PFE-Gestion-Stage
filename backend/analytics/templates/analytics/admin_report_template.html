@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<style>
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    color: #1a202c;
+    line-height: 1.4;
+    background: #ffffff;
+  }
+
+  /* Header */
+  .header-table {
+    width: 100%;
+    border-bottom: 2pt solid #4f46e5;
+    margin-bottom: 20pt;
+    padding-bottom: 10pt;
+  }
+  .brand-name {
+    font-size: 18pt;
+    font-weight: bold;
+    color: #4f46e5;
+  }
+  .report-meta {
+    text-align: right;
+  }
+  .report-title {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #1a202c;
+  }
+  .report-date {
+    font-size: 8pt;
+    color: #94a3b8;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #4f46e5;
+    text-transform: uppercase;
+    margin-bottom: 10pt;
+    margin-top: 15pt;
+    border-left: 3pt solid #4f46e5;
+    padding-left: 5pt;
+  }
+
+  /* KPI Grid (using tables since xhtml2pdf lacks flex/grid) */
+  .kpi-table {
+    width: 100%;
+    margin-bottom: 10pt;
+  }
+  .kpi-card {
+    border: 1pt solid #e2e8f0;
+    padding: 8pt;
+    background: #f8fafc;
+    text-align: center;
+  }
+  .kpi-label {
+    font-size: 7pt;
+    font-weight: bold;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 3pt;
+  }
+  .kpi-value {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #1a202c;
+  }
+  .kpi-accent {
+    background: #eef2ff;
+    border-color: #4f46e5;
+  }
+  .kpi-accent .kpi-value {
+    color: #4f46e5;
+  }
+
+  /* Rate Bars */
+  .rate-table {
+    width: 100%;
+    margin-bottom: 10pt;
+  }
+  .rate-label {
+    width: 30%;
+    font-size: 9pt;
+    font-weight: bold;
+    color: #475569;
+  }
+  .rate-track {
+    width: 60%;
+    height: 8pt;
+    background: #e2e8f0;
+  }
+  .rate-fill {
+    height: 8pt;
+    background-color: #4f46e5;
+  }
+  .rate-pct {
+    width: 10%;
+    text-align: right;
+    font-weight: bold;
+    color: #4f46e5;
+  }
+
+  /* Tables */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15pt;
+  }
+  .data-table th {
+    background: #4f46e5;
+    color: white;
+    padding: 6pt;
+    text-align: left;
+    font-size: 8pt;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .data-table td {
+    padding: 6pt;
+    border-bottom: 0.5pt solid #e2e8f0;
+    font-size: 9pt;
+  }
+  .row-even { background: #f8fafc; }
+
+  /* Badges */
+  .badge {
+    padding: 2pt 4pt;
+    border-radius: 3pt;
+    font-size: 7pt;
+    font-weight: bold;
+  }
+  .badge-good { background: #dcfce7; color: #166534; }
+  .badge-medium { background: #fef9c3; color: #854d0e; }
+  .badge-low { background: #fee2e2; color: #991b1b; }
+
+  .footer {
+    margin-top: 20pt;
+    border-top: 0.5pt solid #e2e8f0;
+    padding-top: 10pt;
+    text-align: center;
+    font-size: 8pt;
+    color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+
+<table class="header-table">
+  <tr>
+    <td><span class="brand-name">StageFlow</span></td>
+    <td class="report-meta">
+      <div class="report-title">Rapport Analytique Global</div>
+      <div class="report-date">Généré le {{ generated_at }}</div>
+    </td>
+  </tr>
+</table>
+
+<div class="section-title">Vue d'ensemble de la plateforme</div>
+
+<table class="kpi-table" cellpadding="5">
+  <tr>
+    <td width="25%">
+      <div class="kpi-card">
+        <div class="kpi-label">Étudiants</div>
+        <div class="kpi-value">{{ overview.total_students }}</div>
+      </div>
+    </td>
+    <td width="25%">
+      <div class="kpi-card">
+        <div class="kpi-label">Entreprises</div>
+        <div class="kpi-value">{{ overview.total_companies }}</div>
+      </div>
+    </td>
+    <td width="25%">
+      <div class="kpi-card">
+        <div class="kpi-label">Candidatures</div>
+        <div class="kpi-value">{{ overview.total_candidatures }}</div>
+      </div>
+    </td>
+    <td width="25%">
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-label">Offres Actives</div>
+        <div class="kpi-value">{{ overview.active_offers }}</div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%">
+      <div class="kpi-card">
+        <div class="kpi-label">Offres Totales</div>
+        <div class="kpi-value">{{ overview.total_offers }}</div>
+      </div>
+    </td>
+    <td width="25%">
+      <div class="kpi-card">
+        <div class="kpi-label">Stages en Cours</div>
+        <div class="kpi-value">{{ overview.active_internships }}</div>
+      </div>
+    </td>
+    <td width="25%">
+      <div class="kpi-card">
+        <div class="kpi-label">Stages Terminés</div>
+        <div class="kpi-value">{{ overview.completed_internships }}</div>
+      </div>
+    </td>
+    <td width="25%">
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-label">Taux Placement</div>
+        <div class="kpi-value">{{ overview.placement_rate }}%</div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div class="section-title">Taux de placement global</div>
+
+<table class="rate-table">
+  <tr>
+    <td class="rate-label">Étudiants placés</td>
+    <td class="rate-track">
+      <div class="rate-fill" style="width: {{ overview.placement_rate }}%"></div>
+    </td>
+    <td class="rate-pct">{{ overview.placement_rate }}%</td>
+  </tr>
+  <tr>
+    <td class="rate-label">Stages terminés</td>
+    <td class="rate-track">
+      <div class="rate-fill" style="width: {{ completed_pct }}%; background-color: #10b981;"></div>
+    </td>
+    <td class="rate-pct" style="color: #10b981;">{{ completed_pct }}%</td>
+  </tr>
+</table>
+
+<div class="section-title">Score de satisfaction</div>
+<div style="background: #eef2ff; border: 1pt solid #4f46e5; padding: 10pt; border-radius: 5pt; margin-bottom: 15pt;">
+  <table width="100%">
+    <tr>
+      <td width="20%" style="font-size: 24pt; font-weight: bold; color: #4f46e5; vertical-align: middle;">
+        {{ overview.average_performance }}
+      </td>
+      <td width="80%" style="vertical-align: middle;">
+        <div style="font-weight: bold; color: #1a202c;">Moyenne des évaluations / 20</div>
+        <div style="font-size: 8pt; color: #64748b;">Basé sur les retours des entreprises partenaires.</div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="section-title">Répartition par département</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Département</th>
+      <th style="text-align:center;">Total</th>
+      <th style="text-align:center;">En Stage</th>
+      <th style="text-align:center;">Taux</th>
+      <th style="text-align:center;">Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for dept in by_department %}
+    <tr class="{% if forloop.counter|divisibleby:2 %}row-even{% endif %}">
+      <td style="font-weight: bold;">{{ dept.departement }}</td>
+      <td style="text-align:center;">{{ dept.total }}</td>
+      <td style="text-align:center;">{{ dept.en_stage }}</td>
+      <td style="text-align:center; font-weight: bold; color: #4f46e5;">{{ dept.pct }}%</td>
+      <td style="text-align:center;">
+        {% if dept.pct >= 50 %}
+          <span class="badge badge-good">BON</span>
+        {% elif dept.pct >= 25 %}
+          <span class="badge badge-medium">MOYEN</span>
+        {% else %}
+          <span class="badge badge-low">FAIBLE</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" style="text-align:center; color:#94a3b8;">Aucun département.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if recent_placements %}
+<div class="section-title">Placements récents</div>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th width="10%">#</th>
+      <th>Étudiant</th>
+      <th>Entreprise</th>
+      <th width="20%">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in recent_placements %}
+    <tr class="{% if forloop.counter|divisibleby:2 %}row-even{% endif %}">
+      <td>{{ forloop.counter }}</td>
+      <td style="font-weight: bold;">{{ p.student }}</td>
+      <td>{{ p.company }}</td>
+      <td style="color: #64748b;">{{ p.date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<div class="footer">
+  StageFlow &mdash; Rapport confidentiel &mdash; {{ generated_at }}
+</div>
+
+</body>
+</html>

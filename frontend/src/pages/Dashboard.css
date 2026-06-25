@@ -1,0 +1,31 @@
+/* ── Dashboard — legacy desktop classes (kept for compatibility) ─── */
+.db-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.75rem; gap: 1rem; flex-wrap: wrap; }
+.db-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-bottom: 1.75rem; }
+.db-stat-card { background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-lg); padding: 1.375rem 1.5rem 1.25rem; display: flex; flex-direction: column; transition: box-shadow .2s,transform .2s,border-color .2s; position: relative; overflow: hidden; }
+.db-stat-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: #CBD5E1; }
+.db-main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 1.25rem; }
+.db-panel { background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: var(--radius-lg); overflow: hidden; }
+.db-panel-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--surface-border); }
+.db-panel-header h3 { margin: 0; font-size: 0.9375rem; font-weight: 700; color: var(--text-main); }
+.db-see-all { font-size: 0.8125rem; font-weight: 600; color: var(--primary); background: none; border: none; cursor: pointer; padding: 4px 2px; }
+.db-activity-list { padding: 0.5rem 0; }
+.db-activity-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.625rem 1.25rem; transition: background .12s; cursor: pointer; }
+.db-activity-row:hover { background: var(--surface-hover, #f8f9fa); }
+.db-activity-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: 700; flex-shrink: 0; }
+.db-activity-info { flex: 1; min-width: 0; }
+.db-activity-title { font-size: 0.875rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.db-activity-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+.db-activity-badge { font-size: 0.6875rem; font-weight: 600; padding: 2px 8px; border-radius: 9999px; white-space: nowrap; flex-shrink: 0; }
+.db-steps-list { padding: 0.5rem 0; }
+.db-step-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.625rem 1.25rem; cursor: pointer; transition: background .12s; }
+.db-step-row:hover { background: var(--surface-hover, #f8f9fa); }
+.db-step-check { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.db-step-label { flex: 1; font-size: 0.875rem; font-weight: 500; color: var(--text-main); }
+.db-step-label.done { color: var(--text-muted); text-decoration: line-through; font-weight: 400; }
+.db-progress-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--surface-border); }
+.db-progress-bar-track { height: 5px; background: var(--surface-section); border-radius: 10px; overflow: hidden; margin-top: 0.375rem; }
+.db-progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #60a5fa); border-radius: 10px; transition: width 0.8s ease; }
+.db-tip-card { padding: 1rem 1.125rem; background: linear-gradient(135deg, var(--primary-light) 0%, rgba(99,102,241,0.08) 100%); border: 1px solid rgba(37,99,235,0.15); border-radius: var(--radius-lg); }
+.db-tip-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.db-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; padding: 3rem 1.5rem; color: var(--text-muted); text-align: center; }
+.db-empty-state p { margin: 0; font-size: 0.9rem; }

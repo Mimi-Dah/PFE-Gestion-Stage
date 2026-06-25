@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Convention de Stage - {{ candidature.id_candidature }}</title>
+    <style>
+        @page {
+            margin: 2cm;
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #6366f1;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #6366f1;
+            margin: 0;
+            text-transform: uppercase;
+            font-size: 24pt;
+        }
+        .header p {
+            margin: 5px 0 0 0;
+            font-weight: bold;
+            color: #444;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            background-color: #f3f4f6;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-left: 4px solid #6366f1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 10pt;
+        }
+        .grid {
+            display: table;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .grid-row {
+            display: table-row;
+        }
+        .grid-label {
+            display: table-cell;
+            width: 30%;
+            font-weight: bold;
+            padding: 4px 0;
+            font-size: 10pt;
+        }
+        .grid-value {
+            display: table-cell;
+            padding: 4px 0;
+            font-size: 10pt;
+        }
+        .article {
+            margin-bottom: 15px;
+        }
+        .article-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .signatures {
+            margin-top: 50px;
+            display: table;
+            width: 100%;
+        }
+        .signature-box {
+            display: table-cell;
+            width: 33%;
+            border: 1px solid #ddd;
+            padding: 15px;
+            height: 120px;
+            vertical-align: top;
+            text-align: center;
+        }
+        .signature-label {
+            font-weight: bold;
+            font-size: 9pt;
+            margin-bottom: 40px;
+            display: block;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 8pt;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>internHub</h1>
+        <p>CONVENTION DE STAGE ACADÉMIQUE</p>
+        <p>N° {{ convention.numero_convention }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">ENTRE LES SOUSSIGNÉS</div>
+        <p><strong>L'Établissement d'Enseignement :</strong> {{ etudiant.etablissement.nom|default:"Université internHub" }}</p>
+        <p><strong>L'Entreprise d'Accueil :</strong> {{ entreprise.nom }}</p>
+        <p><strong>L'Étudiant(e) :</strong> {{ etudiant.prenom }} {{ etudiant.nom }}</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">ARTICLE 1 : OBJET DE LA CONVENTION</div>
+        <p>La présente convention règle les rapports entre l'entreprise d'accueil, l'établissement d'enseignement et l'étudiant dans le cadre du stage défini ci-après.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">ARTICLE 2 : DÉFINITION DU STAGE</div>
+        <div class="grid">
+            <div class="grid-row">
+                <div class="grid-label">Sujet du stage :</div>
+                <div class="grid-value">{{ offre.titre }}</div>
+            </div>
+            <div class="grid-row">
+                <div class="grid-label">Description :</div>
+                <div class="grid-value">{{ offre.description|truncatewords:50 }}</div>
+            </div>
+            <div class="grid-row">
+                <div class="grid-label">Dates :</div>
+                <div class="grid-value">Du {{ offre.date_debut|date:"d/m/Y" }} au {{ offre.date_fin|date:"d/m/Y" }}</div>
+            </div>
+            <div class="grid-row">
+                <div class="grid-label">Gratification :</div>
+                <div class="grid-value">{{ offre.gratification|default:"Non spécifiée" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">ARTICLE 3 : OBLIGATIONS</div>
+        <p>L'étudiant s'engage à respecter le règlement intérieur de l'entreprise. L'entreprise s'engage à confier à l'étudiant des missions en rapport avec sa formation académique.</p>
+    </div>
+
+    <div class="section">
+        <div class="section-title">ARTICLE 4 : RAPPORTS ET ÉVALUATION</div>
+        <p>À l'issue du stage, l'étudiant devra soumettre un rapport de stage à son établissement. L'entreprise procèdera à une évaluation technique de l'étudiant via la plateforme internHub.</p>
+    </div>
+
+    <div class="signatures">
+        <div class="signature-box">
+            <span class="signature-label">L'ÉTUDIANT(E)</span>
+            <p style="font-size: 8pt; color: #aaa;">(Signature précédée de la mention "Lu et approuvé")</p>
+        </div>
+        <div class="signature-box">
+            <span class="signature-label">L'ENTREPRISE</span>
+            <p style="font-size: 8pt; color: #aaa;">(Cachet et signature)</p>
+        </div>
+        <div class="signature-box">
+            <span class="signature-label">L'ÉTABLISSEMENT</span>
+            <p style="font-size: 8pt; color: #aaa;">(Visa du Chef de Département)</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Document généré automatiquement par internHub le {{ today|date:"d/m/Y à H:i" }}<br>
+        Authenticité vérifiable via le code : {{ convention.id_convention }}-{{ candidature.id_candidature }}
+    </div>
+</body>
+</html>

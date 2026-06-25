@@ -1,0 +1,491 @@
+[
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$h7GH5lfVhqDcZb0sIKfV74$8V63iUEDdg3N/uPb39AVjDVEf7gIJxOG3rJvI44Iz4Y=",
+      "last_login": null,
+      "is_superuser": true,
+      "courriel": "admin@stagepro.dz",
+      "role": "Admin",
+      "is_verified": true,
+      "verification_token": null,
+      "cree_le": "2026-05-13T09:44:49.647Z",
+      "mis_a_jour_le": "2026-05-13T09:44:49.647Z",
+      "is_active": true,
+      "is_staff": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$k6wedTejJJoLK0ie4yN9RU$CPk2cFbJhH7Aui7Mo/Qsr0a4LRGS2GXGBFzk7/Rkjig=",
+      "last_login": null,
+      "is_superuser": false,
+      "courriel": "chef.gl@stagepro.dz",
+      "role": "Chef_Departement",
+      "is_verified": true,
+      "verification_token": null,
+      "cree_le": "2026-05-13T09:44:51.355Z",
+      "mis_a_jour_le": "2026-05-13T09:44:51.355Z",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$NyPru23KdWkWbmY4Q4MUtL$3WxkyYy4PVwcZoTnHRYfYjEKGjQTF4dOdjgnzYRGTvA=",
+      "last_login": null,
+      "is_superuser": false,
+      "courriel": "etudiant@stagepro.dz",
+      "role": "Étudiant",
+      "is_verified": true,
+      "verification_token": null,
+      "cree_le": "2026-05-13T09:44:53.156Z",
+      "mis_a_jour_le": "2026-05-13T09:44:53.156Z",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$MdrQ2OUn5NW5kYIBjPY5BO$3X42j3ywarP1s8OQ7XK21iD35G0jgdDG+XwNLktjCGw=",
+      "last_login": null,
+      "is_superuser": false,
+      "courriel": "rh@techcorp.dz",
+      "role": "Entreprise",
+      "is_verified": true,
+      "verification_token": null,
+      "cree_le": "2026-05-13T09:44:54.825Z",
+      "mis_a_jour_le": "2026-05-15T18:34:58.145Z",
+      "is_active": true,
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.etudiant",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "photo": "",
+      "prenom": "Amina",
+      "nom": "Djouder",
+      "telephone": "0555000001",
+      "adresse": "12 Rue des Jasmins, Alger",
+      "departement": 1,
+      "date_de_naissance": "2003-09-12",
+      "niveau_academique": "Master 1",
+      "cv": "",
+      "lettre_motivation": ""
+    }
+  },
+  {
+    "model": "accounts.entreprise",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "rh@techcorp.dz"
+      ],
+      "logo": "",
+      "nom": "TechCorp DZ",
+      "description": "Société spécialisée en développement logiciel et solutions numériques. Nous offrons des stages de qualité à nos jeunes talents.",
+      "adresse": "42 Boulevard Mohamed V, Alger",
+      "telephone": "0213000000",
+      "site_web": null,
+      "nom_contact": "Sara Hamdi",
+      "email_contact": "rh@techcorp.dz"
+    }
+  },
+  {
+    "model": "accounts.chefdepartement",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "chef.gl@stagepro.dz"
+      ],
+      "departement": 1,
+      "nom": "Benali",
+      "prenom": "Karim"
+    }
+  },
+  {
+    "model": "offres.offredestage",
+    "pk": 1,
+    "fields": {
+      "entreprise": 1,
+      "titre": "Développeur Full-Stack (Stage)",
+      "description": "Rejoignez TechCorp DZ pour un stage en développement Full-Stack. Vous travaillerez sur des projets React et Django en collaboration directe avec nos équipes produit et design.",
+      "exigences": "Master 1 ou Master 2 en Génie Logiciel. Maîtrise de Python, JavaScript, React. Autonomie et esprit d'équipe requis.",
+      "date_debut": "2026-05-13",
+      "date_fin": "2026-09-02",
+      "duree_semaines": 16,
+      "localisation": "Alger Centre",
+      "teletravail": false,
+      "domaine": "Génie Logiciel",
+      "gratification": "25000.00",
+      "places_disponibles": 2,
+      "statut": "Active",
+      "publie_le": "2026-05-13T10:18:31.577Z"
+    }
+  },
+  {
+    "model": "offres.offredestage",
+    "pk": 2,
+    "fields": {
+      "entreprise": 1,
+      "titre": "Data Scientist Junior (Stage)",
+      "description": "Stage en Data Science au sein de l'équipe analytics de TechCorp. Vous analyserez des données réelles et construirez des modèles de Machine Learning pour des problèmes métiers concrets.",
+      "exigences": "Master 1 ou Master 2 en Intelligence Artificielle ou Data Science. Connaissances en Python, Pandas, Scikit-learn et visualisation de données.",
+      "date_debut": "2026-05-13",
+      "date_fin": "2026-09-02",
+      "duree_semaines": 16,
+      "localisation": "Alger",
+      "teletravail": true,
+      "domaine": "Intelligence Artificielle",
+      "gratification": "30000.00",
+      "places_disponibles": 1,
+      "statut": "Active",
+      "publie_le": "2026-05-13T10:18:31.590Z"
+    }
+  },
+  {
+    "model": "offres.offredestage",
+    "pk": 3,
+    "fields": {
+      "entreprise": 1,
+      "titre": "Ingénieur Cybersécurité (Stage)",
+      "description": "Stage en sécurité informatique chez TechCorp DZ. Missions : audit de sécurité, tests de pénétration, et mise en œuvre des meilleures pratiques de sécurité sur nos infrastructures.",
+      "exigences": "Licence 3 ou Master en Sécurité Informatique ou Réseaux. Connaissances en Linux, réseaux TCP/IP, bases de cryptographie.",
+      "date_debut": "2026-05-13",
+      "date_fin": "2026-09-02",
+      "duree_semaines": 16,
+      "localisation": "Alger",
+      "teletravail": false,
+      "domaine": "Sécurité Informatique",
+      "gratification": "20000.00",
+      "places_disponibles": 2,
+      "statut": "Active",
+      "publie_le": "2026-05-13T10:18:31.601Z"
+    }
+  },
+  {
+    "model": "offres.favori",
+    "pk": 1,
+    "fields": {
+      "etudiant": 1,
+      "offre": 1,
+      "cree_le": "2026-05-14T13:16:50.467Z"
+    }
+  },
+  {
+    "model": "candidatures.candidature",
+    "pk": 1,
+    "fields": {
+      "etudiant": 1,
+      "offre": 3,
+      "postule_le": "2026-05-14T11:43:41.639Z",
+      "statut": "Terminé",
+      "texte_lettre_motivation": "[Prénom Nom]\n[Téléphone] | [Email]\n[Lien Portfolio/GitHub]\n\nÀ l’attention du Responsable du Recrutement\n[Nom de l’entreprise]\n\nObjet : Candidature au poste de Développeur Web\n\nMadame, Monsieur,\n\nDéveloppeuse spécialisée en React JS et Python, je souhaite rejoindre [Nom de l’entreprise] pour contribuer à la qualité de vos solutions techniques.\n\nMon parcours m'a permis de maîtriser la conception d'interfaces fluides et la mise en place d'architectures sécurisées (notamment via JWT). Rigoureuse et analytique, je m'attache à livrer un code propre tout en automatisant les processus de diagnostic pour gagner en efficacité.\n\nVotre expertise dans le domaine de [secteur de l'entreprise] m'attire tout particulièrement, et je suis convaincue que mon profil technique saura répondre à vos enjeux de performance.\n\nJe suis disponible pour échanger prochainement sur la manière dont mes compétences peuvent servir vos projets.\n\nCordialement,\n\n[Nom]"
+    }
+  },
+  {
+    "model": "conventions.conventiondestage",
+    "pk": 1,
+    "fields": {
+      "candidature": 1,
+      "fichier_convention": "conventions/templates/convention_CONV-1.pdf",
+      "fichier_signe": "conventions/signees/Pv_AGO_NqyDPFx.pdf",
+      "statut": "Validée",
+      "valide_par_chef_departement": null,
+      "date_validation": "2026-05-14T12:10:12.032Z",
+      "signe_par_etudiant_le": "2026-05-14T12:04:16.033Z",
+      "signe_par_entreprise_le": "2026-05-14T12:02:47.469Z",
+      "motif_refus": null,
+      "numero_convention": "CONV-1",
+      "cree_le": "2026-05-14T12:00:42.509Z"
+    }
+  },
+  {
+    "model": "rapports.rapportdestage",
+    "pk": 1,
+    "fields": {
+      "etudiant": 1,
+      "offre": 3,
+      "fichier": "rapports/Etat_Avancement_Technique.md",
+      "resume": "merci",
+      "soumis_le": "2026-05-14T12:23:52.992Z",
+      "note": 17.0,
+      "commentaire": ""
+    }
+  },
+  {
+    "model": "evaluations.evaluationdestage",
+    "pk": 1,
+    "fields": {
+      "entreprise": 1,
+      "etudiant": 1,
+      "offre": 3,
+      "comportement": 3,
+      "adaptabilite": 4,
+      "travail_equipe": 4,
+      "qualite_travail": 4,
+      "note_globale": 15.0,
+      "commentaires": "Pas mal",
+      "recommanderait": "Oui",
+      "cree_le": "2026-05-14T12:28:20.935Z"
+    }
+  },
+  {
+    "model": "etablissements.etablissement",
+    "pk": 1,
+    "fields": {
+      "nom": "École Nationale Supérieure d'Informatique",
+      "adresse": "1 Rue de l'Université, Alger"
+    }
+  },
+  {
+    "model": "etablissements.departement",
+    "pk": 1,
+    "fields": {
+      "etablissement": 1,
+      "nom": "Génie Logiciel"
+    }
+  },
+  {
+    "model": "etablissements.departement",
+    "pk": 2,
+    "fields": {
+      "etablissement": 1,
+      "nom": "Intelligence Artificielle"
+    }
+  },
+  {
+    "model": "etablissements.departement",
+    "pk": 3,
+    "fields": {
+      "etablissement": 1,
+      "nom": "Réseaux et Télécommunications"
+    }
+  },
+  {
+    "model": "etablissements.departement",
+    "pk": 4,
+    "fields": {
+      "etablissement": 1,
+      "nom": "Systèmes Embarqués"
+    }
+  },
+  {
+    "model": "etablissements.departement",
+    "pk": 5,
+    "fields": {
+      "etablissement": 1,
+      "nom": "Sécurité Informatique"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "rh@techcorp.dz"
+      ],
+      "titre": "Nouvelle Candidature",
+      "message": "Amina Djouder a postulé à votre offre 'Ingénieur Cybersécurité (Stage)'.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T11:43:41.683Z",
+      "type_event": "Nouvelle_candidature",
+      "lien": "/espace/entreprise/offres/3/candidatures"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 2,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "titre": "Mise à jour de votre candidature",
+      "message": "Votre candidature pour 'Ingénieur Cybersécurité (Stage)' a été acceptée.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:00:42.375Z",
+      "type_event": "Candidature_Acceptée",
+      "lien": "/espace/candidatures"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 3,
+    "fields": {
+      "user": [
+        "chef.gl@stagepro.dz"
+      ],
+      "titre": "Candidature Acceptée - Action Requise",
+      "message": "La candidature de Amina Djouder pour 'Ingénieur Cybersécurité (Stage)' a été acceptée. Veuillez déposer la convention.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:00:46.311Z",
+      "type_event": "Convention_A_Deposer",
+      "lien": "/espace/chef/conventions"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 4,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "titre": "Signature Entreprise",
+      "message": "L'entreprise a signé votre convention CONV-1.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:02:47.487Z",
+      "type_event": "Convention_signee_entreprise",
+      "lien": "/espace/mon-stage"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 5,
+    "fields": {
+      "user": [
+        "rh@techcorp.dz"
+      ],
+      "titre": "Signature Étudiant",
+      "message": "L'étudiant Amina Djouder a signé la convention CONV-1.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:04:16.067Z",
+      "type_event": "Convention_signee_etudiant",
+      "lien": "/espace/entreprise/conventions"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 6,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "titre": "Convention Validée",
+      "message": "Votre convention CONV-1 a été validée par le département.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:10:12.069Z",
+      "type_event": "Convention_validee",
+      "lien": "/espace/mon-stage"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 7,
+    "fields": {
+      "user": [
+        "rh@techcorp.dz"
+      ],
+      "titre": "Convention Validée",
+      "message": "La convention CONV-1 (Amina Djouder) a été validée.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:10:12.144Z",
+      "type_event": "Convention_validee",
+      "lien": "/espace/entreprise/conventions"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 8,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "titre": "Mise à jour de votre candidature",
+      "message": "Votre candidature pour 'Ingénieur Cybersécurité (Stage)' a été terminé.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:22:41.218Z",
+      "type_event": "Candidature_Terminé",
+      "lien": "/espace/candidatures"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 9,
+    "fields": {
+      "user": [
+        "chef.gl@stagepro.dz"
+      ],
+      "titre": "Nouveau Rapport Soumis",
+      "message": "L'étudiant Amina Djouder a soumis son rapport de stage pour 'Ingénieur Cybersécurité (Stage)'.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:23:53.018Z",
+      "type_event": "Rapport_soumis",
+      "lien": "/espace/chef/rapports"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 10,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "titre": "Évaluation Disponible",
+      "message": "L'entreprise TechCorp DZ a publié votre évaluation de stage.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:28:20.948Z",
+      "type_event": "Evaluation_disponible",
+      "lien": "/espace/evaluations"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 11,
+    "fields": {
+      "user": [
+        "chef.gl@stagepro.dz"
+      ],
+      "titre": "Nouvelle Évaluation Déposée",
+      "message": "L'entreprise TechCorp DZ a évalué le stage de Amina Djouder.",
+      "est_lue": true,
+      "cree_le": "2026-05-14T12:28:20.997Z",
+      "type_event": "Evaluation_disponible",
+      "lien": "/espace/chef/stagiaires"
+    }
+  },
+  {
+    "model": "notifications.notification",
+    "pk": 12,
+    "fields": {
+      "user": [
+        "etudiant@stagepro.dz"
+      ],
+      "titre": "Rapport Noté",
+      "message": "Votre rapport pour 'Ingénieur Cybersécurité (Stage)' a été noté : 17/20.",
+      "est_lue": true,
+      "cree_le": "2026-05-15T10:03:56.771Z",
+      "type_event": "Rapport_note",
+      "lien": "/espace/mon-stage"
+    }
+  },
+  {
+    "model": "absences.absence",
+    "pk": 1,
+    "fields": {
+      "candidature": 1,
+      "date_absence": "2026-05-14",
+      "motif_signalement": "Bonjour à toutes et à tous,\n\nJe vous informe de mon absence du [Date de début] au [Date de fin] inclus.\n\nPendant cette période, je n'aurai pas accès à mes emails. Pour toute demande urgente concernant [Sujet : Recrutement / Paie / Contrats], je vous invite à contacter :\n\n[Nom du collègue] à l'adresse [Email].\n\nPour les dossiers en cours ne présentant pas de caractère d'urgence, je traiterai vos demandes à mon retour le [Date de retour].\n\nMerci de votre compréhension.\n\nBien cordialement,\n\n[Votre Nom]\nResponsable Ressources Humaines",
+      "justification": null,
+      "document_justificatif": "",
+      "statut": "Signaler",
+      "cree_le": "2026-05-14T12:16:18.083Z",
+      "valide_le": null
+    }
+  }
+]

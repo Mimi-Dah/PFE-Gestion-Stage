@@ -1,0 +1,16 @@
+.env
+.tmp/
+credentials.json
+token.json
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+node_modules/
+db.sqlite3
+media/
+dist/
+*.log
+.DS_Store
+mobile/

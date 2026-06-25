@@ -1,0 +1,190 @@
+/* ── Candidatures — table styled with Offres design tokens ──── */
+
+.cand-table-wrap {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.cand-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+/* ── Head ───────────────────────────────────────────────────── */
+.cand-table thead tr {
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-section);
+}
+.cand-table th {
+  padding: 0.75rem 1.25rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-subtle);
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* ── Body rows ──────────────────────────────────────────────── */
+.cand-row {
+  border-bottom: 1px solid var(--surface-border);
+  transition: background 0.12s;
+}
+.cand-row:last-child { border-bottom: none; }
+.cand-row:hover { background: var(--surface-hover); }
+
+.cand-td {
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  color: var(--text-main);
+}
+
+/* Main offer cell */
+.cand-td-main { max-width: 280px; }
+.cand-offer-link {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  text-align: left;
+  line-height: 1.35;
+  transition: color 0.12s;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.cand-offer-link:hover { color: var(--primary); }
+.cand-offer-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--text-subtle);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* Company cell */
+.cand-company {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+.cand-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.cand-company-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Date cell */
+.cand-td-date {
+  display: table-cell;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* Status badge */
+.cand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Actions cell */
+.cand-td-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+.cand-td-actions { display: table-cell; }
+.cand-td-actions > * + * { margin-left: 6px; }
+
+.cand-btn-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(34,197,94,.2);
+  background: #ECFDF5;
+  color: #059669;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.cand-btn-follow:hover { background: #D1FAE5; }
+
+.cand-btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--surface-border);
+  background: transparent;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.cand-btn-view:hover { background: var(--primary-light); border-color: var(--primary); }
+
+.cand-btn-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(239,68,68,.2);
+  background: #FEF2F2;
+  color: #DC2626;
+  cursor: pointer;
+  transition: background 0.12s;
+  padding: 0;
+}
+.cand-btn-delete:hover:not(:disabled) { background: #FEE2E2; }
+.cand-btn-delete:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Dark mode ──────────────────────────────────────────────── */
+.dark .cand-table-wrap  { border-color: rgba(255,255,255,0.08); }
+.dark .cand-row:hover   { background: rgba(255,255,255,0.03); }
+.dark .cand-row         { border-bottom-color: rgba(255,255,255,0.06); }
+.dark .cand-table thead tr { background: rgba(255,255,255,0.03); border-bottom-color: rgba(255,255,255,0.06); }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .cand-table-wrap { border-radius: 12px; overflow-x: auto; }
+  .cand-table { min-width: 640px; }
+}

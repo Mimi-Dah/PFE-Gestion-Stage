@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<style>
+  @page {
+    size: A4;
+    margin: 2cm 2.5cm;
+    @top-center {
+      content: "StageFlow — Rapport Analytique Administrateur";
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 9pt;
+      color: #8892a4;
+    }
+    @bottom-right {
+      content: "Page " counter(page) " / " counter(pages);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 9pt;
+      color: #8892a4;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10.5pt;
+    color: #1a202c;
+    line-height: 1.6;
+    background: #ffffff;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px solid #4f46e5;
+    margin-bottom: 2.5rem;
+  }
+
+  .brand { display: flex; align-items: center; gap: 0.75rem; }
+  .brand-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    flex-shrink: 0;
+  }
+  .brand-name {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #4f46e5;
+    letter-spacing: -0.03em;
+  }
+
+  .report-meta { text-align: right; }
+  .report-meta .report-title {
+    font-size: 13pt;
+    font-weight: 800;
+    color: #1a202c;
+  }
+  .report-meta .report-subtitle {
+    font-size: 9pt;
+    color: #64748b;
+    margin-top: 0.25rem;
+  }
+  .report-meta .report-date {
+    font-size: 9pt;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Section titles ──────────────────────────────────────── */
+  .section-title {
+    font-size: 11pt;
+    font-weight: 900;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-left: 4px solid #4f46e5;
+    padding-left: 0.75rem;
+    margin-bottom: 1.25rem;
+    margin-top: 2.25rem;
+  }
+
+  /* ── Overview grid ───────────────────────────────────────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .kpi-card {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1rem 0.9rem;
+    background: #f8fafc;
+  }
+  .kpi-card.accent { border-color: #4f46e5; background: #eef2ff; }
+
+  .kpi-label {
+    font-size: 7.5pt;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.4rem;
+  }
+  .kpi-value {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #1a202c;
+    line-height: 1;
+  }
+  .kpi-card.accent .kpi-value { color: #4f46e5; }
+
+  /* ── Placement rate bar ──────────────────────────────────── */
+  .rate-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .rate-label { font-size: 9.5pt; font-weight: 700; color: #475569; min-width: 130px; }
+  .rate-track {
+    flex: 1;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .rate-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    border-radius: 99px;
+  }
+  .rate-pct { font-size: 10pt; font-weight: 900; color: #4f46e5; min-width: 45px; text-align: right; }
+
+  /* ── Satisfaction box ────────────────────────────────────── */
+  .satisfaction-box {
+    border: 1.5px solid #4f46e5;
+    border-radius: 12px;
+    background: #eef2ff;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .satisfaction-score {
+    font-size: 36pt;
+    font-weight: 900;
+    color: #4f46e5;
+    line-height: 1;
+  }
+  .satisfaction-detail { flex: 1; }
+  .satisfaction-detail .s-title {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #1a202c;
+  }
+  .satisfaction-detail .s-sub {
+    font-size: 9pt;
+    color: #64748b;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Department table ────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+  }
+  thead tr { background: #4f46e5; color: white; }
+  thead th {
+    padding: 0.65rem 0.9rem;
+    text-align: left;
+    font-weight: 800;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  tbody tr:nth-child(odd) { background: #ffffff; }
+  tbody td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  .td-dept { font-weight: 700; color: #1a202c; }
+  .td-badge {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    font-size: 8pt;
+    font-weight: 800;
+  }
+  .badge-good { background: #dcfce7; color: #166534; }
+  .badge-medium { background: #fef9c3; color: #854d0e; }
+  .badge-low { background: #fee2e2; color: #991b1b; }
+
+  .bar-cell { width: 120px; }
+  .mini-track {
+    height: 7px;
+    background: #e2e8f0;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .mini-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    border-radius: 99px;
+  }
+
+  /* ── Placements table ────────────────────────────────────── */
+  .placement-table thead tr { background: #0f172a; }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .report-footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 8.5pt;
+    color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────── -->
+<div class="report-header">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <span class="brand-name">StageFlow</span>
+  </div>
+  <div class="report-meta">
+    <div class="report-title">Rapport Analytique Global</div>
+    <div class="report-subtitle">Vue Administrateur — Données en temps réel</div>
+    <div class="report-date">Généré le {{ generated_at }}</div>
+  </div>
+</div>
+
+<!-- ── Vue d'ensemble ─────────────────────────────────────── -->
+<div class="section-title">Vue d'ensemble de la plateforme</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Étudiants</div>
+    <div class="kpi-value">{{ overview.total_students }}</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Entreprises</div>
+    <div class="kpi-value">{{ overview.total_companies }}</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Candidatures</div>
+    <div class="kpi-value">{{ overview.total_candidatures }}</div>
+  </div>
+  <div class="kpi-card accent">
+    <div class="kpi-label">Offres Actives</div>
+    <div class="kpi-value">{{ overview.active_offers }}</div>
+  </div>
+</div>
+
+<div class="kpi-grid" style="margin-top: 0.85rem;">
+  <div class="kpi-card">
+    <div class="kpi-label">Offres Totales</div>
+    <div class="kpi-value">{{ overview.total_offers }}</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Stages en Cours</div>
+    <div class="kpi-value">{{ overview.active_internships }}</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Stages Terminés</div>
+    <div class="kpi-value">{{ overview.completed_internships }}</div>
+  </div>
+  <div class="kpi-card accent">
+    <div class="kpi-label">Taux de Placement</div>
+    <div class="kpi-value">{{ overview.placement_rate }}%</div>
+  </div>
+</div>
+
+<!-- ── Taux de placement ───────────────────────────────────── -->
+<div class="section-title">Taux de placement global</div>
+
+<div class="rate-row">
+  <span class="rate-label">Étudiants placés en stage</span>
+  <div class="rate-track">
+    <div class="rate-fill" style="width: {{ overview.placement_rate }}%"></div>
+  </div>
+  <span class="rate-pct">{{ overview.placement_rate }}%</span>
+</div>
+<div class="rate-row">
+  <span class="rate-label">Stages terminés</span>
+  <div class="rate-track">
+    <div class="rate-fill" style="width: {{ completed_pct }}%; background: linear-gradient(90deg, #059669, #10b981);"></div>
+  </div>
+  <span class="rate-pct" style="color: #059669;">{{ completed_pct }}%</span>
+</div>
+
+<!-- ── Score de satisfaction ──────────────────────────────── -->
+<div class="section-title">Score de satisfaction</div>
+
+<div class="satisfaction-box">
+  <div class="satisfaction-score">{{ overview.average_performance }}</div>
+  <div class="satisfaction-detail">
+    <div class="s-title">Moyenne des évaluations de stages</div>
+    <div class="s-sub">
+      Calculée à partir des évaluations soumises par les entreprises partenaires.<br/>
+      Critères : comportement, adaptabilité, travail d'équipe, qualité du travail (sur 20).
+    </div>
+  </div>
+</div>
+
+<!-- ── Répartition par département ───────────────────────── -->
+<div class="section-title">Répartition par département</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Département</th>
+      <th style="text-align:center;">Étudiants</th>
+      <th style="text-align:center;">En Stage</th>
+      <th style="text-align:center;">Taux</th>
+      <th class="bar-cell">Progression</th>
+      <th style="text-align:center;">Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for dept in by_department %}
+    {% with pct=dept.pct %}
+    <tr>
+      <td class="td-dept">{{ dept.departement }}</td>
+      <td style="text-align:center;">{{ dept.total }}</td>
+      <td style="text-align:center;">{{ dept.en_stage }}</td>
+      <td style="text-align:center; font-weight:800; color:#4f46e5;">{{ pct }}%</td>
+      <td class="bar-cell">
+        <div class="mini-track">
+          <div class="mini-fill" style="width: {{ pct }}%"></div>
+        </div>
+      </td>
+      <td style="text-align:center;">
+        {% if pct >= 50 %}
+          <span class="td-badge badge-good">Bon</span>
+        {% elif pct >= 25 %}
+          <span class="td-badge badge-medium">Moyen</span>
+        {% else %}
+          <span class="td-badge badge-low">Faible</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endwith %}
+    {% empty %}
+    <tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:1.5rem;">Aucun département enregistré.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- ── Placements récents ─────────────────────────────────── -->
+{% if recent_placements %}
+<div class="section-title">Placements récents</div>
+
+<table class="placement-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Étudiant</th>
+      <th>Entreprise</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in recent_placements %}
+    <tr>
+      <td style="color:#94a3b8; font-size:8.5pt;">{{ forloop.counter }}</td>
+      <td class="td-dept">{{ p.student }}</td>
+      <td>{{ p.company }}</td>
+      <td style="color:#64748b; font-size:8.5pt;">{{ p.date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<div class="report-footer">
+  Ce rapport est confidentiel et destiné à l'usage exclusif de l'administrateur de la plateforme StageFlow.
+  &mdash; Généré automatiquement le {{ generated_at }}.
+</div>
+
+</body>
+</html>

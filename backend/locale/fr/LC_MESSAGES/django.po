@@ -1,0 +1,166 @@
+# Traductions françaises — InternHub Backend
+# Généré par : django-admin makemessages -l fr
+# Compilé par : django-admin compilemessages
+#
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# ---------------------------------------------------------------------------
+# accounts/models.py
+# ---------------------------------------------------------------------------
+msgid "Français"
+msgstr "Français"
+
+msgid "العربية"
+msgstr "Arabe"
+
+msgid "langue préférée"
+msgstr "langue préférée"
+
+# ---------------------------------------------------------------------------
+# accounts/views.py — authentification
+# ---------------------------------------------------------------------------
+msgid "Token manquant."
+msgstr "Token manquant."
+
+msgid "Lien de vérification invalide ou déjà utilisé."
+msgstr "Lien de vérification invalide ou déjà utilisé."
+
+msgid "Compte vérifié avec succès."
+msgstr "Compte vérifié avec succès."
+
+msgid "Email requis."
+msgstr "Email requis."
+
+msgid "Si ce compte existe, un email de réinitialisation a été envoyé."
+msgstr "Si ce compte existe, un email de réinitialisation a été envoyé."
+
+msgid "Données manquantes."
+msgstr "Données manquantes."
+
+msgid "Lien invalide."
+msgstr "Lien invalide."
+
+msgid "Lien de réinitialisation invalide ou expiré."
+msgstr "Lien de réinitialisation invalide ou expiré."
+
+msgid "Mot de passe réinitialisé avec succès."
+msgstr "Mot de passe réinitialisé avec succès."
+
+msgid "Les deux mots de passe sont requis."
+msgstr "Les deux mots de passe sont requis."
+
+msgid "Le mot de passe actuel est incorrect."
+msgstr "Le mot de passe actuel est incorrect."
+
+msgid "Le nouveau mot de passe doit faire au moins 8 caractères."
+msgstr "Le nouveau mot de passe doit faire au moins 8 caractères."
+
+msgid "Mot de passe mis à jour avec succès."
+msgstr "Mot de passe mis à jour avec succès."
+
+msgid "Rôle invalide."
+msgstr "Rôle invalide."
+
+msgid "Vous ne pouvez pas modifier votre propre rôle."
+msgstr "Vous ne pouvez pas modifier votre propre rôle."
+
+# ---------------------------------------------------------------------------
+# accounts/views.py — langue
+# ---------------------------------------------------------------------------
+msgid "Langue non supportée. Choisissez parmi : %(langs)s"
+msgstr "Langue non supportée. Choisissez parmi : %(langs)s"
+
+msgid "Langue mise à jour avec succès."
+msgstr "Langue mise à jour avec succès."
+
+# ---------------------------------------------------------------------------
+# accounts/serializers.py — validation
+# ---------------------------------------------------------------------------
+msgid "Chef de Département must be created by an administrator."
+msgstr "Le compte Chef de Département doit être créé par un administrateur."
+
+msgid "Département non trouvé."
+msgstr "Département non trouvé."
+
+msgid "Le département %(nom)s a déjà un chef."
+msgstr "Le département %(nom)s a déjà un chef."
+
+msgid "Ce courriel est déjà utilisé."
+msgstr "Ce courriel est déjà utilisé."
+
+msgid "Le mot de passe est trop court (minimum 8 caractères)."
+msgstr "Le mot de passe est trop court (minimum 8 caractères)."
+
+msgid "Le rôle sélectionné est invalide."
+msgstr "Le rôle sélectionné est invalide."
+
+# ---------------------------------------------------------------------------
+# notifications/utils.py — titres et messages de notification
+# ---------------------------------------------------------------------------
+msgid "Nouvelle candidature reçue"
+msgstr "Nouvelle candidature reçue"
+
+msgid "Votre candidature a été soumise avec succès."
+msgstr "Votre candidature a été soumise avec succès."
+
+msgid "Candidature acceptée"
+msgstr "Candidature acceptée"
+
+msgid "Félicitations ! Votre candidature a été acceptée."
+msgstr "Félicitations ! Votre candidature a été acceptée."
+
+msgid "Candidature refusée"
+msgstr "Candidature refusée"
+
+msgid "Votre candidature n'a pas été retenue."
+msgstr "Votre candidature n'a pas été retenue."
+
+msgid "Convention générée"
+msgstr "Convention générée"
+
+msgid "Votre convention de stage est prête à être signée."
+msgstr "Votre convention de stage est prête à être signée."
+
+msgid "Convention signée"
+msgstr "Convention signée"
+
+msgid "Votre convention de stage a été signée et validée."
+msgstr "Votre convention de stage a été signée et validée."
+
+msgid "Nouvelle absence enregistrée"
+msgstr "Nouvelle absence enregistrée"
+
+msgid "Une absence a été enregistrée pour votre stage."
+msgstr "Une absence a été enregistrée pour votre stage."
+
+msgid "Nouvelle évaluation disponible"
+msgstr "Nouvelle évaluation disponible"
+
+msgid "Votre maître de stage a soumis une évaluation."
+msgstr "Votre maître de stage a soumis une évaluation."
+
+msgid "Rapport de stage soumis"
+msgstr "Rapport de stage soumis"
+
+msgid "Votre rapport de stage a été reçu et est en cours de traitement."
+msgstr "Votre rapport de stage a été reçu et est en cours de traitement."
+
+# ---------------------------------------------------------------------------
+# Erreurs génériques
+# ---------------------------------------------------------------------------
+msgid "Une erreur inattendue s'est produite."
+msgstr "Une erreur inattendue s'est produite."
+
+msgid "Accès non autorisé."
+msgstr "Accès non autorisé."
+
+msgid "Ressource introuvable."
+msgstr "Ressource introuvable."
+
+msgid "Requête invalide."
+msgstr "Requête invalide."

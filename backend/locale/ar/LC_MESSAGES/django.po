@@ -1,0 +1,166 @@
+# الترجمات العربية — InternHub Backend
+# Généré par : django-admin makemessages -l ar
+# Compilé par : django-admin compilemessages
+#
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+# ---------------------------------------------------------------------------
+# accounts/models.py
+# ---------------------------------------------------------------------------
+msgid "Français"
+msgstr "الفرنسية"
+
+msgid "العربية"
+msgstr "العربية"
+
+msgid "langue préférée"
+msgstr "اللغة المفضلة"
+
+# ---------------------------------------------------------------------------
+# accounts/views.py — authentification
+# ---------------------------------------------------------------------------
+msgid "Token manquant."
+msgstr "الرمز المميز مفقود."
+
+msgid "Lien de vérification invalide ou déjà utilisé."
+msgstr "رابط التحقق غير صالح أو تم استخدامه مسبقاً."
+
+msgid "Compte vérifié avec succès."
+msgstr "تم التحقق من الحساب بنجاح."
+
+msgid "Email requis."
+msgstr "البريد الإلكتروني مطلوب."
+
+msgid "Si ce compte existe, un email de réinitialisation a été envoyé."
+msgstr "إذا كان هذا الحساب موجوداً، فقد تم إرسال بريد إلكتروني لإعادة التعيين."
+
+msgid "Données manquantes."
+msgstr "البيانات مفقودة."
+
+msgid "Lien invalide."
+msgstr "الرابط غير صالح."
+
+msgid "Lien de réinitialisation invalide ou expiré."
+msgstr "رابط إعادة التعيين غير صالح أو منتهي الصلاحية."
+
+msgid "Mot de passe réinitialisé avec succès."
+msgstr "تمت إعادة تعيين كلمة المرور بنجاح."
+
+msgid "Les deux mots de passe sont requis."
+msgstr "كلا كلمتي المرور مطلوبتان."
+
+msgid "Le mot de passe actuel est incorrect."
+msgstr "كلمة المرور الحالية غير صحيحة."
+
+msgid "Le nouveau mot de passe doit faire au moins 8 caractères."
+msgstr "يجب أن تتكون كلمة المرور الجديدة من 8 أحرف على الأقل."
+
+msgid "Mot de passe mis à jour avec succès."
+msgstr "تم تحديث كلمة المرور بنجاح."
+
+msgid "Rôle invalide."
+msgstr "الدور غير صالح."
+
+msgid "Vous ne pouvez pas modifier votre propre rôle."
+msgstr "لا يمكنك تعديل دورك الخاص."
+
+# ---------------------------------------------------------------------------
+# accounts/views.py — langue
+# ---------------------------------------------------------------------------
+msgid "Langue non supportée. Choisissez parmi : %(langs)s"
+msgstr "اللغة غير مدعومة. اختر من بين: %(langs)s"
+
+msgid "Langue mise à jour avec succès."
+msgstr "تم تحديث اللغة بنجاح."
+
+# ---------------------------------------------------------------------------
+# accounts/serializers.py — validation
+# ---------------------------------------------------------------------------
+msgid "Chef de Département must be created by an administrator."
+msgstr "يجب أن يتم إنشاء حساب رئيس القسم من قبل المسؤول."
+
+msgid "Département non trouvé."
+msgstr "القسم غير موجود."
+
+msgid "Le département %(nom)s a déjà un chef."
+msgstr "القسم %(nom)s لديه رئيس بالفعل."
+
+msgid "Ce courriel est déjà utilisé."
+msgstr "البريد الإلكتروني مستخدم بالفعل."
+
+msgid "Le mot de passe est trop court (minimum 8 caractères)."
+msgstr "كلمة المرور قصيرة جداً (8 أحرف على الأقل)."
+
+msgid "Le rôle sélectionné est invalide."
+msgstr "الدور المحدد غير صالح."
+
+# ---------------------------------------------------------------------------
+# notifications/utils.py — titres et messages de notification
+# ---------------------------------------------------------------------------
+msgid "Nouvelle candidature reçue"
+msgstr "تم استلام طلب جديد"
+
+msgid "Votre candidature a été soumise avec succès."
+msgstr "تم تقديم طلبك بنجاح."
+
+msgid "Candidature acceptée"
+msgstr "تم قبول الطلب"
+
+msgid "Félicitations ! Votre candidature a été acceptée."
+msgstr "تهانينا! تم قبول طلبك."
+
+msgid "Candidature refusée"
+msgstr "تم رفض الطلب"
+
+msgid "Votre candidature n'a pas été retenue."
+msgstr "لم يتم قبول طلبك."
+
+msgid "Convention générée"
+msgstr "تم إنشاء العقد"
+
+msgid "Votre convention de stage est prête à être signée."
+msgstr "عقد التدريب الخاص بك جاهز للتوقيع."
+
+msgid "Convention signée"
+msgstr "تم توقيع العقد"
+
+msgid "Votre convention de stage a été signée et validée."
+msgstr "تم توقيع عقد التدريب والتحقق منه."
+
+msgid "Nouvelle absence enregistrée"
+msgstr "تم تسجيل غياب جديد"
+
+msgid "Une absence a été enregistrée pour votre stage."
+msgstr "تم تسجيل غياب في تدريبك."
+
+msgid "Nouvelle évaluation disponible"
+msgstr "تقييم جديد متاح"
+
+msgid "Votre maître de stage a soumis une évaluation."
+msgstr "قدّم مشرف تدريبك تقييماً جديداً."
+
+msgid "Rapport de stage soumis"
+msgstr "تم تقديم تقرير التدريب"
+
+msgid "Votre rapport de stage a été reçu et est en cours de traitement."
+msgstr "تم استلام تقرير تدريبك وهو قيد المعالجة."
+
+# ---------------------------------------------------------------------------
+# Erreurs génériques
+# ---------------------------------------------------------------------------
+msgid "Une erreur inattendue s'est produite."
+msgstr "حدث خطأ غير متوقع."
+
+msgid "Accès non autorisé."
+msgstr "الوصول غير مصرح به."
+
+msgid "Ressource introuvable."
+msgstr "المورد غير موجود."
+
+msgid "Requête invalide."
+msgstr "الطلب غير صالح."

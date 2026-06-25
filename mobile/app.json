@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "InternHub",
+    "slug": "internhub-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "updates": {
+      "enabled": false
+    },
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#1B6EF3"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.interhub.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F172A"
+      },
+      "package": "com.interhub.mobile",
+      "usesCleartextTraffic": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "InternHub needs access to your photos to upload a profile picture."
+        }
+      ],
+      "expo-font"
+    ]
+  }
+}

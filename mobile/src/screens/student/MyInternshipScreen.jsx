@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  ActivityIndicator, Alert, Modal, FlatList, Platform,
+  ActivityIndicator, Alert, Modal, FlatList, Platform, I18nManager,
 } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as DocumentPicker from 'expo-document-picker';
@@ -9,7 +9,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import {
   Calendar, FileText, CheckCircle, Clock, XCircle,
-  Briefcase, ChevronRight, ChevronDown, ClipboardList, Upload,
+  Briefcase, ChevronRight, ChevronLeft, ChevronDown, ClipboardList, Upload,
   Star, MessageSquare, AlertTriangle, Award, Download,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
@@ -575,7 +575,9 @@ function QuickRow({ C, label, sub, onPress }) {
         <Text style={[styles.quickLabel, { color: C.text }]}>{label}</Text>
         <Text style={[styles.quickSub, { color: C.textMuted }]}>{sub}</Text>
       </View>
-      <ChevronRight size={16} color={C.textMuted} strokeWidth={1.8} />
+      {I18nManager.isRTL
+        ? <ChevronLeft size={16} color={C.textMuted} strokeWidth={1.8} />
+        : <ChevronRight size={16} color={C.textMuted} strokeWidth={1.8} />}
     </TouchableOpacity>
   );
 }

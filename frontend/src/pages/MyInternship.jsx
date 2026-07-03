@@ -266,7 +266,7 @@ const MyInternship = () => {
       )}
 
       {/* ── Info paragraph ─────────────────────────────────────── */}
-      <div className="ms-info-para" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem 1.5rem' }}>
+      <div className="ms-info-para" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem 1.5rem' }}>
         <span>
           {t('pages.myInternship.convWith')} <strong>{activeConv.numero_convention || `#${activeConvId}`}</strong>{' '}
           {t('pages.myInternship.convWithCompany')} <strong>{activeConv.entreprise_nom || '—'}</strong>
@@ -281,7 +281,7 @@ const MyInternship = () => {
             {t('pages.myInternship.status.' + activeConv.statut)}
           </span>
         </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.875rem', marginLeft: 'auto', flexShrink: 0 }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.875rem', flexShrink: 0 }}>
           <span className="ms-sign-row" style={{ gap: 5 }}>
             <span className="ms-sign-dot" style={{ background: activeConv.signe_par_etudiant_le ? '#16a34a' : '#e2e8f0' }} />
             <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{t('pages.myInternship.signedStudent')}</span>
@@ -300,7 +300,7 @@ const MyInternship = () => {
       </div>
 
       {/* ══ MAIN CONTENT ═══════════════════════════════════════════ */}
-      <div className="ms-right-col" style={{ maxWidth: '100%' }}>
+      <div className="ms-right-col">
 
         {/* Steps card */}
         <div className="vf-card">
@@ -484,14 +484,9 @@ const MyInternship = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 0, minWidth: 0 }}>
+            <div className="ms-eval-body">
               {/* LEFT — Global score */}
-              <div style={{
-                padding: '1.25rem 1.375rem',
-                borderRight: '1px dashed #eaecf2',
-                display: 'flex', flexDirection: 'column', justifyContent: 'center',
-                gap: '0.75rem', flexShrink: 0, width: 200,
-              }}>
+              <div className="ms-eval-left">
                 <span className="ms-section-label">{t('pages.myInternship.globalScore')}</span>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
                   <span className="ms-serif" style={{ fontSize: '2.25rem', fontWeight: 700, color: '#1b6ef3', lineHeight: 1, letterSpacing: '-0.03em' }}>
@@ -522,12 +517,7 @@ const MyInternship = () => {
               </div>
 
               {/* RIGHT — Sub-scores */}
-              <div style={{
-                flex: 1, minWidth: 0,
-                display: 'grid', gridTemplateColumns: '1fr 1fr',
-                padding: '1.125rem 1.375rem', gap: '0.875rem',
-                alignContent: 'center',
-              }}>
+              <div className="ms-eval-right">
                 {[
                   [t('pages.myInternship.criteriaWork'),     activeEval.qualite_travail, '#1b6ef3'],
                   [t('pages.myInternship.criteriaBehavior'), activeEval.comportement,    '#6366f1'],

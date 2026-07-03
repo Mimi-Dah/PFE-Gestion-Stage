@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet,
-  ActivityIndicator, Animated,
+  ActivityIndicator, Animated, I18nManager,
 } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { Bell, ArrowLeft, CheckCircle, Clock, Briefcase, Info, Trash2, CheckCheck, Trash } from 'lucide-react-native';
+import { Bell, ArrowLeft, ArrowRight, CheckCircle, Clock, Briefcase, Info, Trash2, CheckCheck, Trash } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { F } from '../../theme/fonts';
@@ -35,14 +35,12 @@ async function fetchNotifications() {
 }
 
 /* ── Swipeable delete action ── */
-function DeleteAction({ onDelete, dragX, deleteLabel }) {
-  const translateX = dragX.interpolate({
-    inputRange: [-100, 0],
-    outputRange: [0, 100],
-    extrapolate: 'clamp',
-  });
+function DeleteAction({ onDelete, dragX, deleteLabel, isRTL }) {
+  const translateX = isRTL
+    ? dragX.interpolate({ inputRange: [0, 100], outputRange: [-100, 0], extrapolate: 'clamp' })
+    : dragX.interpolate({ inputRange: [-100, 0], outputRange: [0, 100],  extrapolate: 'clamp' });
   return (
-    <Animated.View style={[s.deleteWrap, { transform: [{ translateX }] }]}>
+    <Animated.View style={[s.deleteWrap, { alignItems: isRTL ? 'flex-start' : 'flex-end' }, { transform: [{ translateX }] }]}>
       <TouchableOpacity style={s.deleteBtn} onPress={onDelete} activeOpacity={0.8}>
         <Trash2 size={20} color="#fff" strokeWidth={2} />
         <Text style={s.deleteBtnText}>{deleteLabel}</Text>
@@ -53,6 +51,8 @@ function DeleteAction({ onDelete, dragX, deleteLabel }) {
 
 /* ── Single notification card ── */
 function NotifRow({ item, C, isDark, onDelete, deleteLabel }) {
+  const { t }   = useTranslation();
+  const isRTL   = I18nManager.isRTL;
   const swipeRef = useRef(null);
   const cfg       = getTypeConfig(item.type_event);
   const NotifIcon = cfg.icon;
@@ -63,15 +63,24 @@ function NotifRow({ item, C, isDark, onDelete, deleteLabel }) {
     onDelete(item.id_notification);
   };
 
+  const swipeProps = isRTL
+    ? {
+        renderLeftActions: (_, dragX) => (
+          <DeleteAction onDelete={handleDelete} dragX={dragX} deleteLabel={deleteLabel} isRTL />
+        ),
+        leftThreshold:  60,
+        overshootLeft:  false,
+      }
+    : {
+        renderRightActions: (_, dragX) => (
+          <DeleteAction onDelete={handleDelete} dragX={dragX} deleteLabel={deleteLabel} isRTL={false} />
+        ),
+        rightThreshold: 60,
+        overshootRight: false,
+      };
+
   return (
-    <Swipeable
-      ref={swipeRef}
-      renderRightActions={(_, dragX) => (
-        <DeleteAction onDelete={handleDelete} dragX={dragX} deleteLabel={deleteLabel} />
-      )}
-      rightThreshold={60}
-      overshootRight={false}
-    >
+    <Swipeable ref={swipeRef} {...swipeProps}>
       <View
         style={[
           s.notifCard,
@@ -163,7 +172,9 @@ export default function NotificationsScreen({ navigation }) {
       {/* ── Header ── */}
       <View style={[s.header, { paddingTop: insets.top + 14, backgroundColor: C.bgCard, borderBottomColor: C.border }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={8} style={s.backBtn}>
-          <ArrowLeft size={22} color={C.text} strokeWidth={2} />
+          {I18nManager.isRTL
+            ? <ArrowRight size={22} color={C.text} strokeWidth={2} />
+            : <ArrowLeft  size={22} color={C.text} strokeWidth={2} />}
         </TouchableOpacity>
 
         <View style={s.headerCenter}>
@@ -293,7 +304,7 @@ const s = StyleSheet.create({
     backgroundColor: '#EF4444',
     justifyContent: 'center', alignItems: 'center', gap: 4,
     borderRadius: 12,
-    marginLeft: 8,
+    marginStart: 8,
   },
   deleteBtnText: { fontFamily: F.semi, fontSize: 11, color: '#fff' },
 

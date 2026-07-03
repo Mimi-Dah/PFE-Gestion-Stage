@@ -1,11 +1,20 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="StageMS — Plateforme de gestion des stagiaires pour les entreprises et équipes RH." />
     <title>StageMS</title>
+    <script>
+      /* Apply saved lang/dir before first paint — prevents RTL layout flash on iOS */
+      try {
+        var s = JSON.parse(localStorage.getItem('internhub-layout-storage') || '{}');
+        var lang = (s.state && s.state.language) || 'fr';
+        document.documentElement.setAttribute('lang', lang);
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      } catch(e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

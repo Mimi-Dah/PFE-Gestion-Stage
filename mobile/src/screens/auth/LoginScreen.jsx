@@ -191,8 +191,8 @@ const makeStyles = (C) => StyleSheet.create({
   inputError: { borderWidth: 1.5, borderColor: C.danger },
   fieldError:  { fontFamily: F.reg, fontSize: 12, color: C.danger },
   pwWrap:   { position: 'relative' },
-  pwInput:  { paddingRight: 48 },
-  eyeBtn:   { position: 'absolute', right: 16, top: 0, bottom: 0, justifyContent: 'center' },
+  pwInput:  { paddingEnd: 48 },
+  eyeBtn:   { position: 'absolute', end: 16, top: 0, bottom: 0, justifyContent: 'center' },
   rememberRow:  { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8, marginBottom: 24 },
   checkbox: {
     width: 20, height: 20, borderRadius: 6, borderWidth: 1.5, borderColor: C.border,

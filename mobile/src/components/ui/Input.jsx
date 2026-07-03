@@ -67,7 +67,7 @@ export default function Input({
           <IconToRender
             size={19}
             color={focused ? C.primary : C.textMuted}
-            style={{ marginRight: 8 }}
+            style={{ marginEnd: 8 }}
             strokeWidth={2}
           />
         )}

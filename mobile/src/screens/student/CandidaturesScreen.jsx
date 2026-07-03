@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet,
-  RefreshControl, ActivityIndicator, Alert, ScrollView,
+  RefreshControl, ActivityIndicator, Alert, ScrollView, I18nManager,
 } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Briefcase, Clock, CheckCircle2, XCircle, Trash2, FileText,
-  MapPin, PlayCircle, BadgeCheck, ChevronRight,
+  MapPin, PlayCircle, BadgeCheck, ChevronRight, ChevronLeft,
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -191,6 +191,7 @@ export default function CandidaturesScreen({ navigation }) {
 }
 
 function CandidatureCard({ item, C, isDark, statusMap, labelFollow, labelView, labelWithdraw, onDelete, onViewOffer, onFollowStage }) {
+  const { t }      = useTranslation();
   const colors     = STATUS_COLORS[item.statut] ?? STATUS_COLORS['en_attente'];
   const label      = statusMap?.[item.statut]?.label ?? colors.label ?? item.statut;
   const st         = { ...colors, label };
@@ -269,7 +270,9 @@ function CandidatureCard({ item, C, isDark, statusMap, labelFollow, labelView, l
               )}
               <TouchableOpacity style={[styles.actionBtn, { backgroundColor: C.bgMuted, borderColor: C.border }]} onPress={onViewOffer} activeOpacity={0.7}>
                 <Text style={[styles.actionBtnText, { color: C.textSub }]}>{labelView}</Text>
-                <ChevronRight size={12} color={C.textSub} strokeWidth={2} />
+                {I18nManager.isRTL
+                  ? <ChevronLeft size={12} color={C.textSub} strokeWidth={2} />
+                  : <ChevronRight size={12} color={C.textSub} strokeWidth={2} />}
               </TouchableOpacity>
               {isPending && (
                 <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#FEF2F2', borderColor: 'rgba(239,68,68,.25)' }]} onPress={onDelete} activeOpacity={0.7}>

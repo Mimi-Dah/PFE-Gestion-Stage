@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, I18nManager } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft } from 'lucide-react-native';
+import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
@@ -49,7 +49,9 @@ export default function EvaluationsScreen({ navigation, route }) {
           accessibilityLabel="Retour"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <ChevronLeft size={24} color={C.primary} />
+          {I18nManager.isRTL
+            ? <ChevronRight size={24} color={C.primary} />
+            : <ChevronLeft  size={24} color={C.primary} />}
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={{ ...typography.h2, color: C.text }}>{t('evaluations.title')}</Text>

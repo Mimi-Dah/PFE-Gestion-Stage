@@ -139,6 +139,7 @@ const en = {
     verifyAccount: {
       title: 'Verify your account',
       subtitle: 'A verification email has been sent to {{email}}. Check your inbox to activate your account.',
+      resend: 'Resend verification email',
       backToLogin: 'Back to login',
     },
   },

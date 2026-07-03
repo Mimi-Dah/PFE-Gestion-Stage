@@ -24,6 +24,9 @@
   z-index: 1000;
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  will-change: transform;
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   scrollbar-width: none;
 }
@@ -459,36 +462,51 @@
     box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.25);
   }
   .dark .sidebar { box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.55); }
+  /* Sidebar overlays on mobile — no margin shift in any direction */
   .main-content { margin-left: 0 !important; }
+  [dir="rtl"] .main-content { margin-right: 0 !important; }
   .topbar { padding: 0 16px; }
-  .page-main { padding: 20px 16px; padding-bottom: calc(64px + 20px); }
+  /* iOS safe area: bottom nav (72px) + content gap + home indicator */
+  .page-main {
+    padding: 20px 16px;
+    padding-bottom: calc(72px + max(20px, env(safe-area-inset-bottom)));
+  }
   .topbar-actions { gap: 6px; }
   .role-badge { display: none; }
   .bottom-nav { display: flex; }
 }
 
 @media (max-width: 480px) {
-  .page-main { padding: 16px; padding-bottom: calc(64px + 16px); }
+  .page-main {
+    padding: 16px;
+    padding-bottom: calc(72px + max(16px, env(safe-area-inset-bottom)));
+  }
 }
 
 /* ============================================================
-   RTL — Arabic layout overrides
+   RTL — Arabic layout overrides (iOS-compatible)
    ============================================================ */
+
+/* ── Sidebar: move to right side in RTL ── */
 [dir="rtl"] .sidebar {
   left: auto;
   right: 0;
   border-right: none;
   border-left: 1px solid #E2E8F0;
+  /* iOS notch/safe-area on the right side in RTL landscape */
+  padding-right: env(safe-area-inset-right);
 }
 
 [dir="rtl"] .dark .sidebar {
   border-left-color: rgba(255, 255, 255, 0.06);
 }
 
+/* ── Main content: shift right (desktop only — mobile is overridden above) ── */
 [dir="rtl"] .main-content {
   margin-left: 0;
   margin-right: 0;
-  transition: margin-right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: margin-right 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              margin-left  0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [dir="rtl"] .main-content.sidebar-open {
@@ -496,6 +514,7 @@
   margin-right: var(--sidebar-w);
 }
 
+/* ── Search icon/input: flip positions ── */
 [dir="rtl"] .sidebar-search-icon {
   left: auto;
   right: 9px;
@@ -503,12 +522,35 @@
 
 [dir="rtl"] .sidebar-search-input {
   padding: 7px 30px 7px 10px !important;
+  text-align: right;
+  direction: rtl;
 }
 
+/* ── Topbar: reverse flex direction for RTL ── */
 [dir="rtl"] .topbar {
   direction: rtl;
 }
 
+/* ── Bottom nav: reverse item order for RTL ── */
 [dir="rtl"] .bottom-nav {
   direction: rtl;
+  /* iOS: swap safe-area insets because layout is mirrored */
+  padding-left:  max(4px, env(safe-area-inset-right));
+  padding-right: max(4px, env(safe-area-inset-left));
+}
+
+/* ── Nav links: ensure RTL text alignment in sidebar ── */
+[dir="rtl"] .nav-link {
+  text-align: right;
+}
+
+[dir="rtl"] .nav-section-label {
+  text-align: right;
+  padding-right: 8px;
+  padding-left: 0;
+}
+
+/* ── Sidebar user card: text aligns right in RTL ── */
+[dir="rtl"] .sidebar-user-info {
+  text-align: right;
 }

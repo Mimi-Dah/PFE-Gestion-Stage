@@ -120,8 +120,39 @@ const Candidatures = () => {
         subtitle={t('pages.candidatures.subtitle')}
       />
 
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
-        <div className="offers-search-wrap">
+      {/* ── Unified toolbar: chips left, search right ───────────── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
+
+        {/* Status chips — left/center */}
+        {all.length > 0 && (
+          <div className="offers-chips-bar" style={{ flex: 1 }}>
+            {CHIPS.map(chip => {
+              const cnt = countByStatus(chip.key);
+              if (cnt === 0 && chip.key) return null;
+              return (
+                <button
+                  key={chip.key}
+                  className={`offers-chip${statusFilter === chip.key ? ' active' : ''}`}
+                  onClick={() => setStatusFilter(chip.key)}
+                >
+                  {chip.label}
+                  <span style={{
+                    minWidth: '18px', height: '18px', padding: '0 4px',
+                    background: statusFilter === chip.key ? 'rgba(255,255,255,0.25)' : 'var(--n200)',
+                    color: statusFilter === chip.key ? '#fff' : 'var(--n600)',
+                    fontSize: '10px', fontWeight: '700', borderRadius: '9999px',
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    {cnt}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Search — right */}
+        <div className="offers-search-wrap" style={{ flexShrink: 0 }}>
           <Search size={14} style={{ color: 'var(--n400)', flexShrink: 0 }} />
           <input
             type="text"
@@ -138,35 +169,8 @@ const Candidatures = () => {
             </button>
           )}
         </div>
-      </div>
 
-      {/* ── Status filter chips ──────────────────────────────────── */}
-      {all.length > 0 && (
-        <div className="offers-chips-bar">
-          {CHIPS.map(chip => {
-            const cnt = countByStatus(chip.key);
-            if (cnt === 0 && chip.key) return null;
-            return (
-              <button
-                key={chip.key}
-                className={`offers-chip${statusFilter === chip.key ? ' active' : ''}`}
-                onClick={() => setStatusFilter(chip.key)}
-              >
-                {chip.label}
-                <span style={{
-                  minWidth: '18px', height: '18px', padding: '0 4px',
-                  background: statusFilter === chip.key ? 'rgba(255,255,255,0.25)' : 'var(--n200)',
-                  color: statusFilter === chip.key ? '#fff' : 'var(--n600)',
-                  fontSize: '10px', fontWeight: '700', borderRadius: '9999px',
-                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  {cnt}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      )}
+      </div>
 
       {/* ── Result count ────────────────────────────────────────── */}
       {!isError && (
@@ -267,8 +271,10 @@ const Candidatures = () => {
 
                     {/* Date */}
                     <td className="cand-td cand-td-date">
-                      <Calendar size={13} style={{ color: 'var(--text-subtle)', flexShrink: 0 }} />
-                      {appliedDate}
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                        <Calendar size={13} style={{ color: 'var(--text-subtle)', flexShrink: 0 }} />
+                        {appliedDate}
+                      </span>
                     </td>
 
                     {/* Status badge */}

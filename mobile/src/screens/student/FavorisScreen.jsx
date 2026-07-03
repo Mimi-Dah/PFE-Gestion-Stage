@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity, StyleSheet,
-  RefreshControl, ActivityIndicator,
+  RefreshControl, ActivityIndicator, I18nManager,
 } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Heart, MapPin, Clock, Briefcase } from 'lucide-react-native';
+import { ArrowLeft, ArrowRight, Heart, MapPin, Clock, Briefcase } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { F } from '../../theme/fonts';
@@ -84,7 +84,9 @@ export default function FavorisScreen({ navigation }) {
     <View style={[styles.root, { backgroundColor: C.bg }]}>
       <View style={[styles.header, { paddingTop: insets.top + 14, backgroundColor: C.bgCard, borderBottomColor: C.border }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={8}>
-          <ArrowLeft size={22} color={C.text} strokeWidth={2} />
+          {I18nManager.isRTL
+            ? <ArrowRight size={22} color={C.text} strokeWidth={2} />
+            : <ArrowLeft  size={22} color={C.text} strokeWidth={2} />}
         </TouchableOpacity>
         <Text style={[styles.pageTitle, { color: C.text }]}>{t('favoris.title')}</Text>
         <View style={{ width: 22 }} />

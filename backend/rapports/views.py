@@ -43,6 +43,20 @@ class RapportDeStageViewSet(viewsets.ModelViewSet):
                 lien="/espace/chef/rapports"
             )
 
+        # Notify Enterprise
+        try:
+            entreprise = rapport.offre.entreprise
+            if entreprise and entreprise.user:
+                create_notification(
+                    user=entreprise.user,
+                    titre="Nouveau Rapport Soumis",
+                    message=f"L'étudiant {etudiant.prenom} {etudiant.nom} a soumis son rapport de stage pour '{rapport.offre.titre}'.",
+                    type_event="Rapport_soumis",
+                    lien="/espace/entreprise/mes-stagiaires"
+                )
+        except Exception as e:
+            print(f"Notification entreprise error: {e}")
+
     def get_queryset(self):
         user = self.request.user
         qs = self.queryset.select_related('etudiant__user', 'offre__entreprise')

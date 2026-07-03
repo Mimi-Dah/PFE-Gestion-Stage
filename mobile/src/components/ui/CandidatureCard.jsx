@@ -55,7 +55,7 @@ export default function CandidatureCard({
           </Text>
           <View style={styles.metaRow}>
             <Building size={13} color={C.textMuted} />
-            <Text style={{ ...typography.caption, color: C.textSub, marginLeft: 4 }} numberOfLines={1}>
+            <Text style={{ ...typography.caption, color: C.textSub, marginStart: 4 }} numberOfLines={1}>
               {company}
             </Text>
           </View>
@@ -66,7 +66,7 @@ export default function CandidatureCard({
         {formattedDate ? (
           <View style={styles.metaRow}>
             <Calendar size={12} color={C.textMuted} />
-            <Text style={{ ...typography.small, color: C.textMuted, marginLeft: 4 }}>
+            <Text style={{ ...typography.small, color: C.textMuted, marginStart: 4 }}>
               {formattedDate}
             </Text>
           </View>

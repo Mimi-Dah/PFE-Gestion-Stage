@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, StatusBar } from 'react-native';
-import { MailCheck, GraduationCap, ArrowLeft } from 'lucide-react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, StatusBar, I18nManager } from 'react-native';
+import { MailCheck, GraduationCap, ArrowLeft, ArrowRight } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { F } from '../../theme/fonts';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
+import api from '../../services/api';
 
 export default function VerifyAccountScreen({ navigation, route }) {
   const { t } = useTranslation();
@@ -18,8 +19,9 @@ export default function VerifyAccountScreen({ navigation, route }) {
   const [loading, setLoading] = useState(false);
 
   const handleResend = async () => {
+    if (!email) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
+    await api.safeRequest(api.post('auth/resend-verification/', { email }));
     setResent(true);
     setLoading(false);
   };
@@ -31,7 +33,9 @@ export default function VerifyAccountScreen({ navigation, route }) {
       {/* Header */}
       <View style={s.topRow}>
         <TouchableOpacity onPress={() => navigation.navigate('Login')} hitSlop={8}>
-          <ArrowLeft size={22} color={C.text} strokeWidth={2} />
+          {I18nManager.isRTL
+            ? <ArrowRight size={22} color={C.text} strokeWidth={2} />
+            : <ArrowLeft  size={22} color={C.text} strokeWidth={2} />}
         </TouchableOpacity>
         <View style={s.logoRow}>
           <View style={s.logoBubble}>
@@ -74,7 +78,7 @@ export default function VerifyAccountScreen({ navigation, route }) {
       >
         {loading
           ? <ActivityIndicator color={C.primary} size="small" />
-          : <Text style={s.resendText}>{resent ? `${t('common.success')} ✓` : t('auth.verifyAccount.title')}</Text>}
+          : <Text style={s.resendText}>{resent ? `${t('common.success')} ✓` : t('auth.verifyAccount.resend')}</Text>}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.7}>

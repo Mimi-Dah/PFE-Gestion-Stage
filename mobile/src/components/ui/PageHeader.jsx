@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { ArrowLeft } from 'lucide-react-native';
+import { View, Text, TouchableOpacity, I18nManager } from 'react-native';
+import { ArrowLeft, ArrowRight } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
@@ -29,8 +29,10 @@ export default function PageHeader({ title, onBack, right, style }) {
       ]}
     >
       {onBack && (
-        <TouchableOpacity onPress={onBack} hitSlop={10} style={{ marginRight: 12 }}>
-          <ArrowLeft size={20} color={C.text} strokeWidth={2} />
+        <TouchableOpacity onPress={onBack} hitSlop={10} style={{ marginEnd: 12 }}>
+          {I18nManager.isRTL
+            ? <ArrowRight size={20} color={C.text} strokeWidth={2} />
+            : <ArrowLeft  size={20} color={C.text} strokeWidth={2} />}
         </TouchableOpacity>
       )}
       <Text

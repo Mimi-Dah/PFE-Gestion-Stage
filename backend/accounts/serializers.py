@@ -5,6 +5,7 @@ from django.contrib.auth.password_validation import validate_password
 from .models import Etudiant, Entreprise, ChefDepartement
 from etablissements.models import Departement
 from internhub_backend.exceptions import ValidationError as AppValidationError
+from internhub_backend.sanitizers import SanitizeMixin
 
 User = get_user_model()
 
@@ -13,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id_utilisateur', 'courriel', 'role', 'is_active', 'is_verified', 'cree_le')
 
-class RegisterSerializer(serializers.ModelSerializer):
+class RegisterSerializer(SanitizeMixin, serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     
     # Etudiant fields

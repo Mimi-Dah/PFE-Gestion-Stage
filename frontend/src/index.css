@@ -204,6 +204,49 @@ body {
   position: relative;
 }
 
+/* ============================================================
+   RTL (Arabic) — iOS Safari compatibility
+   ============================================================ */
+
+/* Ensure direction propagates on iOS when set via JS attribute */
+[dir="rtl"] { direction: rtl; }
+[dir="ltr"] { direction: ltr; }
+
+/* iOS Safari requires explicit direction on inputs — inherited direction is not always honoured */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: plaintext;
+}
+
+/* Arabic system-font fallback — Inter has no Arabic glyphs;
+   -apple-system (San Francisco) and Helvetica Neue support Arabic on iOS */
+:lang(ar) body,
+:lang(ar) input,
+:lang(ar) textarea,
+:lang(ar) select,
+:lang(ar) button {
+  font-family: -apple-system, 'Helvetica Neue', 'Segoe UI', 'Tahoma', 'Arial Unicode MS', sans-serif;
+}
+
+/* Prevent iOS from zooming on input focus in Arabic layout */
+[dir="rtl"] input[type="text"],
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="password"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input[type="search"],
+[dir="rtl"] textarea {
+  font-size: max(16px, 1em);
+}
+
+/* Fix tap highlight colour on iOS for RTL interactive elements */
+[dir="rtl"] a,
+[dir="rtl"] button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body::before {
   content: "";
   position: fixed;

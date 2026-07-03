@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { ChevronRight, User, Star, AlertCircle, Building, MapPin } from 'lucide-react-native';
+import { View, Text, TouchableOpacity, StyleSheet, I18nManager } from 'react-native';
+import { ChevronRight, ChevronLeft, User, Star, AlertCircle, Building, MapPin } from 'lucide-react-native';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
 import { typography } from '../../theme/tokens';
@@ -50,7 +50,9 @@ export default function ChoiceRow({
         </View>
         <View style={styles.right}>
           {rightContent ?? null}
-          <ChevronRight size={16} color={C.textMuted} style={{ marginLeft: 4 }} />
+          {I18nManager.isRTL
+            ? <ChevronLeft size={16} color={C.textMuted} style={{ marginEnd: 4 }} />
+            : <ChevronRight size={16} color={C.textMuted} style={{ marginStart: 4 }} />}
         </View>
       </TouchableOpacity>
       {!last && <Divider />}

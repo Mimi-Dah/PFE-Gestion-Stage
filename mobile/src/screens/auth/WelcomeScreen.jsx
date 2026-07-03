@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity, StatusBar,
+  View, Text, StyleSheet, TouchableOpacity, StatusBar, I18nManager,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GraduationCap, ArrowRight, Search, FileCheck, BellRing } from 'lucide-react-native';
+import { GraduationCap, ArrowRight, ArrowLeft, Search, FileCheck, BellRing } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { F } from '../../theme/fonts';
 import useLayoutStore from '../../store/layoutStore';
@@ -75,7 +75,9 @@ export default function WelcomeScreen({ navigation }) {
           activeOpacity={0.85}
         >
           <Text style={s.btnPrimaryText}>{t('welcome.login')}</Text>
-          <ArrowRight size={18} color="#fff" strokeWidth={2} />
+          {I18nManager.isRTL
+            ? <ArrowLeft size={18} color="#fff" strokeWidth={2} />
+            : <ArrowRight size={18} color="#fff" strokeWidth={2} />}
         </TouchableOpacity>
 
         <TouchableOpacity

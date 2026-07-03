@@ -199,7 +199,7 @@ export default function ProfileEditScreen({ navigation }) {
           activeOpacity={0.75}
         >
           <FileText size={20} color={C.primary} strokeWidth={1.8} />
-          <View style={{ flex: 1, marginLeft: 14 }}>
+          <View style={{ flex: 1, marginStart: 14 }}>
             <Text style={[styles.docTitle, { color: C.text }]}>
               {newCv ? newCv.name : profil.cv ? t('profileEdit.changeCv') : t('profileEdit.cv')}
             </Text>
@@ -264,9 +264,9 @@ const styles = StyleSheet.create({
   },
   avatarHint:   { fontFamily: F.reg, fontSize: 12, textAlign: 'center', marginBottom: 14 },
 
-  sectionTitle: { fontFamily: F.semi, fontSize: 11, letterSpacing: 0.8, marginTop: 10, marginBottom: 4, marginLeft: 4 },
+  sectionTitle: { fontFamily: F.semi, fontSize: 11, letterSpacing: 0.8, marginTop: 10, marginBottom: 4, marginStart: 4 },
   card:         { borderRadius: radius.card, borderWidth: 1, ...shadow.card },
-  divider:      { height: 1, marginLeft: 16 },
+  divider:      { height: 1, marginStart: 16 },
 
   fieldRow:    { paddingHorizontal: 14, paddingVertical: 11 },
   fieldLabel:  { fontFamily: F.semi, fontSize: 12, marginBottom: 4 },

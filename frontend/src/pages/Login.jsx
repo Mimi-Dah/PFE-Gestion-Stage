@@ -9,13 +9,16 @@ import {
   Mail,
   Lock,
   ArrowRight,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
+import useLayoutStore from '../store/layoutStore';
 import api from '../services/api';
 
 const Field = ({ label, error, children }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-    <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#334155' }}>
+    <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-color)' }}>
       {label}
     </label>
     {children}
@@ -34,15 +37,16 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const setAuth  = useAuthStore((state) => state.setAuth);
+  const { isDarkMode, toggleDarkMode } = useLayoutStore();
   const { t } = useTranslation();
 
   const inputBase = {
     width: '100%',
     padding: '0.75rem 0.875rem 0.75rem 2.75rem',
     borderRadius: '8px',
-    border: '1.5px solid #E2E8F0',
-    backgroundColor: '#F8FAFC',
-    color: '#0F172A',
+    border: '1.5px solid var(--border)',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--text-main)',
     fontSize: '0.9375rem',
     fontWeight: '500',
     outline: 'none',
@@ -55,7 +59,7 @@ const Login = () => {
     left: '12px',
     top: '50%',
     transform: 'translateY(-50%)',
-    color: '#94A3B8',
+    color: 'var(--text-subtle)',
     pointerEvents: 'none',
   };
 
@@ -97,7 +101,7 @@ const Login = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#fff',
+      backgroundColor: 'var(--bg-main)',
       position: 'relative',
       overflow: 'hidden',
       padding: '2rem 1rem',
@@ -106,7 +110,7 @@ const Login = () => {
       <div
         className="animate-fade-in"
         style={{
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--bg-card)',
           borderRadius: '12px',
           boxShadow: '0 4px 6px -1px rgba(0,0,0,0.07), 0 20px 60px -10px rgba(0,0,0,0.12)',
           padding: '2rem 2rem',
@@ -114,9 +118,23 @@ const Login = () => {
           maxWidth: '450px',
           position: 'relative',
           zIndex: 1,
-          border: '1px solid rgba(226,232,240,0.8)',
+          border: '1px solid var(--border)',
         }}
       >
+        <button
+          onClick={toggleDarkMode}
+          title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+          style={{
+            position: 'absolute', top: '1rem', right: '1rem',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            width: 32, height: 32, borderRadius: 8,
+            border: '1px solid var(--border)', background: 'transparent',
+            color: 'var(--text-subtle)', cursor: 'pointer',
+          }}
+        >
+          {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
+        </button>
+
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '1.375rem' }}>
           <div style={{
             width: '44px', height: '44px', borderRadius: '12px',
@@ -127,13 +145,13 @@ const Login = () => {
           }}>
             <GraduationCap size={22} color="#fff" />
           </div>
-          <span style={{ fontSize: '1.125rem', fontWeight: '900', color: '#0F172A', letterSpacing: '-0.04em', marginBottom: '0.625rem' }}>
+          <span style={{ fontSize: '1.125rem', fontWeight: '900', color: 'var(--text-main)', letterSpacing: '-0.04em', marginBottom: '0.625rem' }}>
             intern<span style={{ color: '#6366F1' }}>Hub</span>
           </span>
-          <h1 style={{ fontSize: '1.375rem', fontWeight: '900', color: '#0F172A', letterSpacing: '-0.04em', margin: '0 0 0.25rem' }}>
+          <h1 style={{ fontSize: '1.375rem', fontWeight: '900', color: 'var(--text-main)', letterSpacing: '-0.04em', margin: '0 0 0.25rem' }}>
             {t('auth.login.title')}
           </h1>
-          <p style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: '500', margin: 0 }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: '500', margin: 0 }}>
             {t('auth.login.subtitle')}
           </p>
         </div>
@@ -164,8 +182,14 @@ const Login = () => {
                 placeholder={t('auth.login.emailPlaceholder')}
                 {...register('email', { required: t('common.required') })}
                 style={inputBase}
-                onFocus={e => { e.target.style.borderColor = '#6366F1'; e.target.style.backgroundColor = '#fff'; }}
-                onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.backgroundColor = '#F8FAFC'; }}
+                onFocus={e => {
+                  e.target.style.borderColor = '#6366F1';
+                  e.target.style.setProperty('background-color', 'var(--bg-card)');
+                }}
+                onBlur={e => {
+                  e.target.style.setProperty('border-color', 'var(--border)');
+                  e.target.style.setProperty('background-color', 'var(--bg-input)');
+                }}
               />
             </div>
           </Field>
@@ -191,8 +215,14 @@ const Login = () => {
                 placeholder={t('auth.login.passwordPlaceholder')}
                 {...register('password', { required: t('common.required') })}
                 style={{ ...inputBase, paddingRight: '2.75rem' }}
-                onFocus={e => { e.target.style.borderColor = '#6366F1'; e.target.style.backgroundColor = '#fff'; }}
-                onBlur={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.backgroundColor = '#F8FAFC'; }}
+                onFocus={e => {
+                  e.target.style.borderColor = '#6366F1';
+                  e.target.style.setProperty('background-color', 'var(--bg-card)');
+                }}
+                onBlur={e => {
+                  e.target.style.setProperty('border-color', 'var(--border)');
+                  e.target.style.setProperty('background-color', 'var(--bg-input)');
+                }}
               />
               <button
                 type="button"
@@ -200,7 +230,7 @@ const Login = () => {
                 style={{
                   position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#94A3B8', padding: '4px', display: 'flex', alignItems: 'center',
+                  color: 'var(--text-subtle)', padding: '4px', display: 'flex', alignItems: 'center',
                 }}
               >
                 {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -238,14 +268,14 @@ const Login = () => {
         </form>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '1rem 0' }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#E2E8F0' }} />
-          <span style={{ fontSize: '0.72rem', color: '#94A3B8', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border)' }} />
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             {t('auth.login.or')}
           </span>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#E2E8F0' }} />
+          <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border)' }} />
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: '0.875rem', color: '#64748B', fontWeight: '500', margin: 0 }}>
+        <p style={{ textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '500', margin: 0 }}>
           {t('auth.login.noAccount')}{' '}
           <Link to="/register" style={{ color: '#6366F1', fontWeight: '800', textDecoration: 'none' }}>
             {t('auth.login.createAccount')}

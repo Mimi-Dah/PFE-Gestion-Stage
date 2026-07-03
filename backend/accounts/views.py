@@ -2,6 +2,7 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
@@ -9,6 +10,7 @@ from django.conf import settings
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from rest_framework.parsers import MultiPartParser, FormParser
+from internhub_backend.throttles import LoginRateThrottle, RegisterRateThrottle
 
 _ = lambda s: s  # no-op: strings are already French
 
@@ -23,6 +25,11 @@ from internhub_backend.permissions import IsAdmin
 from internhub_backend.exceptions import NotFoundError, BadRequestError
 
 User = get_user_model()
+
+
+class ThrottledTokenObtainPairView(TokenObtainPairView):
+    """Login JWT avec limite de 5 tentatives/minute par IP."""
+    throttle_classes = [LoginRateThrottle]
 
 
 def _send_verification_email(user):
@@ -87,6 +94,7 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
     parser_classes = (MultiPartParser, FormParser)
+    throttle_classes = [RegisterRateThrottle]
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)

@@ -13,6 +13,7 @@ import { F } from '../../theme/fonts';
 import PageHeader from '../../components/ui/PageHeader';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
+import api from '../../services/api';
 
 export default function ResetPasswordScreen({ navigation, route }) {
   const { t } = useTranslation();
@@ -42,15 +43,11 @@ export default function ResetPasswordScreen({ navigation, route }) {
 
   const onSubmit = async ({ password }) => {
     setApiErr('');
-    try {
-      await fetch(`/api/v1/auth/reset-password/`, {
-        method: 'POST',
-        body: JSON.stringify({ password, token, uid }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+    const result = await api.safeRequest(api.post('auth/reset-password/', { password, token, uid }));
+    if (result.ok) {
       setDone(true);
-    } catch {
-      setApiErr(t('auth.resetPassword.successMsg'));
+    } else {
+      setApiErr(result.error?.message || t('common.error'));
     }
   };
 
@@ -139,8 +136,8 @@ const makeStyles = (C) => StyleSheet.create({
   inputError:    { borderWidth: 1.5, borderColor: C.danger },
   fieldError:    { fontFamily: F.reg, fontSize: 12, color: C.danger },
   pwWrap:        { position: 'relative' },
-  pwInput:       { paddingRight: 48 },
-  eyeBtn:        { position: 'absolute', right: 16, top: 0, bottom: 0, justifyContent: 'center' },
+  pwInput:       { paddingEnd: 48 },
+  eyeBtn:        { position: 'absolute', end: 16, top: 0, bottom: 0, justifyContent: 'center' },
   submitBtn:     { backgroundColor: C.primary, borderRadius: 13, paddingVertical: 14, alignItems: 'center' },
   submitBtnDisabled: { opacity: 0.65 },
   submitText:    { fontFamily: F.semi, fontSize: 15, color: '#fff' },

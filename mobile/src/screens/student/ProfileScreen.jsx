@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Image, Modal, Switch,
+  View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert, Image, Modal, Switch, I18nManager,
 } from 'react-native';
 import {
-  User, Heart, Lock, FileText, Star, LogOut, ChevronRight, X, Moon, Pencil, Globe,
+  User, Heart, Lock, FileText, Star, LogOut, ChevronRight, ChevronLeft, X, Moon, Pencil, Globe,
 } from 'lucide-react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -146,7 +146,9 @@ export default function ProfileScreen({ navigation }) {
                 <item.icon size={18} color={item.iconColor} strokeWidth={1.8} />
               </View>
               <Text style={[styles.rowLabel, { color: C.text }]}>{item.label}</Text>
-              <ChevronRight size={16} color={C.textMuted} strokeWidth={1.8} />
+              {I18nManager.isRTL
+                ? <ChevronLeft size={16} color={C.textMuted} strokeWidth={1.8} />
+                : <ChevronRight size={16} color={C.textMuted} strokeWidth={1.8} />}
             </TouchableOpacity>
           ))}
 
@@ -191,7 +193,9 @@ export default function ProfileScreen({ navigation }) {
                 <item.icon size={18} color={item.iconColor} strokeWidth={1.8} />
               </View>
               <Text style={[styles.rowLabel, { color: C.text }]}>{item.label}</Text>
-              <ChevronRight size={16} color={C.textMuted} strokeWidth={1.8} />
+              {I18nManager.isRTL
+                ? <ChevronLeft size={16} color={C.textMuted} strokeWidth={1.8} />
+                : <ChevronRight size={16} color={C.textMuted} strokeWidth={1.8} />}
             </TouchableOpacity>
           ))}
         </View>
@@ -278,12 +282,12 @@ const styles = StyleSheet.create({
   userEmail:     { fontFamily: F.reg, fontSize: 13, marginBottom: 12 },
   roleBadge:     { borderRadius: 999, paddingHorizontal: 18, paddingVertical: 6 },
   roleBadgeText: { fontFamily: F.semi, fontSize: 13 },
-  sectionLabel:  { fontFamily: F.bold, fontSize: 11, letterSpacing: 0.8, marginLeft: 4, marginBottom: 8 },
+  sectionLabel:  { fontFamily: F.bold, fontSize: 11, letterSpacing: 0.8, marginStart: 4, marginBottom: 8 },
   card:          { borderRadius: 16, borderWidth: 1, marginBottom: 16, overflow: 'hidden' },
   row: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 13 },
-  iconBg: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', marginRight: 14 },
-  rowLabel: { fontFamily: F.med, fontSize: 15, flex: 1 },
+  iconBg: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', marginEnd: 14 },
+  rowLabel: { fontFamily: F.med, fontSize: 15, flex: 1, textAlign: I18nManager.isRTL ? 'right' : 'left' },
   logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 16, paddingVertical: 16, marginBottom: 8 },
-  logoutIcon: { marginRight: 10 },
+  logoutIcon: { marginEnd: 10 },
   logoutText: { fontFamily: F.semi, fontSize: 15, color: '#EF4444' },
 });

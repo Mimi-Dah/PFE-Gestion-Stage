@@ -93,8 +93,17 @@ const Favoris = () => {
         subtitle={t('pages.favoris.subtitle')}
       />
 
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
-        <div className="offers-search-wrap">
+      {/* ── Unified toolbar: count left, search right ─────────────── */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
+        {!isLoading && !isError && (
+          <div style={{ fontSize: '13.5px', fontWeight: '600', color: 'var(--text-main)' }}>
+            {offers.length}{' '}
+            <span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>
+              {t('pages.favoris.count', { count: offers.length })}
+            </span>
+          </div>
+        )}
+        <div className="offers-search-wrap" style={{ flexShrink: 0 }}>
           <Search size={14} style={{ color: 'var(--n400)', flexShrink: 0 }} />
           <input
             type="text"
@@ -112,16 +121,6 @@ const Favoris = () => {
           )}
         </div>
       </div>
-
-      {/* ── Result count ────────────────────────────────────────── */}
-      {!isLoading && !isError && (
-        <div style={{ fontSize: '13.5px', fontWeight: '600', color: 'var(--text-main)' }}>
-          {offers.length}{' '}
-          <span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>
-            {t('pages.favoris.count', { count: offers.length })}
-          </span>
-        </div>
-      )}
 
       {/* ── Loading skeletons ───────────────────────────────────── */}
       {isLoading && (

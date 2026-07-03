@@ -139,6 +139,7 @@ const fr = {
     verifyAccount: {
       title: 'Vérifiez votre compte',
       subtitle: 'Un email de vérification a été envoyé à {{email}}. Consultez votre boîte mail pour activer votre compte.',
+      resend: 'Renvoyer l\'email de vérification',
       backToLogin: 'Retour à la connexion',
     },
   },

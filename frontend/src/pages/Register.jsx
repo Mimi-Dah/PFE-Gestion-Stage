@@ -21,8 +21,11 @@ import {
   Phone,
   MapPin,
   Globe,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
+import useLayoutStore from '../store/layoutStore';
 import api from '../services/api';
 
 /* ── Shared micro-components ─────────────────────────────────── */
@@ -30,7 +33,7 @@ import api from '../services/api';
 const Field = ({ label, aside, error, children, span2 = false }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', ...(span2 && { gridColumn: 'span 2' }) }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#334155' }}>{label}</label>
+      <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-color)' }}>{label}</label>
       {aside}
     </div>
     {children}
@@ -42,9 +45,9 @@ const inputBase = {
   width: '100%',
   padding: '0.75rem 0.875rem 0.75rem 2.625rem',
   borderRadius: '8px',
-  border: '1.5px solid #E2E8F0',
-  backgroundColor: '#F8FAFC',
-  color: '#0F172A',
+  border: '1.5px solid var(--border)',
+  backgroundColor: 'var(--bg-input)',
+  color: 'var(--text-main)',
   fontSize: '0.9rem',
   fontWeight: '500',
   outline: 'none',
@@ -52,8 +55,14 @@ const inputBase = {
   transition: 'border-color 0.15s, background-color 0.15s',
 };
 
-const focusOn  = e => { e.target.style.borderColor = '#6366F1'; e.target.style.backgroundColor = '#fff'; };
-const focusOff = e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.backgroundColor = '#F8FAFC'; };
+const focusOn  = e => {
+  e.target.style.borderColor = '#6366F1';
+  e.target.style.setProperty('background-color', 'var(--bg-card)');
+};
+const focusOff = e => {
+  e.target.style.setProperty('border-color', 'var(--border)');
+  e.target.style.setProperty('background-color', 'var(--bg-input)');
+};
 
 /* ── Main component ───────────────────────────────────────────── */
 
@@ -77,7 +86,7 @@ const Register = () => {
       left:  isRTL ? 'auto' : '12px',
       right: isRTL ? '12px' : 'auto',
       top: '50%', transform: 'translateY(-50%)',
-      display: 'flex', alignItems: 'center', pointerEvents: 'none', color: '#94A3B8',
+      display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-subtle)',
     }}>
       {children}
     </div>
@@ -92,6 +101,7 @@ const Register = () => {
   const [departments, setDepartments] = useState([]);
   const navigate = useNavigate();
   const setAuth  = useAuthStore((state) => state.setAuth);
+  const { isDarkMode, toggleDarkMode } = useLayoutStore();
 
   const role     = watch('role');
   const password = watch('password');
@@ -166,7 +176,7 @@ const Register = () => {
         left:  isRTL ? '10px' : 'auto',
         top: '50%', transform: 'translateY(-50%)',
         background: 'none', border: 'none', cursor: 'pointer',
-        color: '#94A3B8', display: 'flex', padding: '3px',
+        color: 'var(--text-subtle)', display: 'flex', padding: '3px',
       }}>
       {show ? <EyeOff size={15} /> : <Eye size={15} />}
     </button>
@@ -176,19 +186,34 @@ const Register = () => {
     <div style={{
       minHeight: '100vh', width: '100%',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      backgroundColor: '#fff', position: 'relative', overflow: 'hidden',
+      backgroundColor: 'var(--bg-main)', position: 'relative', overflow: 'hidden',
       padding: '2rem 1rem', boxSizing: 'border-box',
     }}>
 
       {/* ── Card ── */}
       <div className="animate-fade-in" style={{
-        backgroundColor: '#fff', borderRadius: '12px',
+        backgroundColor: 'var(--bg-card)', borderRadius: '12px',
         boxShadow: '0 4px 6px -1px rgba(0,0,0,0.07), 0 20px 60px -10px rgba(0,0,0,0.12)',
-        border: '1px solid rgba(226,232,240,0.8)',
+        border: '1px solid var(--border)',
         padding: '1.75rem 2rem', width: '100%', maxWidth: '560px',
         position: 'relative', zIndex: 1,
         direction: isRTL ? 'rtl' : 'ltr',
       }}>
+
+        {/* ── Dark mode toggle ── */}
+        <button
+          onClick={toggleDarkMode}
+          title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+          style={{
+            position: 'absolute', top: '1rem', right: '1rem',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            width: 32, height: 32, borderRadius: 8,
+            border: '1px solid var(--border)', background: 'transparent',
+            color: 'var(--text-subtle)', cursor: 'pointer',
+          }}
+        >
+          {isDarkMode ? <Sun size={14} /> : <Moon size={14} />}
+        </button>
 
         {/* ── Header ── */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '1.25rem' }}>
@@ -200,13 +225,13 @@ const Register = () => {
           }}>
             <GraduationCap size={22} color="#fff" />
           </div>
-          <span style={{ fontSize: '1.125rem', fontWeight: '900', color: '#0F172A', letterSpacing: '-0.04em', marginBottom: '0.5rem' }}>
+          <span style={{ fontSize: '1.125rem', fontWeight: '900', color: 'var(--text-main)', letterSpacing: '-0.04em', marginBottom: '0.5rem' }}>
             intern<span style={{ color: '#6366F1' }}>Hub</span>
           </span>
-          <h1 style={{ fontSize: '1.375rem', fontWeight: '900', color: '#0F172A', letterSpacing: '-0.04em', margin: '0 0 0.25rem' }}>
+          <h1 style={{ fontSize: '1.375rem', fontWeight: '900', color: 'var(--text-main)', letterSpacing: '-0.04em', margin: '0 0 0.25rem' }}>
             {t('auth.register.title')}
           </h1>
-          <p style={{ color: '#64748B', fontSize: '0.875rem', fontWeight: '500', margin: 0 }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: '500', margin: 0 }}>
             {stepSubtitles[step - 1]}
           </p>
         </div>
@@ -221,20 +246,20 @@ const Register = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
                   <div style={{
                     width: '32px', height: '32px', borderRadius: '50%',
-                    background: done || active ? '#6366F1' : '#F1F5F9',
-                    border: `2px solid ${done || active ? '#6366F1' : '#E2E8F0'}`,
+                    background: done || active ? '#6366F1' : 'var(--surface-section)',
+                    border: `2px solid ${done || active ? '#6366F1' : 'var(--border)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     boxShadow: done || active ? '0 0 0 4px rgba(99,102,241,0.15)' : 'none',
                     transition: 'all 0.25s',
                   }}>
                     {done
                       ? <Check size={14} color="#fff" strokeWidth={3} />
-                      : <span style={{ fontSize: '0.75rem', fontWeight: '800', color: active ? '#fff' : '#94A3B8' }}>{i}</span>
+                      : <span style={{ fontSize: '0.75rem', fontWeight: '800', color: active ? '#fff' : 'var(--text-subtle)' }}>{i}</span>
                     }
                   </div>
                   <span style={{
                     fontSize: '0.68rem', fontWeight: '700',
-                    color: active ? '#6366F1' : done ? '#64748B' : '#94A3B8',
+                    color: active ? '#6366F1' : done ? 'var(--text-muted)' : 'var(--text-subtle)',
                     whiteSpace: 'nowrap',
                   }}>
                     {stepLabels[i - 1]}
@@ -243,7 +268,7 @@ const Register = () => {
                 {i < 3 && (
                   <div style={{
                     width: '72px', height: '2px', margin: '0 0.25rem', marginBottom: '1.25rem',
-                    background: step > i ? '#6366F1' : '#E2E8F0',
+                    background: step > i ? '#6366F1' : 'var(--border)',
                     transition: 'background 0.3s',
                   }} />
                 )}
@@ -272,7 +297,7 @@ const Register = () => {
 
               {/* Role picker */}
               <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#334155', display: 'block', marginBottom: '0.5rem' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-color)', display: 'block', marginBottom: '0.5rem' }}>
                   {t('auth.register.roleLabel')}
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
@@ -283,8 +308,8 @@ const Register = () => {
                     <label key={value} style={{
                       cursor: 'pointer',
                       padding: '1.25rem 1rem', borderRadius: '10px',
-                      border: `1.5px solid ${role === value ? '#6366F1' : '#E2E8F0'}`,
-                      backgroundColor: role === value ? 'rgba(99,102,241,0.06)' : '#F8FAFC',
+                      border: `1.5px solid ${role === value ? '#6366F1' : 'var(--border)'}`,
+                      backgroundColor: role === value ? 'rgba(99,102,241,0.06)' : 'var(--bg-input)',
                       display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                       transition: 'all 0.2s',
                     }}>
@@ -302,8 +327,8 @@ const Register = () => {
                         {value === 'Étudiant' ? <UserIcon size={22} /> : <Building2 size={22} />}
                       </div>
                       <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontWeight: '800', fontSize: '0.8rem', color: role === value ? '#6366F1' : '#0F172A' }}>{t(labelKey)}</div>
-                        <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: '500' }}>{t(hintKey)}</div>
+                        <div style={{ fontWeight: '800', fontSize: '0.8rem', color: role === value ? '#6366F1' : 'var(--text-main)' }}>{t(labelKey)}</div>
+                        <div style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontWeight: '500' }}>{t(hintKey)}</div>
                       </div>
                     </label>
                   ))}
@@ -404,7 +429,7 @@ const Register = () => {
                         left: isRTL ? 'auto' : '12px',
                         right: isRTL ? '12px' : 'auto',
                         top: '14px',
-                        display: 'flex', alignItems: 'center', pointerEvents: 'none', color: '#94A3B8',
+                        display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-subtle)',
                       }}>
                         <MapPin size={15} />
                       </div>
@@ -487,15 +512,15 @@ const Register = () => {
                       cursor: 'pointer',
                       display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                       padding: '1.75rem 1rem', borderRadius: '10px',
-                      border: '1.5px dashed #CBD5E1', backgroundColor: '#F8FAFC',
+                      border: '1.5px dashed var(--border)', backgroundColor: 'var(--bg-input)',
                       textAlign: 'center', transition: 'border-color 0.15s, background-color 0.15s',
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.backgroundColor = '#fff'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.backgroundColor = '#F8FAFC'; }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.setProperty('background-color', 'var(--bg-card)'); }}
+                    onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', 'var(--border)'); e.currentTarget.style.setProperty('background-color', 'var(--bg-input)'); }}
                     >
                       <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color }}>{icon}</div>
-                      <div style={{ fontWeight: '800', fontSize: '0.85rem', color: '#0F172A' }}>{title}</div>
-                      <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>{hint}</div>
+                      <div style={{ fontWeight: '800', fontSize: '0.85rem', color: 'var(--text-main)' }}>{title}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>{hint}</div>
                       <div style={{ marginTop: '0.25rem', padding: '0.3rem 0.875rem', borderRadius: '6px', backgroundColor: `${color}12`, fontSize: '0.72rem', fontWeight: '800', color }}>
                         {t('auth.register.chooseFile')}
                       </div>
@@ -508,17 +533,17 @@ const Register = () => {
                   cursor: 'pointer',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                   padding: '2.5rem 1.5rem', borderRadius: '10px',
-                  border: '1.5px dashed #CBD5E1', backgroundColor: '#F8FAFC',
+                  border: '1.5px dashed var(--border)', backgroundColor: 'var(--bg-input)',
                   textAlign: 'center', transition: 'border-color 0.15s, background-color 0.15s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.backgroundColor = '#fff'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.backgroundColor = '#F8FAFC'; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.setProperty('background-color', 'var(--bg-card)'); }}
+                onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', 'var(--border)'); e.currentTarget.style.setProperty('background-color', 'var(--bg-input)'); }}
                 >
                   <div style={{ width: '56px', height: '56px', borderRadius: '14px', backgroundColor: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6366F1' }}>
                     <Building2 size={28} />
                   </div>
-                  <div style={{ fontWeight: '800', fontSize: '0.9rem', color: '#0F172A' }}>{t('auth.register.logo')}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{t('auth.register.logoHint')}</div>
+                  <div style={{ fontWeight: '800', fontSize: '0.9rem', color: 'var(--text-main)' }}>{t('auth.register.logo')}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>{t('auth.register.logoHint')}</div>
                   <div style={{ marginTop: '0.25rem', padding: '0.35rem 1rem', borderRadius: '6px', backgroundColor: 'rgba(99,102,241,0.1)', fontSize: '0.75rem', fontWeight: '800', color: '#6366F1' }}>
                     {t('auth.register.chooseFile')}
                   </div>
@@ -534,14 +559,14 @@ const Register = () => {
           <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
             {step > 1 ? (
               <button type="button" onClick={() => setStep(s => s - 1)}
-                style={{ flexShrink: 0, padding: '0.75rem 1rem', borderRadius: '8px', border: '1.5px solid #E2E8F0', backgroundColor: 'transparent', color: '#334155', fontWeight: '700', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
+                style={{ flexShrink: 0, padding: '0.75rem 1rem', borderRadius: '8px', border: '1.5px solid var(--border)', backgroundColor: 'transparent', color: 'var(--text-color)', fontWeight: '700', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
                 {isRTL ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
                 {t('auth.register.back')}
               </button>
             ) : (
               <Link to="/login" style={{ flexShrink: 0, textDecoration: 'none' }}>
                 <button type="button"
-                  style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1.5px solid #E2E8F0', backgroundColor: 'transparent', color: '#334155', fontWeight: '700', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                  style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1.5px solid var(--border)', backgroundColor: 'transparent', color: 'var(--text-color)', fontWeight: '700', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                   {isRTL ? <ArrowRight size={15} /> : <ArrowLeft size={15} />}
                   {t('auth.register.loginLink')}
                 </button>
@@ -565,7 +590,7 @@ const Register = () => {
         </form>
 
         {/* Login link */}
-        <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.8rem', color: '#64748B', fontWeight: '500', margin: '1.25rem 0 0' }}>
+        <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '500', margin: '1.25rem 0 0' }}>
           {t('auth.register.alreadyAccount')}{' '}
           <Link to="/login" style={{ color: '#6366F1', fontWeight: '800', textDecoration: 'none' }}>
             {t('auth.register.login')}

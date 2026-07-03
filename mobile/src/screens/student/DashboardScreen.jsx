@@ -1,10 +1,10 @@
 import React from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, TextInput,
+  StyleSheet, TextInput, I18nManager,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowRight, Search, Clock, CheckCircle, FileText, Briefcase, GraduationCap, User, Star, Heart, BellDot } from 'lucide-react-native';
+import { ArrowRight, ArrowLeft, Search, Clock, CheckCircle, FileText, Briefcase, GraduationCap, User, Star, Heart, BellDot } from 'lucide-react-native';
 import { useQuery } from '@tanstack/react-query';
 import useLayoutStore from '../../store/layoutStore';
 import useAuthStore from '../../store/authStore';
@@ -157,7 +157,7 @@ export default function DashboardScreen({ navigation }) {
 
           {/* Search bar */}
           <View style={[styles.searchBar, { backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#F2F2F7' }]}>
-            <Search size={18} color={C.textMuted} style={{ marginRight: 10 }} />
+            <Search size={18} color={C.textMuted} style={{ marginEnd: 10 }} />
             <TextInput
               placeholder={t('dashboard.searchPlaceholder')}
               placeholderTextColor={C.textMuted}
@@ -182,7 +182,7 @@ export default function DashboardScreen({ navigation }) {
           {/* Active internship banner */}
           {internship ? (
             <TouchableOpacity
-              onPress={() => navigation.navigate('InternshipTab')}
+              onPress={() => navigation.navigate('StageTab')}
               activeOpacity={0.85}
               style={[styles.internshipBanner, { backgroundColor: C.primary }]}
             >
@@ -196,7 +196,9 @@ export default function DashboardScreen({ navigation }) {
                 </Text>
               </View>
               <View style={styles.internshipArrow}>
-                <ArrowRight size={20} color="#FFFFFF" />
+                {I18nManager.isRTL
+                  ? <ArrowLeft size={20} color="#FFFFFF" />
+                  : <ArrowRight size={20} color="#FFFFFF" />}
               </View>
             </TouchableOpacity>
           ) : null}
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
   },
   pillsContent: {
     gap:             8,
-    paddingRight:    spacing.md,
+    paddingEnd:      spacing.md,
   },
   pill: {
     paddingHorizontal: 16,

@@ -36,7 +36,7 @@ export default function ErrorToast() {
           key={id}
           style={[styles.toast, { backgroundColor: toastBg, borderColor: toastBorder }]}
         >
-          <AlertCircle size={18} color={toastIcon} style={{ marginRight: 8 }} />
+          <AlertCircle size={18} color={toastIcon} style={{ marginEnd: 8 }} />
           <View style={{ flex: 1 }}>
             {error.code && (
               <Text style={{ fontFamily: F.bodySemi, color: toastText, fontSize: 11, opacity: 0.7 }}>

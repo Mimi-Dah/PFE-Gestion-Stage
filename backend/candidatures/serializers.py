@@ -2,8 +2,9 @@ from rest_framework import serializers
 from .models import Candidature
 from accounts.serializers import EtudiantSerializer
 from offres.serializers import OffreDeStageSerializer
+from internhub_backend.sanitizers import SanitizeMixin
 
-class CandidatureSerializer(serializers.ModelSerializer):
+class CandidatureSerializer(SanitizeMixin, serializers.ModelSerializer):
     etudiant_detail = EtudiantSerializer(source='etudiant', read_only=True)
     offre_detail = OffreDeStageSerializer(source='offre', read_only=True)
 

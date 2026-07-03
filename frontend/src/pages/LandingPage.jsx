@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   GraduationCap, Building2, Landmark, Menu, X, ArrowRight,
   Search, Users, FileText, Briefcase, TrendingUp, Shield,
-  ChevronRight, MessageCircle, BarChart2, Globe,
+  ChevronRight, MessageCircle, BarChart2, Globe, Sun, Moon,
 } from 'lucide-react';
 import useLayoutStore from '../store/layoutStore';
 
@@ -43,12 +43,12 @@ function LpLangSwitcher() {
         style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '.4375rem .875rem', borderRadius: 8,
-          border: '1.5px solid #e2e8f0', background: '#fff',
-          fontSize: '.8125rem', fontWeight: 600, color: '#475569',
+          border: '1.5px solid var(--border)', background: 'var(--bg-card)',
+          fontSize: '.8125rem', fontWeight: 600, color: 'var(--text-muted)',
           cursor: 'pointer', transition: 'border-color .15s, color .15s',
         }}
         onMouseEnter={e => { e.currentTarget.style.borderColor = '#c7d2fe'; e.currentTarget.style.color = '#6366F1'; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#475569'; }}
+        onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', 'var(--border)'); e.currentTarget.style.setProperty('color', 'var(--text-muted)'); }}
       >
         <Globe size={14} />
         {current.flag} {current.code.toUpperCase()}
@@ -56,18 +56,18 @@ function LpLangSwitcher() {
       {open && (
         <div style={{
           position: 'absolute', top: 'calc(100% + 6px)',
-          right: 0, minWidth: 148, background: '#fff',
-          border: '1px solid #e2e8f0', borderRadius: 10,
+          right: 0, minWidth: 148, background: 'var(--bg-card)',
+          border: '1px solid var(--border)', borderRadius: 10,
           boxShadow: '0 8px 24px rgba(0,0,0,.10)',
           zIndex: 2000, overflow: 'hidden',
         }}>
           {LANGS.map(l => (
             <button key={l.code} onClick={() => pick(l.code)} style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: 8,
-              padding: '0.625rem 0.875rem', background: language === l.code ? '#eef2ff' : 'transparent',
+              padding: '0.625rem 0.875rem', background: language === l.code ? 'rgba(99,102,241,0.10)' : 'transparent',
               border: 'none', cursor: 'pointer', fontSize: '.875rem',
               fontWeight: language === l.code ? 700 : 500,
-              color: language === l.code ? '#6366F1' : '#475569',
+              color: language === l.code ? '#6366F1' : 'var(--text-muted)',
               textAlign: 'start',
             }}>
               <span style={{ fontSize: '1rem' }}>{l.flag}</span>
@@ -89,6 +89,7 @@ export default function LandingPage() {
   const isRTL = i18n.language === 'ar';
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useLayoutStore();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 8);
@@ -698,6 +699,28 @@ export default function LandingPage() {
         [dir="rtl"] .lp-ft-grid { direction: rtl; }
         [dir="rtl"] .lp-ft-brand { max-width: unset; }
         [dir="rtl"] .lp-ft-btm { direction: rtl; }
+
+        /* ── DARK MODE ── */
+        .dark .lp {
+          color: #CBD5E1;
+          background: #0F172A;
+          --t1: #F8FAFC;
+          --t2: #94A3B8;
+          --bdr: rgba(148,163,184,.12);
+          --sec: #1E293B;
+          --pl: rgba(99,102,241,.14);
+          --pb: rgba(99,102,241,.30);
+        }
+        .dark .lp-nav { background: rgba(15,23,42,.97); }
+        .dark .lp .lp-mob { background: #1E293B; }
+        .dark .lp .lp-hero { background: linear-gradient(180deg,#1a2340 0%,#111827 45%,#0F172A 100%); }
+        .dark .lp .lp-btn-out { background: rgba(255,255,255,.06); color: #94A3B8; }
+        .dark .lp .lp-hero-btn-sec { background: rgba(255,255,255,.07); color: #CBD5E1; }
+        .dark .lp .lp-stats-bar { background: #1E293B; }
+        .dark .lp .lp-feat-card { background: #1E293B; }
+        .dark .lp .lp-feat-dsc { color: #94A3B8; }
+        .dark .lp .lp-who-card { background: #1E293B; }
+        .dark .lp .lp-how-step-dsc { color: #94A3B8; }
       `}</style>
 
       <div className="lp">
@@ -717,6 +740,21 @@ export default function LandingPage() {
             </div>
             <div className="lp-nav-cta">
               <LpLangSwitcher />
+              <button
+                onClick={toggleDarkMode}
+                title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 36, height: 36, borderRadius: 8,
+                  border: '1.5px solid var(--border)', background: 'var(--bg-card)',
+                  color: 'var(--text-muted)', cursor: 'pointer', flexShrink: 0,
+                  transition: 'border-color .15s, color .15s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#c7d2fe'; e.currentTarget.style.color = '#6366F1'; }}
+                onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', 'var(--border)'); e.currentTarget.style.setProperty('color', 'var(--text-muted)'); }}
+              >
+                {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
+              </button>
               <Link to="/login"    className="lp-btn-out">{t('landing.nav.login')}</Link>
               <Link to="/register" className="lp-btn-pri">{t('landing.nav.register')} <ChevronRight size={14} /></Link>
             </div>
@@ -731,7 +769,21 @@ export default function LandingPage() {
               <a href="#apropos"  onClick={() => setMenuOpen(false)}>{t('landing.nav.about')}</a>
               <a href="#comment"  onClick={() => setMenuOpen(false)}>{t('landing.nav.howItWorks')}</a>
               <div style={{ display:'flex', flexDirection:'column', gap:'.5rem', marginTop:'.5rem', paddingTop:'.5rem', borderTop:'1px solid var(--bdr)' }}>
-                <LpLangSwitcher />
+                <div style={{ display:'flex', alignItems:'center', gap:'.5rem' }}>
+                  <LpLangSwitcher />
+                  <button
+                    onClick={toggleDarkMode}
+                    title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+                    style={{
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      width:36, height:36, borderRadius:8,
+                      border:'1.5px solid var(--border)', background:'var(--bg-card)',
+                      color:'var(--text-muted)', cursor:'pointer', flexShrink:0,
+                    }}
+                  >
+                    {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
+                  </button>
+                </div>
                 <Link to="/login"    onClick={() => setMenuOpen(false)} style={{ padding:'.65rem .75rem', border:'1.5px solid var(--bdr)', borderRadius:'var(--r2)', textAlign:'center', color:'var(--t2)', textDecoration:'none', fontWeight:600 }}>{t('landing.nav.login')}</Link>
                 <Link to="/register" onClick={() => setMenuOpen(false)} style={{ padding:'.65rem .75rem', background:'linear-gradient(135deg,#6366F1,#8B5CF6)', borderRadius:'var(--r2)', textAlign:'center', color:'#fff', textDecoration:'none', fontWeight:600 }}>{t('landing.nav.register')}</Link>
               </div>

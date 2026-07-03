@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, Modal,
+  View, Text, TouchableOpacity, StyleSheet, Modal, Alert, I18nManager,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Globe, Check } from 'lucide-react-native';
 import { F } from '../../theme/fonts';
 import { getColors } from '../../theme/colors';
 import useLayoutStore from '../../store/layoutStore';
-import { LANG_KEY } from '../../i18n';
+import { LANG_KEY, RTL_LANGS } from '../../i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LANGUAGES = [
@@ -27,9 +27,33 @@ export default function LanguageSwitcher() {
   const handleSelect = async (code) => {
     setOpen(false);
     if (code === i18n.language) return;
+
+    const willBeRTL = RTL_LANGS.includes(code);
+    const needsRestart = willBeRTL !== I18nManager.isRTL;
+
     await AsyncStorage.setItem(LANG_KEY, code);
     await i18n.changeLanguage(code);
-    // Direction is driven reactively by the root View in App.jsx — no reload needed.
+    I18nManager.allowRTL(willBeRTL);
+    I18nManager.forceRTL(willBeRTL);
+
+    // React Native only mirrors row layouts / start-end spacing for the new
+    // writing direction after a full reload — switching the i18n language
+    // alone does not re-layout already-mounted screens.
+    if (needsRestart) {
+      Alert.alert(t('lang.restartRequired'), t('lang.restartMsg'), [
+        { text: t('lang.restartLater'), style: 'cancel' },
+        {
+          text: t('lang.restartNow'),
+          onPress: () => {
+            import('expo-updates')
+              .then((Updates) => Updates.reloadAsync())
+              .catch(() => {
+                Alert.alert(t('lang.restartRequired'), t('lang.restartMsg'));
+              });
+          },
+        },
+      ]);
+    }
   };
 
   return (

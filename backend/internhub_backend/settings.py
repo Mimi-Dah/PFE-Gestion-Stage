@@ -200,6 +200,21 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 12,
     'EXCEPTION_HANDLER': 'internhub_backend.exception_handler.custom_exception_handler',
+
+    # ── Throttling (limitation du trafic) ────────────────────────────────
+    # Classes appliquées globalement à toutes les vues.
+    # Les vues sensibles (login, register) utilisent leurs propres classes
+    # via throttle_classes = [LoginRateThrottle].
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',         # Anonymes : 100 req/jour (navigation publique)
+        'user': '1000/day',        # Authentifiés : 1000 req/jour
+        'login': '5/minute',       # Tentatives de connexion : 5/min par IP
+        'register': '10/hour',     # Inscriptions : 10/heure par IP
+    },
 }
 
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  Modal, TextInput, ActivityIndicator, Alert,
+  Modal, TextInput, ActivityIndicator, Alert, I18nManager,
 } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as DocumentPicker from 'expo-document-picker';
 import {
-  ArrowLeft, Heart, MapPin, Clock, Calendar, DollarSign,
+  ArrowLeft, ArrowRight, Heart, MapPin, Clock, Calendar, DollarSign,
   FileUp, CheckCircle, X, Upload, Briefcase, Wifi, CheckCircle2,
   Building2, ShieldCheck,
 } from 'lucide-react-native';
@@ -101,7 +101,9 @@ export default function OfferDetailScreen({ navigation, route }) {
       {/* Header fixed */}
       <View style={[styles.navBar, { paddingTop: insets.top + 8, backgroundColor: C.bgCard, borderBottomColor: C.border }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={8} style={[styles.iconBtn, { backgroundColor: C.bgMuted }]}>
-          <ArrowLeft size={18} color={C.text} strokeWidth={2} />
+          {I18nManager.isRTL
+            ? <ArrowRight size={18} color={C.text} strokeWidth={2} />
+            : <ArrowLeft  size={18} color={C.text} strokeWidth={2} />}
         </TouchableOpacity>
         <Text style={[styles.navTitle, { color: C.text }]} numberOfLines={1}>{t('offerDetail.back')}</Text>
         <TouchableOpacity

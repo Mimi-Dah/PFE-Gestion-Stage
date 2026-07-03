@@ -98,9 +98,6 @@
 
 /* Date cell */
 .cand-td-date {
-  display: table-cell;
-  align-items: center;
-  gap: 6px;
   color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
@@ -125,7 +122,6 @@
   text-align: right;
   white-space: nowrap;
 }
-.cand-td-actions { display: table-cell; }
 .cand-td-actions > * + * { margin-left: 6px; }
 
 .cand-btn-follow {
@@ -187,4 +183,13 @@
 @media (max-width: 768px) {
   .cand-table-wrap { border-radius: 12px; overflow-x: auto; }
   .cand-table { min-width: 640px; }
+}
+@media (max-width: 480px) {
+  .cand-table { min-width: 0; }
+  .cand-table th:nth-child(2),
+  .cand-table th:nth-child(3),
+  .cand-table td:nth-child(2),
+  .cand-table td:nth-child(3) { display: none; }
+  .cand-td-actions { white-space: normal; }
+  .cand-td-actions > * + * { margin-left: 4px; }
 }

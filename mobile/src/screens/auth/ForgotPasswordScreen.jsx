@@ -13,6 +13,7 @@ import { F } from '../../theme/fonts';
 import PageHeader from '../../components/ui/PageHeader';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
+import api from '../../services/api';
 
 export default function ForgotPasswordScreen({ navigation }) {
   const { t } = useTranslation();
@@ -32,10 +33,10 @@ export default function ForgotPasswordScreen({ navigation }) {
 
   const onSubmit = async ({ email }) => {
     setApiErr('');
-    try {
-      await fetch(`/api/v1/auth/forgot-password/`, { method: 'POST', body: JSON.stringify({ email }), headers: { 'Content-Type': 'application/json' } });
+    const result = await api.safeRequest(api.post('auth/forgot-password/', { email }));
+    if (result.ok) {
       setSent(true);
-    } catch {
+    } else {
       setApiErr(t('auth.forgotPassword.errorSend'));
     }
   };

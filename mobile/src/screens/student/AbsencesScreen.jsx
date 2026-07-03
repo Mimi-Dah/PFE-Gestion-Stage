@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Modal, TextInput, Alert, I18nManager } from 'react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ChevronLeft, Edit2 } from 'lucide-react-native';
+import { ChevronLeft, ChevronRight, Edit2 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
@@ -64,7 +64,9 @@ export default function AbsencesScreen({ navigation, route }) {
           accessibilityLabel="Retour"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <ChevronLeft size={24} color={C.primary} />
+          {I18nManager.isRTL
+            ? <ChevronRight size={24} color={C.primary} />
+            : <ChevronLeft  size={24} color={C.primary} />}
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={{ ...typography.h2, color: C.text }}>{t('absences.title')}</Text>
@@ -87,7 +89,7 @@ export default function AbsencesScreen({ navigation, route }) {
           renderItem={({ item }) => (
             <Card style={{ marginBottom: 12 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <View style={{ flex: 1, marginRight: 12 }}>
+                <View style={{ flex: 1, marginEnd: 12 }}>
                   <Text style={{ ...typography.label, color: C.text }}>
                     {new Date(item.date_absence).toLocaleDateString(t('dashboard.dateLocale'), {
                       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',

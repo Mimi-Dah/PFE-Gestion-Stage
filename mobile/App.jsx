@@ -54,9 +54,8 @@ function AppContent() {
     PlusJakartaSans_800ExtraBold,
   });
 
-  // Keep the native I18nManager in sync so the OS reflects the correct direction
-  // on any future full native restart. The actual in-session direction is driven by
-  // the `direction` style on the root View below (no reload needed).
+  // Keep the native I18nManager in sync so row/start-end layout mirrors correctly
+  // after the app reload triggered by LanguageSwitcher when switching to/from RTL.
   useEffect(() => {
     I18nManager.allowRTL(isRTL);
     I18nManager.forceRTL(isRTL);

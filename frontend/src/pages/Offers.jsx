@@ -283,7 +283,7 @@ const Offers = () => {
 
   const toggleFavori = useMutation({
     mutationFn: (id) => api.post(`offres/${id}/favori/`),
-    onSuccess: () => queryClient.invalidateQueries(['offres']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['offres'] }),
   });
 
   const applyQuickChip = (patch) => {
@@ -312,8 +312,67 @@ const Offers = () => {
       {/* ── Page header ─────────────────────────────────────────── */}
       <PageHeader eyebrow={t('pages.offers.eyebrow')} title={t('pages.offers.title')} subtitle={t('pages.offers.subtitle')} />
 
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+      {/* ── Unified toolbar: chips left, search + filter right ─────── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
+
+        {/* Chips + sort — left/center */}
+        <div className="offers-chips-bar" style={{ flex: 1 }}>
+          <button className={`offers-chip${isAllActive ? ' active' : ''}`} onClick={clearAll}>
+            {t('pages.offers.chipAll')}
+          </button>
+          <button
+            className={`offers-chip${appliedFilters.teletravail === 'true' ? ' active' : ''}`}
+            onClick={() => applyQuickChip(appliedFilters.teletravail === 'true' ? {} : { teletravail: 'true' })}
+          >
+            <Wifi size={11} />{t('pages.offers.chipRemote')}
+            {appliedFilters.teletravail === 'true' && <span className="offers-chip-remove">×</span>}
+          </button>
+          <button
+            className={`offers-chip${appliedFilters.duree_semaines === '8' ? ' active' : ''}`}
+            onClick={() => applyQuickChip(appliedFilters.duree_semaines === '8' ? {} : { duree_semaines: '8' })}
+          >
+            <Clock size={11} />{t('pages.offers.chip8w')}
+            {appliedFilters.duree_semaines === '8' && <span className="offers-chip-remove">×</span>}
+          </button>
+          <button
+            className={`offers-chip${appliedFilters.duree_semaines === '12' ? ' active' : ''}`}
+            onClick={() => applyQuickChip(appliedFilters.duree_semaines === '12' ? {} : { duree_semaines: '12' })}
+          >
+            <Clock size={11} />{t('pages.offers.chip12w')}
+            {appliedFilters.duree_semaines === '12' && <span className="offers-chip-remove">×</span>}
+          </button>
+
+          <div className="offers-divider" />
+
+          <select
+            value={appliedFilters.ordering}
+            onChange={e => {
+              const next = { ...appliedFilters, ordering: e.target.value };
+              setDraftFilters(next);
+              setAppliedFilters(next);
+            }}
+            style={{
+              width: 'auto',
+              padding: '6px 28px 6px 12px',
+              border: '1.5px solid var(--n200)',
+              borderRadius: '9999px',
+              fontSize: '12.5px',
+              fontWeight: '500',
+              color: 'var(--n600)',
+              background: 'var(--surface-card)',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            <option value="-publie_le">{t('pages.offers.sortNewest')}</option>
+            <option value="publie_le">{t('pages.offers.sortOldest')}</option>
+            <option value="duree_semaines">{t('pages.offers.sortDurAsc')}</option>
+            <option value="-duree_semaines">{t('pages.offers.sortDurDesc')}</option>
+          </select>
+        </div>
+
+        {/* Search + filter button — right */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
           <div className="offers-search-wrap">
             <Search size={14} style={{ color: 'var(--n400)', flexShrink: 0 }} />
             <input
@@ -351,62 +410,7 @@ const Offers = () => {
             )}
           </button>
         </div>
-      </div>
 
-      {/* ── Quick chip filter bar ────────────────────────────────── */}
-      <div className="offers-chips-bar">
-        <button className={`offers-chip${isAllActive ? ' active' : ''}`} onClick={clearAll}>
-          {t('pages.offers.chipAll')}
-        </button>
-        <button
-          className={`offers-chip${appliedFilters.teletravail === 'true' ? ' active' : ''}`}
-          onClick={() => applyQuickChip(appliedFilters.teletravail === 'true' ? {} : { teletravail: 'true' })}
-        >
-          <Wifi size={11} />{t('pages.offers.chipRemote')}
-          {appliedFilters.teletravail === 'true' && <span className="offers-chip-remove">×</span>}
-        </button>
-        <button
-          className={`offers-chip${appliedFilters.duree_semaines === '8' ? ' active' : ''}`}
-          onClick={() => applyQuickChip(appliedFilters.duree_semaines === '8' ? {} : { duree_semaines: '8' })}
-        >
-          <Clock size={11} />{t('pages.offers.chip8w')}
-          {appliedFilters.duree_semaines === '8' && <span className="offers-chip-remove">×</span>}
-        </button>
-        <button
-          className={`offers-chip${appliedFilters.duree_semaines === '12' ? ' active' : ''}`}
-          onClick={() => applyQuickChip(appliedFilters.duree_semaines === '12' ? {} : { duree_semaines: '12' })}
-        >
-          <Clock size={11} />{t('pages.offers.chip12w')}
-          {appliedFilters.duree_semaines === '12' && <span className="offers-chip-remove">×</span>}
-        </button>
-
-        <div className="offers-divider" />
-
-        <select
-          value={appliedFilters.ordering}
-          onChange={e => {
-            const next = { ...appliedFilters, ordering: e.target.value };
-            setDraftFilters(next);
-            setAppliedFilters(next);
-          }}
-          style={{
-            width: 'auto',
-            padding: '6px 28px 6px 12px',
-            border: '1.5px solid var(--n200)',
-            borderRadius: '9999px',
-            fontSize: '12.5px',
-            fontWeight: '500',
-            color: 'var(--n600)',
-            background: 'var(--surface-card)',
-            cursor: 'pointer',
-            flexShrink: 0,
-          }}
-        >
-          <option value="-publie_le">{t('pages.offers.sortNewest')}</option>
-          <option value="publie_le">{t('pages.offers.sortOldest')}</option>
-          <option value="duree_semaines">{t('pages.offers.sortDurAsc')}</option>
-          <option value="-duree_semaines">{t('pages.offers.sortDurDesc')}</option>
-        </select>
       </div>
 
       {/* ── Advanced filter panel ───────────────────────────────── */}

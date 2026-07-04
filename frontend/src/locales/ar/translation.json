@@ -35,7 +35,8 @@
       "noAccount": "ليس لديك حساب؟",
       "createAccount": "إنشاء حساب",
       "or": "أو",
-      "errorDefault": "فشل تسجيل الدخول. تحقق من بيانات اعتمادك."
+      "errorDefault": "فشل تسجيل الدخول. تحقق من بيانات اعتمادك.",
+      "idleLogoutMessage": "لقد تم تسجيل خروجك بعد 30 دقيقة من عدم النشاط. يرجى تسجيل الدخول مجدداً."
     },
     "register": {
       "title": "إنشاء حساب",
@@ -1140,9 +1141,9 @@
       "deadlineDays_one": "يوم واحد متبقٍّ",
       "deadlineDays_other": "{{count}} أيام متبقية",
       "reason": "السبب: {{reason}}",
-      "pendingMsg": "التبرير مُقدَّم — في انتظار قرار رئيس القسم",
+      "pendingMsg": "التبرير مُقدَّم — في انتظار القرار",
       "autoClosedMsg": "أُغلق تلقائياً — انقضت مهلة 3 أيام دون تبرير",
-      "rejectedMsg": "رفض رئيس القسم التبرير",
+      "rejectedMsg": "تم رفض التبرير",
       "justifyBtn": "تبرير",
       "expiredLabel": "منتهٍ",
       "reviewLabel": "قيد الفحص",
@@ -1578,7 +1579,17 @@
         "reasonRequired": "السبب مطلوب.",
         "cancelBtn": "إلغاء",
         "sendingBtn": "جارٍ الإرسال...",
-        "reportBtnSubmit": "إبلاغ"
+        "reportBtnSubmit": "إبلاغ",
+        "stageDefault": "التدريب",
+        "reportedReason": "سبب الإبلاغ",
+        "studentJustification": "تبرير الطالب",
+        "seeDocument": "عرض الوثيقة",
+        "noJustification": "لم يتم تقديم أي تبرير.",
+        "reject": "رفض",
+        "approveJustification": "الموافقة على التبرير",
+        "absenceJustified": "الغياب مبرر",
+        "absenceUnjustified": "الغياب غير مبرر",
+        "waitingSubmission": "بانتظار تقديم الطالب"
       },
       "creerOffre": {
         "title": "إضافة عرض جديد",

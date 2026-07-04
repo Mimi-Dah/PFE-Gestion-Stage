@@ -35,7 +35,8 @@
       "noAccount": "Don't have an account?",
       "createAccount": "Create an account",
       "or": "or",
-      "errorDefault": "Login failed. Please check your credentials."
+      "errorDefault": "Login failed. Please check your credentials.",
+      "idleLogoutMessage": "You were logged out after 30 minutes of inactivity. Please sign in again."
     },
     "register": {
       "title": "Create an account",
@@ -1140,9 +1141,9 @@
       "deadlineDays_one": "{{count}}d left",
       "deadlineDays_other": "{{count}}d left",
       "reason": "Reason: {{reason}}",
-      "pendingMsg": "Justification submitted — awaiting department head decision",
+      "pendingMsg": "Justification submitted — awaiting a decision",
       "autoClosedMsg": "Automatically closed — 3-day deadline passed without justification",
-      "rejectedMsg": "Justification rejected by department head",
+      "rejectedMsg": "Justification rejected",
       "justifyBtn": "Justify",
       "expiredLabel": "Expired",
       "reviewLabel": "Under review",
@@ -1578,7 +1579,17 @@
         "reasonRequired": "A reason is required.",
         "cancelBtn": "Cancel",
         "sendingBtn": "Sending...",
-        "reportBtnSubmit": "Report"
+        "reportBtnSubmit": "Report",
+        "stageDefault": "Internship",
+        "reportedReason": "Reported reason",
+        "studentJustification": "Student's justification",
+        "seeDocument": "See document",
+        "noJustification": "No justification submitted.",
+        "reject": "Reject",
+        "approveJustification": "Approve justification",
+        "absenceJustified": "Absence justified",
+        "absenceUnjustified": "Absence unjustified",
+        "waitingSubmission": "Awaiting submission by the student"
       },
       "creerOffre": {
         "title": "Add a new offer",

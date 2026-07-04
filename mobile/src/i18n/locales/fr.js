@@ -70,6 +70,7 @@ const fr = {
       errorDefault: 'Identifiants incorrects.',
       emailInvalid: 'Email invalide',
       passwordRequired: 'Mot de passe requis',
+      idleLogoutMessage: "Vous avez été déconnecté(e) après 30 minutes d'inactivité. Veuillez vous reconnecter.",
     },
 
     register: {

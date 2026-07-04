@@ -5,7 +5,7 @@ from .views import (
     EntrepriseDetailView, VerifyEmailView, ChefManagementView,
     DepartementListView, UserManagementView, DepartementManagementView,
     PasswordResetRequestView, PasswordResetConfirmView, AdminPasswordResetView,
-    ChangePasswordView, ThrottledTokenObtainPairView,
+    ChangePasswordView, ThrottledTokenObtainPairView, LogoutView,
 )
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     path('auth/verify/', VerifyEmailView.as_view(), name='verify-email'),
     path('auth/login/', ThrottledTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/logout/', LogoutView.as_view(), name='auth_logout'),
     path('auth/me/', ProfileMeView.as_view(), name='auth_me'),
     path('auth/password-reset/', PasswordResetRequestView.as_view(), name='password-reset'),
     path('auth/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),

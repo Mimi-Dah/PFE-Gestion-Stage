@@ -31,7 +31,12 @@ import useAuthStore from '../store/authStore';
 import useLayoutStore from '../store/layoutStore';
 import NotificationBar from '../components/NotificationBar';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import { logoutUser } from '../services/authService';
+import useIdleTimer from '../hooks/useIdleTimer';
 import './DashboardLayout.css';
+
+// Déconnexion automatique après 30 minutes sans la moindre interaction.
+const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000;
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
@@ -100,21 +105,30 @@ const BottomNav = ({ user, location, t }) => {
 };
 
 const DashboardLayout = () => {
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const { isDarkMode, isSidebarOpen, toggleDarkMode, toggleSidebar } = useLayoutStore();
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
 
+  const handleLogout = async (reason) => {
+    await logoutUser({ reason });
+    navigate('/login', { replace: true, state: reason ? { reason } : undefined });
+  };
+
+  // Le hook doit être appelé à chaque rendu (règle des Hooks React) : il est
+  // donc placé avant le "return" anticipé ci-dessous, mais désactivé via
+  // `enabled` tant qu'aucun utilisateur n'est connecté.
+  useIdleTimer({
+    timeout: INACTIVITY_TIMEOUT_MS,
+    enabled: isAuthenticated,
+    onIdle: () => handleLogout('idle'),
+  });
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
 
   const displayName = user?.profil_etudiant
     ? `${user.profil_etudiant.prenom} ${user.profil_etudiant.nom}`.trim()
@@ -171,7 +185,7 @@ const DashboardLayout = () => {
                 <p className="nav-section-label">{t('nav.sections.account')}</p>
                 <NavLink to="/espace/settings"      icon={Lock}          >{t('nav.items.security')}</NavLink>
                 <NavLink to="/espace/help"          icon={HelpCircle}    >{t('nav.items.help')}</NavLink>
-                <div onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                <div onClick={() => handleLogout()} style={{ cursor: 'pointer' }}>
                   <NavLink to="#" icon={LogOut}>{t('nav.items.logout')}</NavLink>
                 </div>
               </div>
@@ -191,7 +205,7 @@ const DashboardLayout = () => {
               <div className="nav-section-divider">
                 <p className="nav-section-label">{t('nav.sections.account')}</p>
                 <NavLink to="/espace/entreprise/password" icon={Lock}>{t('nav.items.password')}</NavLink>
-                <div onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                <div onClick={() => handleLogout()} style={{ cursor: 'pointer' }}>
                   <NavLink to="#" icon={LogOut}>{t('nav.items.logout')}</NavLink>
                 </div>
               </div>
@@ -210,7 +224,7 @@ const DashboardLayout = () => {
                 <p className="nav-section-label">{t('nav.sections.account')}</p>
                 <NavLink to="/espace/chef/guide" icon={HelpCircle}>{t('nav.items.adminGuide')}</NavLink>
                 <NavLink to="/espace/profil"     icon={Settings}  >{t('nav.items.profile')}</NavLink>
-                <div onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                <div onClick={() => handleLogout()} style={{ cursor: 'pointer' }}>
                   <NavLink to="#" icon={LogOut}>{t('nav.items.logout')}</NavLink>
                 </div>
               </div>
@@ -230,7 +244,7 @@ const DashboardLayout = () => {
               <div className="nav-section-divider">
                 <p className="nav-section-label">{t('nav.sections.account')}</p>
                 <NavLink to="/espace/profil" icon={Settings}>{t('nav.items.settings')}</NavLink>
-                <div onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                <div onClick={() => handleLogout()} style={{ cursor: 'pointer' }}>
                   <NavLink to="#" icon={LogOut}>{t('nav.items.logout')}</NavLink>
                 </div>
               </div>
@@ -274,7 +288,7 @@ const DashboardLayout = () => {
             <NotificationBar />
 
             <button
-              onClick={handleLogout}
+              onClick={() => handleLogout()}
               className="icon-button logout-button"
               title={t('topbar.logout')}
             >

@@ -70,6 +70,7 @@ const en = {
       errorDefault: 'Incorrect credentials.',
       emailInvalid: 'Invalid email',
       passwordRequired: 'Password required',
+      idleLogoutMessage: 'You were logged out after 30 minutes of inactivity. Please sign in again.',
     },
 
     register: {

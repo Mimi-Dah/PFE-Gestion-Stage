@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',  # Nécessaire pour BLACKLIST_AFTER_ROTATION et le logout
     'corsheaders',
     'django_filters',
     
@@ -133,6 +134,9 @@ if 'mysql' in _db_engine:
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': os.environ.get('DB_PORT', '3306'),
+        # Réutilise la connexion MySQL entre requêtes au lieu d'en ouvrir une
+        # nouvelle à chaque fois (coût de handshake/auth perceptible en local).
+        'CONN_MAX_AGE': int(os.environ.get('DB_CONN_MAX_AGE', 60)),
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
     })
 
@@ -219,17 +223,51 @@ REST_FRAMEWORK = {
 
 
 
+# ─────────────────────────────────────────────────────────────────
+# Configuration des jetons JWT (Simple JWT)
+# ─────────────────────────────────────────────────────────────────
 SIMPLE_JWT = {
+    # Durée de vie courte de l'access token : limite la fenêtre d'exploitation
+    # si un jeton est volé (XSS, interception réseau, etc.).
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('JWT_ACCESS_LIFETIME_MINUTES', 15))),
+
+    # Le refresh token vit plus longtemps : il permet de renouveler l'access
+    # token sans redemander le mot de passe pendant toute la durée de la session.
     'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.environ.get('JWT_REFRESH_LIFETIME_DAYS', 7))),
+
+    # À chaque rafraîchissement, un NOUVEAU refresh token est émis (rotation) :
+    # cela empêche la réutilisation indéfinie d'un même refresh token volé.
     'ROTATE_REFRESH_TOKENS': True,
+
+    # L'ancien refresh token est blacklisté dès qu'il a été utilisé pour une
+    # rotation : un jeton rejoué (ex. copié par un attaquant) est donc rejeté.
+    # Nécessite l'app 'rest_framework_simplejwt.token_blacklist' (voir INSTALLED_APPS).
     'BLACKLIST_AFTER_ROTATION': True,
+
+    # Champs personnalisés car notre modèle User utilise 'id_utilisateur' comme clé primaire.
     'USER_ID_FIELD': 'id_utilisateur',
     'USER_ID_CLAIM': 'user_id',
 }
 
+# Surcharge locale des migrations de 'token_blacklist' : la migration 0006
+# d'origine utilise un RENAME COLUMN incompatible avec MariaDB < 10.5.
+# Voir internhub_backend/token_blacklist_migrations/0006_auto_20171017_2113.py.
+MIGRATION_MODULES = {
+    'token_blacklist': 'internhub_backend.token_blacklist_migrations',
+}
+
 AUTH_USER_MODEL = 'accounts.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# En dev, le hachage PBKDF2 par défaut (~600k itérations) ajoute plusieurs
+# centaines de ms perceptibles à chaque login. On utilise un hasher rapide en
+# premier (utilisé pour les nouveaux mots de passe) tout en gardant le hasher
+# standard en fallback pour vérifier les mots de passe existants.
+if DEBUG:
+    PASSWORD_HASHERS = [
+        'internhub_backend.dev_hashers.FastPBKDF2Hasher',
+        'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    ]
 
 # Email Configuration
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')

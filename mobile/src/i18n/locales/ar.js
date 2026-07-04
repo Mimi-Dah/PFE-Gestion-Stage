@@ -70,6 +70,7 @@ const ar = {
       errorDefault: 'بيانات الاعتماد غير صحيحة.',
       emailInvalid: 'البريد الإلكتروني غير صالح',
       passwordRequired: 'كلمة المرور مطلوبة',
+      idleLogoutMessage: 'لقد تم تسجيل خروجك بعد 30 دقيقة من عدم النشاط. يرجى تسجيل الدخول مجدداً.',
     },
 
     register: {

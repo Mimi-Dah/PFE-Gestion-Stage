@@ -16,6 +16,7 @@ import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
 import AuthService from '../../services/auth';
 import api from '../../services/api';
+import { logoutUser } from '../../services/authService';
 import LanguageSwitcher from '../../components/common/LanguageSwitcher';
 
 export default function ProfileScreen({ navigation }) {
@@ -28,7 +29,6 @@ export default function ProfileScreen({ navigation }) {
   const [showTerms, setShowTerms] = useState(false);
   const user       = useAuthStore((s) => s.user);
 
-  const logout     = useAuthStore((s) => s.logout);
   const updateUser = useAuthStore((s) => s.updateUser);
   const profil     = user?.profil_etudiant || {};
 
@@ -47,7 +47,7 @@ export default function ProfileScreen({ navigation }) {
   const confirmLogout = () =>
     Alert.alert(t('profile.logoutConfirmTitle'), t('profile.logoutConfirmMsg'), [
       { text: t('profile.logoutCancel'), style: 'cancel' },
-      { text: t('profile.logoutConfirm'), style: 'destructive', onPress: logout },
+      { text: t('profile.logoutConfirm'), style: 'destructive', onPress: () => logoutUser() },
     ]);
 
   const SETTINGS = [

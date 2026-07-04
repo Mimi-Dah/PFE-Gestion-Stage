@@ -3,6 +3,8 @@ from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
@@ -17,7 +19,8 @@ _ = lambda s: s  # no-op: strings are already French
 logger = logging.getLogger(__name__)
 from .serializers import (
     RegisterSerializer, UserSerializer, EtudiantSerializer,
-    EntrepriseSerializer, ChefDepartementSerializer, ChefCreateSerializer
+    EntrepriseSerializer, ChefDepartementSerializer, ChefCreateSerializer,
+    CustomTokenObtainPairSerializer, build_user_profile_data,
 )
 from .models import Etudiant, Entreprise, ChefDepartement
 from etablissements.models import Departement
@@ -29,7 +32,36 @@ User = get_user_model()
 
 class ThrottledTokenObtainPairView(TokenObtainPairView):
     """Login JWT avec limite de 5 tentatives/minute par IP."""
+    serializer_class = CustomTokenObtainPairSerializer
     throttle_classes = [LoginRateThrottle]
+
+
+class LogoutView(APIView):
+    """
+    Déconnexion côté serveur : blackliste le refresh token reçu pour qu'il ne
+    puisse plus jamais être échangé contre un nouvel access token, même s'il
+    n'a pas encore expiré (ex. token volé, appareil partagé, déconnexion
+    automatique pour inactivité).
+
+    Volontairement accessible sans authentification valide (AllowAny) : au
+    moment où l'utilisateur se déconnecte, son access token est souvent déjà
+    expiré (c'est justement pour ça qu'on veut invalider la session côté
+    serveur). Seul le refresh token, transmis dans le corps de la requête,
+    est nécessaire.
+    """
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        refresh = request.data.get('refresh')
+        if not refresh:
+            raise BadRequestError(_("Refresh token manquant."))
+        try:
+            RefreshToken(refresh).blacklist()
+        except TokenError:
+            # Jeton déjà invalide/expiré/blacklisté : la déconnexion reste un
+            # succès du point de vue du client, il n'y a rien de plus à faire.
+            pass
+        return Response({"message": _("Déconnexion réussie.")}, status=status.HTTP_200_OK)
 
 
 def _send_verification_email(user):
@@ -165,29 +197,7 @@ class ProfileMeView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def get(self, request):
-        user = request.user
-        ctx = {'request': request}
-        serializer = UserSerializer(user, context=ctx)
-        data = serializer.data
-        if user.role == 'Étudiant':
-            try:
-                etudiant = user.profil_etudiant
-                data['profil_etudiant'] = EtudiantSerializer(etudiant, context=ctx).data
-            except Etudiant.DoesNotExist:
-                pass
-        elif user.role == 'Entreprise':
-            try:
-                entreprise = user.profil_entreprise
-                data['profil_entreprise'] = EntrepriseSerializer(entreprise, context=ctx).data
-            except Entreprise.DoesNotExist:
-                pass
-        elif user.role == 'Chef_Departement':
-            try:
-                chef = user.profil_chef
-                data['profil_chef'] = ChefDepartementSerializer(chef, context=ctx).data
-            except ChefDepartement.DoesNotExist:
-                pass
-        return Response(data)
+        return Response(build_user_profile_data(request.user, context={'request': request}))
 
     def patch(self, request):
         user = request.user

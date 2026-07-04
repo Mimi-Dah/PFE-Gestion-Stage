@@ -87,9 +87,8 @@ export default function DashboardScreen({ navigation }) {
   const candidatures = candidaturesData?.results ?? candidaturesData ?? [];
   const pending      = candidatures.filter(c => c.statut === 'En_attente').length;
   const accepted     = candidatures.filter(c => c.statut === 'Acceptée').length;
-  const internship   = Array.isArray(internshipData)
-    ? internshipData[0]
-    : internshipData?.results?.[0];
+  const conventions   = Array.isArray(internshipData) ? internshipData : (internshipData?.results ?? []);
+  const internship    = [...conventions].sort((a, b) => (b.id_convention ?? b.id ?? 0) - (a.id_convention ?? a.id ?? 0))[0] ?? null;
 
   return (
     <View style={[styles.root, { backgroundColor: C.bg }]}>

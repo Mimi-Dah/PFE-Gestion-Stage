@@ -35,7 +35,8 @@
       "noAccount": "Pas encore de compte ?",
       "createAccount": "Créer un compte",
       "or": "ou",
-      "errorDefault": "Échec de connexion. Vérifiez vos identifiants."
+      "errorDefault": "Échec de connexion. Vérifiez vos identifiants.",
+      "idleLogoutMessage": "Vous avez été déconnecté(e) après 30 minutes d'inactivité. Veuillez vous reconnecter."
     },
     "register": {
       "title": "Créer un compte",
@@ -1140,9 +1141,9 @@
       "deadlineDays_one": "{{count}}j restant",
       "deadlineDays_other": "{{count}}j restants",
       "reason": "Motif : {{reason}}",
-      "pendingMsg": "Justification soumise — en attente de décision du chef de département",
+      "pendingMsg": "Justification soumise — en attente de décision",
       "autoClosedMsg": "Clôturée automatiquement — délai de 3 jours dépassé sans justification",
-      "rejectedMsg": "Justification refusée par le chef de département",
+      "rejectedMsg": "Justification refusée",
       "justifyBtn": "Justifier",
       "expiredLabel": "Expiré",
       "reviewLabel": "En examen",
@@ -1578,7 +1579,17 @@
         "reasonRequired": "Un motif est requis.",
         "cancelBtn": "Annuler",
         "sendingBtn": "Envoi...",
-        "reportBtnSubmit": "Signaler"
+        "reportBtnSubmit": "Signaler",
+        "stageDefault": "Stage",
+        "reportedReason": "Motif de signalement",
+        "studentJustification": "Justification de l'étudiant",
+        "seeDocument": "Voir le document",
+        "noJustification": "Aucune justification soumise.",
+        "reject": "Refuser",
+        "approveJustification": "Approuver la justification",
+        "absenceJustified": "Absence justifiée",
+        "absenceUnjustified": "Absence non justifiée",
+        "waitingSubmission": "En attente de soumission par l'étudiant"
       },
       "creerOffre": {
         "title": "Ajouter une nouvelle offre",

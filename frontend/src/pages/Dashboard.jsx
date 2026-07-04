@@ -186,7 +186,7 @@ const Dashboard = () => {
         tableRows: results.slice(0, 6).map((r, i) => ({
           avatar: (r.nom || r.courriel || '?')[0].toUpperCase(),
           col1: r.nom || r.courriel || `Chef #${r.id}`,
-          col2: r.departement || '—',
+          col2: r.departement_nom || '—',
           statut: 'Actif',
           palette: AVATAR_PALETTE[i % AVATAR_PALETTE.length],
         })),
@@ -210,13 +210,16 @@ const Dashboard = () => {
           ],
           tableTitle: 'Activité de Candidature',
           tableHead: ['Offre', 'Entreprise', 'Statut'],
-          tableRows: results.slice(0, 6).map((r, i) => ({
-            avatar: (r.offre_titre || r.titre || '?')[0].toUpperCase(),
-            col1: r.offre_titre || r.titre || `Offre #${r.id}`,
-            col2: r.entreprise_nom || '—',
-            statut: r.statut || 'En attente',
-            palette: AVATAR_PALETTE[i % AVATAR_PALETTE.length],
-          })),
+          tableRows: results.slice(0, 6).map((r, i) => {
+            const titre = r.offre_detail?.titre || '?';
+            return {
+              avatar: titre[0].toUpperCase(),
+              col1: r.offre_detail?.titre || `Candidature #${r.id_candidature}`,
+              col2: r.offre_detail?.entreprise?.nom || '—',
+              statut: r.statut || 'En attente',
+              palette: AVATAR_PALETTE[i % AVATAR_PALETTE.length],
+            };
+          }),
           nextSteps: [
             { label: 'Téléverser votre CV (PDF)', done: hasCV, link: '/espace/profil' },
             { label: 'Postuler à des offres', done: hasApplied, link: '/espace/offres' },
@@ -306,7 +309,7 @@ const Dashboard = () => {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          <NextStepsPanel steps={config.nextSteps} navigate={navigate} progressPct={progressPct} />
+          <NextStepsPanel steps={config.nextSteps} navigate={navigate} progressPct={progressPct} t={t} />
 
           <div className="glass-panel" style={{ padding: '18px 20px', background: 'linear-gradient(135deg, var(--primary-light) 0%, rgba(99,102,241,0.08) 100%)', border: '1px solid rgba(37,99,235,0.15)' }}>
             <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>

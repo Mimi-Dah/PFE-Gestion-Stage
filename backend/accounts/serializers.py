@@ -1,5 +1,6 @@
 ﻿import secrets
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from .models import Etudiant, Entreprise, ChefDepartement
@@ -131,6 +132,43 @@ class ChefDepartementSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChefDepartement
         fields = '__all__'
+
+def build_user_profile_data(user, context=None):
+    """
+    Sérialise un User avec son profil de rôle imbriqué (profil_etudiant /
+    profil_entreprise / profil_chef). Utilisé à la fois par ProfileMeView et
+    par le login, pour renvoyer le même payload sans dupliquer la logique et
+    sans obliger le frontend à faire un 2e aller-retour après le login.
+    """
+    ctx = context or {}
+    data = UserSerializer(user, context=ctx).data
+    if user.role == 'Étudiant':
+        try:
+            data['profil_etudiant'] = EtudiantSerializer(user.profil_etudiant, context=ctx).data
+        except Etudiant.DoesNotExist:
+            pass
+    elif user.role == 'Entreprise':
+        try:
+            data['profil_entreprise'] = EntrepriseSerializer(user.profil_entreprise, context=ctx).data
+        except Entreprise.DoesNotExist:
+            pass
+    elif user.role == 'Chef_Departement':
+        try:
+            data['profil_chef'] = ChefDepartementSerializer(user.profil_chef, context=ctx).data
+        except ChefDepartement.DoesNotExist:
+            pass
+    return data
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Login JWT qui renvoie aussi le profil complet de l'utilisateur,
+    pour éviter un 2e appel réseau (auth/me/) juste après la connexion."""
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['user'] = build_user_profile_data(self.user, context=self.context)
+        return data
+
 
 class ChefCreateSerializer(serializers.Serializer):
     courriel = serializers.EmailField()

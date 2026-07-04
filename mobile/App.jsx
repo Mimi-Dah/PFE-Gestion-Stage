@@ -16,6 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { navigationRef } from './src/navigation/navigationRef';
 import RootNavigator from './src/navigation/RootNavigator';
 import ErrorToast from './src/components/common/ErrorToast';
+import InactivityGuard from './src/components/common/InactivityGuard';
 import useLayoutStore from './src/store/layoutStore';
 import {
   Inter_400Regular,
@@ -70,7 +71,9 @@ function AppContent() {
   return (
     <View style={{ flex: 1, direction: isRTL ? 'rtl' : 'ltr' }}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
-      <RootNavigator />
+      <InactivityGuard>
+        <RootNavigator />
+      </InactivityGuard>
       <ErrorToast />
     </View>
   );

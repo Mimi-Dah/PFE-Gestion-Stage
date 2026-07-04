@@ -5,11 +5,16 @@ import PageHeader from '../../components/PageHeader';
 import {
   AlertCircle, CheckCircle, XCircle, Clock, Plus, X,
   UserX, Calendar, Search, ArrowUpDown, ArrowUp, ArrowDown,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, Eye, FileText, Check,
 } from 'lucide-react';
-import api from '../../services/api';
+import api, { mediaUrl } from '../../services/api';
+import { dateLocale } from '../../utils/dateLocale';
 
 const PAGE_SIZES = [10, 25, 50];
+
+const STATUS_FILTER_GROUPS = {
+  Signaler: ['Signaler', 'En_attente_approbation'],
+};
 
 const STATUT_STYLE = {
   Signaler:                { color: '#92400e', bg: '#fef9c3', dot: '#f59e0b' },
@@ -161,9 +166,10 @@ const SignalModal = ({ onClose, interns, onSubmit, isPending }) => {
 };
 
 const EntrepriseAbsences = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const [showForm, setShowForm]       = useState(false);
+  const [selected, setSelected]       = useState(null);
   const [search, setSearch]           = useState('');
   const [statusFilter, setStatusFilter] = useState(null);
   const [sort, setSort]               = useState({ col: 'date_absence', dir: 'desc' });
@@ -204,10 +210,22 @@ const EntrepriseAbsences = () => {
     onError: () => {},
   });
 
+  const validateMutation = useMutation({
+    mutationFn: async ({ id, statut }) => {
+      const r = await api.safeRequest(api.post(`absences/${id}/valider/`, { statut }));
+      if (r.ok) return r.value.data;
+      throw r.error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['entreprise-absences'] });
+      setSelected(null);
+    },
+  });
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     let list = absences.filter(a => {
-      if (statusFilter && a.statut !== statusFilter) return false;
+      if (statusFilter && !(STATUS_FILTER_GROUPS[statusFilter] || [statusFilter]).includes(a.statut)) return false;
       return (
         `${a.etudiant_prenom} ${a.etudiant_nom}`.toLowerCase().includes(q) ||
         (a.offre_titre || '').toLowerCase().includes(q) ||
@@ -319,6 +337,7 @@ const EntrepriseAbsences = () => {
                 <TH style={{ width: '220px' }}>{t('pages.entreprise.absences.colReason')}</TH>
                 <TH style={{ width: '200px' }}>{t('pages.entreprise.absences.colJustification')}</TH>
                 <TH col="statut" sort={sort} onSort={handleSort} style={{ width: '120px' }}>{t('pages.entreprise.absences.colStatus')}</TH>
+                <TH style={{ width: '60px', textAlign: 'right' }}></TH>
               </tr>
             </thead>
             <tbody>
@@ -334,13 +353,13 @@ const EntrepriseAbsences = () => {
                 ))
               ) : isError ? (
                 <tr>
-                  <td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: '#b91c1c', fontSize: '0.875rem', fontWeight: 600 }}>
+                  <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#b91c1c', fontSize: '0.875rem', fontWeight: 600 }}>
                     {t('pages.entreprise.absences.errorLoading')}
                   </td>
                 </tr>
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--text-subtle)', fontSize: '0.875rem' }}>
+                  <td colSpan={7} style={{ padding: '3.5rem', textAlign: 'center', color: 'var(--text-subtle)', fontSize: '0.875rem' }}>
                     {absences.length === 0 ? t('pages.entreprise.absences.noAbsences') : t('pages.entreprise.absences.noFound')}
                   </td>
                 </tr>
@@ -382,6 +401,16 @@ const EntrepriseAbsences = () => {
                     </td>
                     <td style={{ padding: '0.85rem 1rem' }}>
                       <StatutBadge statut={absence.statut} />
+                    </td>
+                    <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                      <button
+                        onClick={() => setSelected(absence)}
+                        style={{ width: 32, height: 32, border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', transition: 'all 0.15s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.borderColor = '#cbd5e1'; e.currentTarget.style.color = '#1e293b'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#64748b'; }}
+                      >
+                        <Eye size={14} />
+                      </button>
                     </td>
                   </tr>
                 );
@@ -440,6 +469,121 @@ const EntrepriseAbsences = () => {
           isPending={signalMutation.isPending}
         />
       )}
+
+      {/* Validation Modal */}
+      {selected && (() => {
+        const s          = STATUT_STYLE[selected.statut] || STATUT_STYLE.Signaler;
+        const hue        = (selected.etudiant_prenom?.charCodeAt(0) || 65) % 360;
+        const ini        = ((selected.etudiant_prenom?.[0] || '') + (selected.etudiant_nom?.[0] || '')).toUpperCase() || '?';
+        const canDecide  = selected.statut === 'En_attente_approbation';
+        const isApproved = selected.statut === 'Justifiée';
+        const LABELS = {
+          Signaler:               t('pages.entreprise.absences.statusReported'),
+          En_attente_approbation: t('pages.entreprise.absences.statusPending'),
+          Justifiée:              t('pages.entreprise.absences.statusJustified'),
+          Non_justifiée:          t('pages.entreprise.absences.statusUnjustified'),
+        };
+        const statusLabel = LABELS[selected.statut] || selected.statut;
+        
+        return (
+          <div onClick={() => setSelected(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.45)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1.5rem' }}>
+            <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', width: '100%', maxWidth: 520, maxHeight: '90vh', borderRadius: 16, boxShadow: '0 24px 64px rgba(0,0,0,0.18)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+              {/* Header */}
+              <div style={{ padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                  <div style={{ width: 46, height: 46, borderRadius: 12, background: `hsl(${hue},55%,90%)`, color: `hsl(${hue},55%,32%)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1.05rem', flexShrink: 0 }}>{ini}</div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>{selected.etudiant_prenom} {selected.etudiant_nom}</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 2 }}>{selected.offre_titre || t('pages.entreprise.absences.stageDefault')}</div>
+                  </div>
+                </div>
+                <button onClick={() => setSelected(null)} style={{ width: 34, height: 34, borderRadius: 9, border: '1px solid #e2e8f0', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#f1f5f9'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
+                >
+                  <X size={15} />
+                </button>
+              </div>
+
+              {/* Meta chips */}
+              <div style={{ borderTop: '1px solid #e2e8f0', padding: '0.75rem 1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0, background: '#f8fafc' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid #e2e8f0', background: '#fff', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
+                  <Calendar size={12} color="#94a3b8" />{new Date(selected.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
+                </span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 600, padding: '0.3rem 0.75rem', borderRadius: 999, background: s.bg, color: s.color }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.dot }} />{statusLabel}
+                </span>
+              </div>
+
+              {/* Body */}
+              <div style={{ overflowY: 'auto', flex: 1, padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+
+                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '1rem 1.25rem' }}>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.entreprise.absences.reportedReason')}</div>
+                  <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-color)', lineHeight: 1.65, fontStyle: 'italic' }}>"{selected.motif_signalement}"</p>
+                </div>
+
+                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '1rem 1.25rem' }}>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.entreprise.absences.studentJustification')}</div>
+                  {selected.justification ? (
+                    <>
+                      <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-color)', lineHeight: 1.65 }}>{selected.justification}</p>
+                      {selected.document_justificatif && (
+                        <a href={mediaUrl(selected.document_justificatif)} target="_blank" rel="noopener noreferrer"
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.75rem', padding: '0.45rem 0.85rem', background: '#eef2ff', border: '1px solid #c7d2fe', borderRadius: 7, color: '#4338ca', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 600 }}>
+                          <FileText size={13} /> {t('pages.entreprise.absences.seeDocument')}
+                        </a>
+                      )}
+                    </>
+                  ) : (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <AlertCircle size={14} color="#f59e0b" style={{ flexShrink: 0 }} />
+                      <span style={{ fontSize: '0.82rem', color: '#92400e', fontWeight: 500 }}>{t('pages.entreprise.absences.noJustification')}</span>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+
+              {/* Footer */}
+              <div style={{ borderTop: '1px solid #e2e8f0', padding: '1rem 1.5rem', flexShrink: 0 }}>
+                {canDecide ? (
+                  <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <button
+                      onClick={() => validateMutation.mutate({ id: selected.id_absence, statut: 'Non_justifiée' })}
+                      disabled={validateMutation.isPending}
+                      style={{ flex: 1, height: 40, border: '1px solid #fecaca', borderRadius: 9, background: '#fff', cursor: validateMutation.isPending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: '#dc2626', transition: 'background 0.15s' }}
+                      onMouseEnter={e => !validateMutation.isPending && (e.currentTarget.style.background = '#fff5f5')}
+                      onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                    >
+                      <X size={14} /> {t('pages.entreprise.absences.reject')}
+                    </button>
+                    <button
+                      onClick={() => validateMutation.mutate({ id: selected.id_absence, statut: 'Justifiée' })}
+                      disabled={validateMutation.isPending}
+                      style={{ flex: 2, height: 40, border: 'none', borderRadius: 9, background: '#15803d', cursor: validateMutation.isPending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: '#fff', transition: 'background 0.15s' }}
+                      onMouseEnter={e => !validateMutation.isPending && (e.currentTarget.style.background = '#166534')}
+                      onMouseLeave={e => (e.currentTarget.style.background = '#15803d')}
+                    >
+                      <Check size={14} /> {t('pages.entreprise.absences.approveJustification')}
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 9, background: isApproved ? '#dcfce7' : selected.statut === 'Non_justifiée' ? '#fee2e2' : '#f3f4f6', border: `1px solid ${isApproved ? '#86efac' : selected.statut === 'Non_justifiée' ? '#fecaca' : '#e5e7eb'}` }}>
+                      {isApproved ? <CheckCircle size={16} color="#15803d" /> : selected.statut === 'Non_justifiée' ? <XCircle size={16} color="#dc2626" /> : <Clock size={16} color="#9ca3af" />}
+                      <span style={{ fontWeight: 600, fontSize: '0.875rem', color: isApproved ? '#15803d' : selected.statut === 'Non_justifiée' ? '#dc2626' : '#6b7280' }}>
+                        {isApproved ? t('pages.entreprise.absences.absenceJustified') : selected.statut === 'Non_justifiée' ? t('pages.entreprise.absences.absenceUnjustified') : t('pages.entreprise.absences.waitingSubmission')}
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };

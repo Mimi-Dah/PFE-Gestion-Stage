@@ -1,4 +1,4 @@
-﻿from django.utils import timezone
+from django.utils import timezone
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -21,7 +21,7 @@ class AbsenceViewSet(viewsets.ModelViewSet):
         if self.action in ['justifier']:
             return [IsStudent()]
         if self.action in ['valider']:
-            return [IsChefDepartement()]
+            return [(IsChefDepartement | IsEnterprise)()]
         return [IsAuthenticated()]
 
     def get_queryset(self):
@@ -147,11 +147,14 @@ class AbsenceViewSet(viewsets.ModelViewSet):
         absence.valide_le = timezone.now()
         absence.save()
 
+        role = request.user.role
+        validateur = "le chef de département" if role == 'Chef_Departement' else "l'entreprise"
+        
         if statut == 'Justifiée':
-            msg   = f"Votre justification pour l'absence du {absence.date_absence} a été approuvée par le chef de département."
+            msg   = f"Votre justification pour l'absence du {absence.date_absence} a été approuvée par {validateur}."
             event = "Absence_approuvee"
         else:
-            msg   = f"Votre justification pour l'absence du {absence.date_absence} a été refusée. Cette absence est marquée comme non justifiée."
+            msg   = f"Votre justification pour l'absence du {absence.date_absence} a été refusée par {validateur}. Cette absence est marquée comme non justifiée."
             event = "Absence_refusee"
 
         create_notification(

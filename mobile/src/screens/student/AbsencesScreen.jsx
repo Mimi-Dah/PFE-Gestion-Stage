@@ -103,7 +103,7 @@ export default function AbsencesScreen({ navigation, route }) {
                 </View>
                 <StatusBadge status={item.statut} />
               </View>
-              {item.statut !== 'Justifiée' ? (
+              {item.statut === 'Signaler' && !item.delai_depasse ? (
                 <TouchableOpacity
                   onPress={() => setSelectedAbsence(item)}
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 12, alignSelf: 'flex-start' }}

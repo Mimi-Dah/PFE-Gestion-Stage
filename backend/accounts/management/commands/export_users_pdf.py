@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
@@ -30,6 +30,8 @@ class Command(BaseCommand):
         output_path = options['output'] or str(Path(settings.BASE_DIR).parent / 'nouveaux_utilisateurs.pdf')
 
         styles = getSampleStyleSheet()
+        cell_style = ParagraphStyle('cell', parent=styles['Normal'], fontSize=8.5, leading=10.5)
+        header_style = ParagraphStyle('header', parent=cell_style, textColor=colors.white)
         story = [
             Paragraph("Liste des utilisateurs - InternHub Mauritanie", styles['Title']),
             Spacer(1, 0.5 * cm),
@@ -50,7 +52,8 @@ class Command(BaseCommand):
             story.append(Paragraph(ROLE_LABELS[role], styles['Heading2']))
             story.append(Spacer(1, 0.2 * cm))
 
-            data = [["Nom", "Email", "Mot de passe", "Détail"]]
+            header = [Paragraph(f"<b>{h}</b>", header_style) for h in ("Nom", "Email", "Mot de passe", "Détail")]
+            data = [header]
             for user in role_users:
                 nom = user.courriel
                 detail = "-"
@@ -67,9 +70,14 @@ class Command(BaseCommand):
                     nom = f"{p.prenom} {p.nom}"
                     detail = p.departement.nom if p.departement else '-'
 
-                data.append([nom, user.courriel, PASSWORDS.get(role, '-'), detail])
+                data.append([
+                    Paragraph(nom, cell_style),
+                    Paragraph(user.courriel, cell_style),
+                    Paragraph(PASSWORDS.get(role, '-'), cell_style),
+                    Paragraph(detail, cell_style),
+                ])
 
-            table = Table(data, colWidths=[5 * cm, 6 * cm, 3.5 * cm, 5 * cm])
+            table = Table(data, colWidths=[5 * cm, 4.7 * cm, 3 * cm, 4 * cm], repeatRows=1)
             table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1B6EF3')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
@@ -81,7 +89,10 @@ class Command(BaseCommand):
             story.append(table)
             story.append(Spacer(1, 0.6 * cm))
 
-        doc = SimpleDocTemplate(output_path, pagesize=A4, title="Utilisateurs InternHub Mauritanie")
+        doc = SimpleDocTemplate(
+            output_path, pagesize=A4, title="Utilisateurs InternHub Mauritanie",
+            leftMargin=1.5 * cm, rightMargin=1.5 * cm, topMargin=1.5 * cm, bottomMargin=1.5 * cm,
+        )
         doc.build(story)
 
         self.stdout.write(self.style.SUCCESS(f"PDF généré : {output_path}"))

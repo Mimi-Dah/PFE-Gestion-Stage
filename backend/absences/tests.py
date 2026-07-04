@@ -149,7 +149,7 @@ class AbsenceJustifyTests(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.absence.refresh_from_db()
-        self.assertEqual(self.absence.statut, 'Justifiée')
+        self.assertEqual(self.absence.statut, 'En_attente_approbation')
         self.assertEqual(self.absence.justification, 'Rendez-vous médical.')
 
     def test_justification_without_text_returns_400(self):
@@ -189,7 +189,7 @@ class AbsenceValidateTests(TestCase):
             date_absence=date(2026, 7, 11),
             motif_signalement='Absent.',
             justification='Raison valide.',
-            statut='Justifiée',
+            statut='En_attente_approbation',
         )
         self.url = f'/api/v1/absences/{self.absence.pk}/valider/'
 
@@ -217,10 +217,22 @@ class AbsenceValidateTests(TestCase):
         response = self.client.post(self.url, {'statut': 'Justifiée'}, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_enterprise_cannot_validate_an_absence(self):
+    def test_enterprise_can_validate_their_own_intern_absence(self):
         self.client.force_authenticate(self.corp_user)
-        response = self.client.post(self.url, {'statut': 'Non_justifiée'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        response = self.client.post(self.url, {'statut': 'Justifiée'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.absence.refresh_from_db()
+        self.assertEqual(self.absence.statut, 'Justifiée')
+
+    def test_other_enterprise_cannot_validate_an_unrelated_absence(self):
+        other_corp_user = make_user('other_corp@test.com', 'Entreprise')
+        Entreprise.objects.create(
+            user=other_corp_user, nom='OtherCorp', description='Other', adresse='Lyon',
+            telephone='0600000001', nom_contact='Alice', email_contact='alice@othercorp.com',
+        )
+        self.client.force_authenticate(other_corp_user)
+        response = self.client.post(self.url, {'statut': 'Justifiée'}, format='json')
+        self.assertIn(response.status_code, (status.HTTP_403_FORBIDDEN, status.HTTP_404_NOT_FOUND))
 
 
 # ── 4. Absence Queryset Scoping ───────────────────────────────────────────────

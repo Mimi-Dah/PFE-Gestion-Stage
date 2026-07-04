@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, StatusBar,
@@ -13,6 +13,7 @@ import { F } from '../../theme/fonts';
 import AuthService from '../../services/auth';
 import useAuthStore from '../../store/authStore';
 import useLayoutStore from '../../store/layoutStore';
+import useSessionMessageStore from '../../store/sessionMessageStore';
 import { getColors } from '../../theme/colors';
 
 export default function LoginScreen({ navigation }) {
@@ -25,6 +26,12 @@ export default function LoginScreen({ navigation }) {
   const [showPw, setShowPw] = useState(false);
   const [apiErr, setApiErr] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
+  // Capturé une seule fois au montage : la raison de la dernière déconnexion
+  // (ex: "idle"), posée par InactivityGuard avant de vider le store d'auth.
+  const [idleReason] = useState(() => useSessionMessageStore.getState().reason);
+  useEffect(() => {
+    useSessionMessageStore.getState().clear();
+  }, []);
 
   const schema = z.object({
     email:    z.string().email(t('auth.login.emailInvalid')),
@@ -66,6 +73,12 @@ export default function LoginScreen({ navigation }) {
       >
         <Text style={s.title}>{t('auth.login.title')}</Text>
         <Text style={s.subtitle}>{t('auth.login.subtitle')}</Text>
+
+        {!apiErr && idleReason === 'idle' ? (
+          <View style={s.infoBanner}>
+            <Text style={s.infoBannerText}>{t('auth.login.idleLogoutMessage')}</Text>
+          </View>
+        ) : null}
 
         {apiErr ? (
           <View style={s.errorBanner}>
@@ -179,6 +192,8 @@ const makeStyles = (C) => StyleSheet.create({
   subtitle:    { fontFamily: F.med, fontSize: 13, color: C.primary, marginBottom: 22 },
   errorBanner:     { backgroundColor: C.errorSurface, borderRadius: 10, padding: 12, marginBottom: 16 },
   errorBannerText: { fontFamily: F.med, fontSize: 13, color: C.danger },
+  infoBanner:      { backgroundColor: C.primarySurface ?? 'rgba(59,130,246,0.08)', borderRadius: 10, padding: 12, marginBottom: 16 },
+  infoBannerText:  { fontFamily: F.med, fontSize: 13, color: C.primary },
   fields:      { gap: 14, marginBottom: 4 },
   fieldWrap:   { gap: 6 },
   fieldLabel:  { fontFamily: F.semi, fontSize: 13, color: C.text, letterSpacing: 0.1 },

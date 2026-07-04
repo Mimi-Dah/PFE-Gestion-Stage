@@ -12,6 +12,7 @@ const STATUS_MAP = {
   Terminé:              { label: 'Terminé',             variant: 'muted'   },
   Terminée:             { label: 'Terminée',            variant: 'muted'   },
   Signaler:             { label: 'Signalée',            variant: 'warning' },
+  En_attente_approbation: { label: "En attente d'approbation", variant: 'info' },
   Justifiée:            { label: 'Justifiée',           variant: 'success' },
   Non_justifiée:        { label: 'Non justifiée',       variant: 'danger'  },
 };

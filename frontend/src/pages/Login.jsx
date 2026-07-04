@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm as useReactHookForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -36,6 +36,7 @@ const Login = () => {
   const [isLoading, setIsLoading]       = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const setAuth  = useAuthStore((state) => state.setAuth);
   const { isDarkMode, toggleDarkMode } = useLayoutStore();
   const { t } = useTranslation();
@@ -71,23 +72,15 @@ const Login = () => {
       api.post('auth/login/', { courriel: email, password })
     );
     if (loginResult.ok) {
-      const { access, refresh } = loginResult.value.data;
-      const meResult = await api.safeRequest(
-        api.get('auth/me/', { headers: { Authorization: `Bearer ${access}` } })
-      );
-      if (meResult.ok) {
-        const user = meResult.value.data;
-        setAuth(user, access, refresh);
-        const roleHome = {
-          'Étudiant':         '/espace/offres',
-          'Entreprise':       '/espace/entreprise/offres',
-          'Chef_Departement': '/espace/chef/analytics',
-          'Admin':            '/espace/admin/analytics',
-        };
-        navigate(roleHome[user.role] ?? '/espace');
-      } else {
-        setApiError(t('auth.login.errorDefault'));
-      }
+      const { access, refresh, user } = loginResult.value.data;
+      setAuth(user, access, refresh);
+      const roleHome = {
+        'Étudiant':         '/espace/offres',
+        'Entreprise':       '/espace/entreprise/offres',
+        'Chef_Departement': '/espace/chef/analytics',
+        'Admin':            '/espace/admin/analytics',
+      };
+      navigate(roleHome[user.role] ?? '/espace');
     } else {
       setApiError(loginResult.error.message || t('auth.login.errorDefault'));
     }
@@ -155,6 +148,23 @@ const Login = () => {
             {t('auth.login.subtitle')}
           </p>
         </div>
+
+        {!apiError && location.state?.reason === 'idle' && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '0.5rem',
+            backgroundColor: 'rgba(59,130,246,0.08)',
+            border: '1px solid rgba(59,130,246,0.25)',
+            borderRadius: '8px',
+            padding: '0.75rem 1rem',
+            marginBottom: '1.25rem',
+            color: '#2563EB',
+            fontSize: '0.85rem',
+            fontWeight: '600',
+          }}>
+            <Lock size={14} style={{ flexShrink: 0 }} />
+            {t('auth.login.idleLogoutMessage')}
+          </div>
+        )}
 
         {apiError && (
           <div style={{

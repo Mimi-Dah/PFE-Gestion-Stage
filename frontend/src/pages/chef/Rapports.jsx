@@ -54,16 +54,16 @@ const downloadFile = async (url, filename) => {
 
 const StatCard = ({ icon: Icon, label, value, iconBg, iconColor }) => (
   <div
-    style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '10px', padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.875rem', transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.15s' }}
+    style={{ background: 'var(--bg-card)', border: '1.5px solid var(--border)', borderRadius: '10px', padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.875rem', transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.15s' }}
     onMouseEnter={e => { e.currentTarget.style.borderColor = iconColor; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-    onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
+    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
   >
     <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: iconBg, color: iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
       <Icon size={17} />
     </div>
     <div>
-      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>{value}</div>
-      <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 500, marginTop: '0.15rem' }}>{label}</div>
+      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.1 }}>{value}</div>
+      <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 500, marginTop: '0.15rem' }}>{label}</div>
     </div>
   </div>
 );
@@ -197,8 +197,8 @@ const Rapports = () => {
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
                     {[160, 180, 100, 80, 40].map((w, j) => (
-                      <td key={j} style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f1f5f9' }}>
-                        <div style={{ height: 12, width: w, background: '#f1f5f9', borderRadius: 4 }} />
+                      <td key={j} style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border)' }}>
+                        <div style={{ height: 12, width: w, background: 'var(--surface-section)', borderRadius: 4 }} />
                       </td>
                     ))}
                   </tr>
@@ -224,9 +224,9 @@ const Rapports = () => {
                 const ini = (rap.etudiant_nom?.[0] || 'É').toUpperCase();
                 return (
                   <tr key={rap.id || rap.id_rapport}
-                    onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-section)'}
                     onMouseLeave={e => e.currentTarget.style.background = ''}
-                    style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.12s' }}
+                    style={{ borderBottom: '1px solid var(--border)', transition: 'background 0.12s' }}
                   >
                     <td style={{ padding: '0.9rem 1.25rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -239,7 +239,7 @@ const Rapports = () => {
                     </td>
                     <td style={{ padding: '0.9rem 1.25rem', whiteSpace: 'nowrap' }}>
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.83rem', color: 'var(--text-color)' }}>
-                        <Calendar size={13} color="#94a3b8" />
+                        <Calendar size={13} color="var(--text-muted)" />
                         {new Date(rap.soumis_le).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </td>
@@ -252,15 +252,15 @@ const Rapports = () => {
                           </span>
                         );
                       })() : (
-                        <span style={{ fontSize: '0.78rem', color: '#94a3b8', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.55rem' }}>{t('pages.chefRapports.noEvalEntreprise')}</span>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', background: 'var(--surface-section)', border: '1px solid var(--border)', borderRadius: 6, padding: '0.2rem 0.55rem' }}>{t('pages.chefRapports.noEvalEntreprise')}</span>
                       )}
                     </td>
                     <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
                       <button
                         onClick={() => handleOpenDetail(rap)}
-                        style={{ width: 32, height: 32, border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', transition: 'all 0.15s' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.borderColor = '#cbd5e1'; e.currentTarget.style.color = '#1e293b'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#64748b'; }}
+                        style={{ width: 32, height: 32, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-card)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', transition: 'all 0.15s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface-section)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
                       >
                         <Eye size={14} />
                       </button>
@@ -274,11 +274,11 @@ const Rapports = () => {
 
         {/* Pagination */}
         {!isLoading && rows.length > 0 && (
-          <div style={{ borderTop: '1px solid #e2e8f0', padding: '0.85rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ borderTop: '1px solid var(--border)', padding: '0.85rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('pages.chefRapports.rows')}</span>
               <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}
-                style={{ height: 28, padding: '0 0.5rem', border: '1px solid #e2e8f0', borderRadius: 6, fontSize: '0.8rem', color: 'var(--text-color)', background: '#fff', cursor: 'pointer', outline: 'none' }}>
+                style={{ height: 28, padding: '0 0.5rem', border: '1px solid var(--border)', borderRadius: 6, fontSize: '0.8rem', color: 'var(--text-color)', background: 'var(--bg-card)', cursor: 'pointer', outline: 'none' }}>
                 {PAGE_SIZES.map(n => <option key={n} value={n}>{n}</option>)}
               </select>
             </div>
@@ -287,7 +287,7 @@ const Rapports = () => {
             </span>
             <div style={{ display: 'flex', gap: '0.25rem' }}>
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                style={{ height: 28, width: 28, border: '1px solid #e2e8f0', borderRadius: 6, background: '#fff', cursor: page === 1 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === 1 ? '#cbd5e1' : 'var(--text-color)' }}>
+                style={{ height: 28, width: 28, border: '1px solid var(--border)', borderRadius: 6, background: 'var(--bg-card)', cursor: page === 1 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === 1 ? 'var(--text-subtle)' : 'var(--text-color)' }}>
                 <ChevronLeft size={14} />
               </button>
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -299,13 +299,13 @@ const Rapports = () => {
                 }
                 return (
                   <button key={n} onClick={() => setPage(n)}
-                    style={{ height: 28, minWidth: 28, padding: '0 0.25rem', border: `1px solid ${page === n ? '#6366f1' : '#e2e8f0'}`, borderRadius: 6, background: page === n ? '#6366f1' : '#fff', cursor: 'pointer', fontSize: '0.8rem', fontWeight: page === n ? 600 : 400, color: page === n ? '#fff' : 'var(--text-color)' }}>
+                    style={{ height: 28, minWidth: 28, padding: '0 0.25rem', border: `1px solid ${page === n ? '#6366f1' : 'var(--border)'}`, borderRadius: 6, background: page === n ? '#6366f1' : 'var(--bg-card)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: page === n ? 600 : 400, color: page === n ? '#fff' : 'var(--text-color)' }}>
                     {n}
                   </button>
                 );
               })}
               <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                style={{ height: 28, width: 28, border: '1px solid #e2e8f0', borderRadius: 6, background: '#fff', cursor: page === totalPages ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === totalPages ? '#cbd5e1' : 'var(--text-color)' }}>
+                style={{ height: 28, width: 28, border: '1px solid var(--border)', borderRadius: 6, background: 'var(--bg-card)', cursor: page === totalPages ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === totalPages ? 'var(--text-subtle)' : 'var(--text-color)' }}>
                 <ChevronRight size={14} />
               </button>
             </div>
@@ -343,18 +343,18 @@ const Rapports = () => {
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 2 }}>{selected.offre_titre || '—'}</div>
                   </div>
                 </div>
-                <button onClick={() => setSelected(null)} style={{ width: 34, height: 34, borderRadius: 9, border: '1px solid #e2e8f0', background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#f1f5f9'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                <button onClick={() => setSelected(null)} style={{ width: 34, height: 34, borderRadius: 9, border: '1px solid var(--border)', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-section)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
                 >
                   <X size={15} />
                 </button>
               </div>
 
               {/* Meta chips */}
-              <div style={{ borderTop: '1px solid #e2e8f0', padding: '0.75rem 1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0, background: '#f8fafc' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid #e2e8f0', background: '#fff', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
-                  <Calendar size={12} color="#94a3b8" />
+              <div style={{ borderTop: '1px solid var(--border)', padding: '0.75rem 1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0, background: 'var(--surface-section)' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--bg-card)', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
+                  <Calendar size={12} color="var(--text-muted)" />
                   {new Date(selected.soumis_le).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
               </div>
@@ -364,13 +364,13 @@ const Rapports = () => {
 
                 {/* File card */}
                 {url ? (
-                  <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '1.1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1rem', background: '#f8fafc' }}>
+                  <div style={{ border: '1px solid var(--border)', borderRadius: 10, padding: '1.1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--surface-section)' }}>
                     <div style={{ width: 44, height: 44, borderRadius: 10, background: iconBg, color: iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <FileSpreadsheet size={20} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: 3 }}>{fileLabel}</div>
-                      <div style={{ fontSize: '0.72rem', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{filename}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{filename}</div>
                     </div>
                     <button
                       onClick={() => downloadFile(url, filename)}
@@ -382,7 +382,7 @@ const Rapports = () => {
                     </button>
                   </div>
                 ) : (
-                  <div style={{ border: '1px dashed #cbd5e1', borderRadius: 10, padding: '2rem', textAlign: 'center', color: '#94a3b8', background: '#f8fafc' }}>
+                  <div style={{ border: '1px dashed var(--border)', borderRadius: 10, padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--surface-section)' }}>
                     <FileSpreadsheet size={28} style={{ opacity: 0.3, display: 'block', margin: '0 auto 0.5rem' }} />
                     <p style={{ margin: 0, fontSize: '0.83rem' }}>{t('pages.chefRapports.noFile')}</p>
                   </div>
@@ -390,17 +390,17 @@ const Rapports = () => {
 
                 {/* Student summary */}
                 {selected.resume && (
-                  <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '1rem 1.25rem' }}>
-                    <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.chefRapports.studentSummary')}</div>
+                  <div style={{ background: 'var(--surface-section)', border: '1px solid var(--border)', borderRadius: 10, padding: '1rem 1.25rem' }}>
+                    <div style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.chefRapports.studentSummary')}</div>
                     <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-color)', lineHeight: 1.7, fontStyle: 'italic' }}>"{selected.resume}"</p>
                   </div>
                 )}
 
                 {/* Enterprise evaluation */}
-                <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, overflow: 'hidden' }}>
-                  <div style={{ padding: '0.75rem 1.25rem', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+                  <div style={{ padding: '0.75rem 1.25rem', background: 'var(--surface-section)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Building2 size={14} color="#6366f1" />
-                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{t('pages.chefRapports.evalEntrepriseSection')}</span>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{t('pages.chefRapports.evalEntrepriseSection')}</span>
                   </div>
                   <div style={{ padding: '1rem 1.25rem' }}>
                     {selected.note_entreprise != null ? (() => {
@@ -410,14 +410,14 @@ const Rapports = () => {
                       return (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                           <div>
-                            <div style={{ fontSize: '0.68rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>{t('pages.chefRapports.noteEntreprise')}</div>
+                            <div style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>{t('pages.chefRapports.noteEntreprise')}</div>
                             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '1rem', fontWeight: 800, padding: '0.3rem 0.75rem', borderRadius: 8, background: esc.bg, color: esc.color }}>
                               {selected.note_entreprise}<span style={{ fontWeight: 400, opacity: 0.65, fontSize: '0.75rem' }}>/20</span>
                             </span>
                           </div>
                           {recoCfg && (
                             <div>
-                              <div style={{ fontSize: '0.68rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>{t('pages.chefRapports.recommandation')}</div>
+                              <div style={{ fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>{t('pages.chefRapports.recommandation')}</div>
                               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, background: recoCfg.bg, color: recoCfg.color, fontSize: '0.8rem', fontWeight: 600 }}>
                                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: recoCfg.dot, flexShrink: 0 }} />
                                 {reco}
@@ -427,7 +427,7 @@ const Rapports = () => {
                         </div>
                       );
                     })() : (
-                      <p style={{ margin: 0, fontSize: '0.83rem', color: '#94a3b8', fontStyle: 'italic' }}>{t('pages.chefRapports.noEvalEntreprise')}</p>
+                      <p style={{ margin: 0, fontSize: '0.83rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>{t('pages.chefRapports.noEvalEntreprise')}</p>
                     )}
                   </div>
                 </div>

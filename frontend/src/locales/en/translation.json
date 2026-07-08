@@ -124,10 +124,6 @@
       "submitting": "Resetting...",
       "successMessage": "Your password has been reset successfully.",
       "backToLogin": "Back to login"
-    },
-    "verifyAccount": {
-      "title": "Verify your account",
-      "subtitle": "Check your email for the verification link."
     }
   },
   "nav": {
@@ -183,7 +179,8 @@
       "interns": "Interns",
       "overview": "Overview",
       "contracts": "Contracts",
-      "users": "Users"
+      "users": "Users",
+      "absences": "Absences"
     }
   },
   "topbar": {
@@ -668,7 +665,7 @@
     "chefAbsences": {
       "eyebrow": "Department Head",
       "title": "Absence Monitoring",
-      "subtitle": "Review and validate student justifications for reported absences.",
+      "subtitle": "Review reported absences and how companies are handling them.",
       "filterAll": "All",
       "filterReported": "Reported",
       "filterToApprove": "To approve",
@@ -706,10 +703,9 @@
       "studentJustification": "Student's justification",
       "seeDocument": "View document",
       "noJustification": "No justification submitted by the student.",
-      "pendingMessage": "The student has submitted a justification — review it before deciding.",
-      "reject": "Reject",
-      "approveJustification": "Approve justification",
-      "excuseWithout": "Excuse without justification",
+      "pendingMessage": "The student has submitted a justification, awaiting the company's decision.",
+      "awaitingStudent": "Awaiting justification from the student.",
+      "awaitingCompanyDecision": "Awaiting the company's decision.",
       "absenceJustified": "Absence justified",
       "absenceUnjustified": "Absence unjustified",
       "abandonWarning": "At 3 unjustified absences, the internship is automatically marked as abandoned."
@@ -1151,6 +1147,7 @@
       "modal": {
         "title": "Submit a justification",
         "absenceDate": "Absence on",
+        "company": "Company",
         "lastDayWarning": "Last day to justify!",
         "daysLeft_one": "You have {{count}} day left to justify.",
         "daysLeft_other": "You have {{count}} days left to justify.",
@@ -1385,6 +1382,7 @@
         "results_one": "{{count}} result",
         "results_other": "{{count}} results",
         "noApps": "No applications found.",
+        "errorUpdating": "Error updating the application.",
         "colCandidate": "Candidate",
         "colOffer": "Offer",
         "colContact": "Contact",

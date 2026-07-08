@@ -1,6 +1,8 @@
 ﻿from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
 from .models import RapportDeStage
 from .serializers import RapportDeStageSerializer
 from accounts.models import Etudiant, ChefDepartement
@@ -33,12 +35,17 @@ class RapportDeStageViewSet(viewsets.ModelViewSet):
         rapport = serializer.save(etudiant=etudiant)
         
         # Notify Chef of Department
+        rapport_msg = format_lazy(
+            _("L'étudiant {etudiant} a soumis son rapport de stage pour '{offre}'."),
+            etudiant=f"{etudiant.prenom} {etudiant.nom}",
+            offre=rapport.offre.titre,
+        )
         chef = ChefDepartement.objects.filter(departement=etudiant.departement).first()
         if chef:
             create_notification(
                 user=chef.user,
-                titre="Nouveau Rapport Soumis",
-                message=f"L'étudiant {etudiant.prenom} {etudiant.nom} a soumis son rapport de stage pour '{rapport.offre.titre}'.",
+                titre=_("Nouveau Rapport Soumis"),
+                message=rapport_msg,
                 type_event="Rapport_soumis",
                 lien="/espace/chef/rapports"
             )
@@ -49,8 +56,8 @@ class RapportDeStageViewSet(viewsets.ModelViewSet):
             if entreprise and entreprise.user:
                 create_notification(
                     user=entreprise.user,
-                    titre="Nouveau Rapport Soumis",
-                    message=f"L'étudiant {etudiant.prenom} {etudiant.nom} a soumis son rapport de stage pour '{rapport.offre.titre}'.",
+                    titre=_("Nouveau Rapport Soumis"),
+                    message=rapport_msg,
                     type_event="Rapport_soumis",
                     lien="/espace/entreprise/mes-stagiaires"
                 )
@@ -90,8 +97,12 @@ class RapportDeStageViewSet(viewsets.ModelViewSet):
             try:
                 create_notification(
                     user=rapport.etudiant.user,
-                    titre="Rapport Noté",
-                    message=f"Votre rapport pour '{rapport.offre.titre}' a été noté : {note}/20.",
+                    titre=_("Rapport Noté"),
+                    message=format_lazy(
+                        _("Votre rapport pour '{offre}' a été noté : {note}/20."),
+                        offre=rapport.offre.titre,
+                        note=note,
+                    ),
                     type_event="Rapport_note",
                     lien="/espace/mon-stage"
                 )

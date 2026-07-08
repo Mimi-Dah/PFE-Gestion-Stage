@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -64,61 +64,25 @@ class LogoutView(APIView):
         return Response({"message": _("Déconnexion réussie.")}, status=status.HTTP_200_OK)
 
 
-def _send_verification_email(user):
-    token = user.verification_token
-    frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:5173')
-    verify_url = f"{frontend_url}/verify-account?token={token}"
-    send_mail(
-        subject='Vérifiez votre compte StageFlow',
-        message=(
-            f"Bonjour,\n\n"
-            f"Cliquez sur ce lien pour vérifier votre compte StageFlow :\n"
-            f"{verify_url}\n\n"
-            f"Ce lien est valable 24 heures.\n\n"
-            f"L'équipe StageFlow"
-        ),
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.courriel],
-        fail_silently=False,
-    )
-
-
 def _send_password_reset_email(user):
     token = PasswordResetTokenGenerator().make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:5173')
     reset_url = f"{frontend_url}/reset-password?uid={uid}&token={token}"
     send_mail(
-        subject='Réinitialisation de votre mot de passe StageFlow',
+        subject='Réinitialisation de votre mot de passe internHub',
         message=(
             f"Bonjour,\n\n"
             f"Cliquez sur ce lien pour réinitialiser votre mot de passe :\n"
             f"{reset_url}\n\n"
             f"Ce lien expire dans 3 jours. Si vous n'avez pas demandé cette "
             f"réinitialisation, ignorez cet email.\n\n"
-            f"L'équipe StageFlow"
+            f"L'équipe internHub"
         ),
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[user.courriel],
         fail_silently=False,
     )
-
-
-class VerifyEmailView(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request):
-        token = request.data.get('token')
-        if not token:
-            raise BadRequestError(_("Token manquant."))
-        try:
-            user = User.objects.get(verification_token=token, is_verified=False)
-        except User.DoesNotExist:
-            raise BadRequestError(_("Lien de vérification invalide ou déjà utilisé."))
-        user.is_verified = True
-        user.verification_token = None
-        user.save(update_fields=['is_verified', 'verification_token'])
-        return Response({"message": _("Compte vérifié avec succès.")}, status=status.HTTP_200_OK)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -128,21 +92,6 @@ class RegisterView(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
     throttle_classes = [RegisterRateThrottle]
 
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        if response.status_code == status.HTTP_201_CREATED:
-            try:
-                user = User.objects.get(courriel=request.data.get('courriel'))
-                if settings.DEBUG:
-                    # Auto-verify in development so no SMTP config is needed
-                    user.is_verified = True
-                    user.verification_token = None
-                    user.save(update_fields=['is_verified', 'verification_token'])
-                else:
-                    _send_verification_email(user)
-            except Exception as exc:
-                logger.error("Post-registration step failed for %s: %s", request.data.get('courriel'), exc)
-        return response
 
 class PasswordResetRequestView(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -223,6 +172,23 @@ class ProfileMeView(APIView):
             except Entreprise.DoesNotExist:
                 raise NotFoundError("Enterprise profile")
         raise BadRequestError("Unknown role")
+
+
+class SetLanguageView(APIView):
+    """Persiste la langue préférée de l'utilisateur, utilisée par
+    `create_notification` pour générer les notifications futures
+    (titre/message) dans la bonne langue."""
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def patch(self, request):
+        lang = request.data.get('preferred_language')
+        valid_codes = [code for code, _label in User.LANGUAGE_CHOICES]
+        if lang not in valid_codes:
+            raise BadRequestError(f"Langue non supportée. Choisissez parmi : {', '.join(valid_codes)}")
+        request.user.preferred_language = lang
+        request.user.save(update_fields=['preferred_language'])
+        return Response({"preferred_language": lang, "message": "Langue mise à jour avec succès."})
+
 
 class UserManagementView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsAdmin]

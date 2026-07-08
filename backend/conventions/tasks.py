@@ -1,6 +1,8 @@
 from celery import shared_task
 import logging
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
 from datetime import timedelta
 from .models import ConventionDeStage
 from notifications.utils import create_notification
@@ -41,16 +43,29 @@ def auto_reject_expired_conventions():
         # Notify Student
         create_notification(
             user=convention.candidature.etudiant.user,
-            titre="Convention Expirée",
-            message=f"Votre convention {convention.numero_convention} a été automatiquement rejetée car elle n'a pas été traitée dans le délai de 3 jours.",
+            titre=_("Convention Expirée"),
+            message=format_lazy(
+                _(
+                    "Votre convention {numero} a été automatiquement rejetée car elle n'a pas "
+                    "été traitée dans le délai de 3 jours."
+                ),
+                numero=convention.numero_convention,
+            ),
             type_event="Convention_refusee",
             lien="/espace/mon-stage"
         )
         # Notify Enterprise
         create_notification(
             user=convention.candidature.offre.entreprise.user,
-            titre="Convention Expirée (Auto-Rejet)",
-            message=f"La convention {convention.numero_convention} pour {convention.candidature.etudiant.prenom} {convention.candidature.etudiant.nom} a été rejetée automatiquement (délai de 3 jours dépassé).",
+            titre=_("Convention Expirée (Auto-Rejet)"),
+            message=format_lazy(
+                _(
+                    "La convention {numero} pour {etudiant} a été rejetée automatiquement "
+                    "(délai de 3 jours dépassé)."
+                ),
+                numero=convention.numero_convention,
+                etudiant=f"{convention.candidature.etudiant.prenom} {convention.candidature.etudiant.nom}",
+            ),
             type_event="Convention_refusee",
             lien="/espace/entreprise/conventions"
         )

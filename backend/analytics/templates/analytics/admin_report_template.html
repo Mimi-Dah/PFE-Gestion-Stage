@@ -21,38 +21,40 @@
   /* Header */
   .header-table {
     width: 100%;
-    border-bottom: 2pt solid #4f46e5;
+    border-bottom: 1pt solid #cbd5e1;
     margin-bottom: 20pt;
     padding-bottom: 10pt;
   }
   .brand-name {
-    font-size: 18pt;
+    font-size: 16pt;
     font-weight: bold;
+    color: #1a202c;
+  }
+  .brand-name .accent {
     color: #4f46e5;
   }
   .report-meta {
     text-align: right;
   }
   .report-title {
-    font-size: 12pt;
+    font-size: 11pt;
     font-weight: bold;
     color: #1a202c;
   }
   .report-date {
     font-size: 8pt;
-    color: #94a3b8;
+    color: #64748b;
   }
 
   /* Section Titles */
   .section-title {
     font-size: 10pt;
     font-weight: bold;
-    color: #4f46e5;
-    text-transform: uppercase;
-    margin-bottom: 10pt;
-    margin-top: 15pt;
-    border-left: 3pt solid #4f46e5;
-    padding-left: 5pt;
+    color: #1a202c;
+    margin-bottom: 8pt;
+    margin-top: 16pt;
+    border-bottom: 0.5pt solid #cbd5e1;
+    padding-bottom: 4pt;
   }
 
   /* KPI Grid (using tables since xhtml2pdf lacks flex/grid) */
@@ -61,9 +63,8 @@
     margin-bottom: 10pt;
   }
   .kpi-card {
-    border: 1pt solid #e2e8f0;
+    border: 0.5pt solid #cbd5e1;
     padding: 8pt;
-    background: #f8fafc;
     text-align: center;
   }
   .kpi-label {
@@ -74,16 +75,9 @@
     margin-bottom: 3pt;
   }
   .kpi-value {
-    font-size: 16pt;
+    font-size: 14pt;
     font-weight: bold;
     color: #1a202c;
-  }
-  .kpi-accent {
-    background: #eef2ff;
-    border-color: #4f46e5;
-  }
-  .kpi-accent .kpi-value {
-    color: #4f46e5;
   }
 
   /* Rate Bars */
@@ -99,18 +93,18 @@
   }
   .rate-track {
     width: 60%;
-    height: 8pt;
+    height: 7pt;
     background: #e2e8f0;
   }
   .rate-fill {
-    height: 8pt;
+    height: 7pt;
     background-color: #4f46e5;
   }
   .rate-pct {
     width: 10%;
     text-align: right;
     font-weight: bold;
-    color: #4f46e5;
+    color: #1a202c;
   }
 
   /* Tables */
@@ -120,13 +114,13 @@
     margin-bottom: 15pt;
   }
   .data-table th {
-    background: #4f46e5;
-    color: white;
+    border-bottom: 1pt solid #1a202c;
     padding: 6pt;
     text-align: left;
     font-size: 8pt;
     font-weight: bold;
     text-transform: uppercase;
+    color: #1a202c;
   }
   .data-table td {
     padding: 6pt;
@@ -134,17 +128,6 @@
     font-size: 9pt;
   }
   .row-even { background: #f8fafc; }
-
-  /* Badges */
-  .badge {
-    padding: 2pt 4pt;
-    border-radius: 3pt;
-    font-size: 7pt;
-    font-weight: bold;
-  }
-  .badge-good { background: #dcfce7; color: #166534; }
-  .badge-medium { background: #fef9c3; color: #854d0e; }
-  .badge-low { background: #fee2e2; color: #991b1b; }
 
   .footer {
     margin-top: 20pt;
@@ -160,7 +143,7 @@
 
 <table class="header-table">
   <tr>
-    <td><span class="brand-name">StageFlow</span></td>
+    <td><span class="brand-name">intern<span class="accent">Hub</span></span></td>
     <td class="report-meta">
       <div class="report-title">Rapport Analytique Global</div>
       <div class="report-date">Généré le {{ generated_at }}</div>
@@ -191,7 +174,7 @@
       </div>
     </td>
     <td width="25%">
-      <div class="kpi-card kpi-accent">
+      <div class="kpi-card">
         <div class="kpi-label">Offres Actives</div>
         <div class="kpi-value">{{ overview.active_offers }}</div>
       </div>
@@ -217,7 +200,7 @@
       </div>
     </td>
     <td width="25%">
-      <div class="kpi-card kpi-accent">
+      <div class="kpi-card">
         <div class="kpi-label">Taux Placement</div>
         <div class="kpi-value">{{ overview.placement_rate }}%</div>
       </div>
@@ -238,26 +221,20 @@
   <tr>
     <td class="rate-label">Stages terminés</td>
     <td class="rate-track">
-      <div class="rate-fill" style="width: {{ completed_pct }}%; background-color: #10b981;"></div>
+      <div class="rate-fill" style="width: {{ completed_pct }}%"></div>
     </td>
-    <td class="rate-pct" style="color: #10b981;">{{ completed_pct }}%</td>
+    <td class="rate-pct">{{ completed_pct }}%</td>
   </tr>
 </table>
 
 <div class="section-title">Score de satisfaction</div>
-<div style="background: #eef2ff; border: 1pt solid #4f46e5; padding: 10pt; border-radius: 5pt; margin-bottom: 15pt;">
-  <table width="100%">
-    <tr>
-      <td width="20%" style="font-size: 24pt; font-weight: bold; color: #4f46e5; vertical-align: middle;">
-        {{ overview.average_performance }}
-      </td>
-      <td width="80%" style="vertical-align: middle;">
-        <div style="font-weight: bold; color: #1a202c;">Moyenne des évaluations / 20</div>
-        <div style="font-size: 8pt; color: #64748b;">Basé sur les retours des entreprises partenaires.</div>
-      </td>
-    </tr>
-  </table>
-</div>
+<table class="rate-table">
+  <tr>
+    <td class="rate-label">Moyenne des évaluations / 20</td>
+    <td style="font-size: 8pt; color: #64748b;">Basé sur les retours des entreprises partenaires.</td>
+    <td class="rate-pct">{{ overview.average_performance }}</td>
+  </tr>
+</table>
 
 <div class="section-title">Répartition par département</div>
 
@@ -277,14 +254,11 @@
       <td style="font-weight: bold;">{{ dept.departement }}</td>
       <td style="text-align:center;">{{ dept.total }}</td>
       <td style="text-align:center;">{{ dept.en_stage }}</td>
-      <td style="text-align:center; font-weight: bold; color: #4f46e5;">{{ dept.pct }}%</td>
+      <td style="text-align:center; font-weight: bold;">{{ dept.pct }}%</td>
       <td style="text-align:center;">
-        {% if dept.pct >= 50 %}
-          <span class="badge badge-good">BON</span>
-        {% elif dept.pct >= 25 %}
-          <span class="badge badge-medium">MOYEN</span>
-        {% else %}
-          <span class="badge badge-low">FAIBLE</span>
+        {% if dept.pct >= 50 %}Bon
+        {% elif dept.pct >= 25 %}Moyen
+        {% else %}Faible
         {% endif %}
       </td>
     </tr>
@@ -319,7 +293,7 @@
 {% endif %}
 
 <div class="footer">
-  StageFlow &mdash; Rapport confidentiel &mdash; {{ generated_at }}
+  internHub &mdash; Rapport confidentiel &mdash; {{ generated_at }}
 </div>
 
 </body>

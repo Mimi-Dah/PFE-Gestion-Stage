@@ -105,6 +105,11 @@ const Register = () => {
 
   const role     = watch('role');
   const password = watch('password');
+  const photo    = watch('photo');
+  const cv       = watch('cv');
+  const logo     = watch('logo');
+
+  const [isAdvancing, setIsAdvancing] = useState(false);
 
   useEffect(() => {
     api.get('etablissements/departements/')
@@ -113,13 +118,18 @@ const Register = () => {
   }, []);
 
   const nextStep = async () => {
+    if (isAdvancing) return;
+    setIsAdvancing(true);
     let fields = [];
     if (step === 1) fields = ['role', 'email', 'password', 'confirmPassword'];
     if (step === 2) {
       if (role === 'Étudiant')  fields = ['prenom', 'nom', 'telephone', 'adresse', 'departement_id', 'niveau_academique'];
       if (role === 'Entreprise') fields = ['nom_entreprise', 'description', 'adresse_entreprise', 'telephone_entreprise', 'nom_contact', 'email_contact'];
     }
-    if (await trigger(fields)) setStep(s => s + 1);
+    if (await trigger(fields)) {
+      setStep(s => Math.min(s + 1, 3));
+    }
+    setTimeout(() => setIsAdvancing(false), 500);
   };
 
   const onSubmit = async (data) => {
@@ -202,6 +212,7 @@ const Register = () => {
 
         {/* ── Dark mode toggle ── */}
         <button
+          type="button"
           onClick={toggleDarkMode}
           title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
           style={{
@@ -501,57 +512,75 @@ const Register = () => {
 
           {/* ── STEP 3 ── */}
           {step === 3 && (
-            <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: role === 'Étudiant' ? '1fr 1fr' : '1fr', gap: '0.875rem' }}>
-              {role === 'Étudiant' ? (
-                <>
-                  {[
-                    { field: 'photo', icon: <Camera size={24} />,      title: t('auth.register.photo'), hint: t('auth.register.photoHint'), accept: 'image/*', color: '#6366F1' },
-                    { field: 'cv',    icon: <UploadCloud size={24} />, title: t('auth.register.cv'),    hint: t('auth.register.cvHint'),    accept: '.pdf',    color: '#8B5CF6' },
-                  ].map(({ field, icon, title, hint, accept, color }) => (
-                    <label key={field} htmlFor={`file-${field}`} style={{
+            <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+              {/* Info banner */}
+              <div style={{
+                padding: '0.65rem 1rem', borderRadius: '8px', fontSize: '0.8rem',
+                background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.2)',
+                color: '#6366F1', fontWeight: '500',
+              }}>
+                {role === 'Étudiant'
+                  ? '📎 ' + (t('auth.register.photoHint') || 'Formats acceptés : JPG, PNG pour la photo · PDF pour le CV')
+                  : '🏢 ' + (t('auth.register.logoHint') || 'Téléchargez le logo de votre entreprise (JPG ou PNG)')}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: role === 'Étudiant' ? '1fr 1fr' : '1fr', gap: '0.875rem' }}>
+                {role === 'Étudiant' ? (
+                  <>
+                    {[
+                      { field: 'photo', icon: <Camera size={24} />,      title: t('auth.register.photo'), hint: t('auth.register.photoHint'), accept: 'image/*', color: '#6366F1', val: photo },
+                      { field: 'cv',    icon: <UploadCloud size={24} />, title: t('auth.register.cv'),    hint: t('auth.register.cvHint'),    accept: '.pdf',    color: '#8B5CF6', val: cv },
+                    ].map(({ field, icon, title, hint, accept, color, val }) => (
+                      <label key={field} htmlFor={`file-${field}`} style={{
+                        cursor: 'pointer',
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
+                        padding: '1.75rem 1rem', borderRadius: '10px',
+                        border: `1.5px dashed ${val && val[0] ? color : 'var(--border)'}`,
+                        backgroundColor: val && val[0] ? `${color}08` : 'var(--bg-input)',
+                        textAlign: 'center', transition: 'border-color 0.15s, background-color 0.15s',
+                        minHeight: '160px', justifyContent: 'center',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.setProperty('background-color', 'var(--bg-card)'); }}
+                      onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', val && val[0] ? color : 'var(--border)'); e.currentTarget.style.setProperty('background-color', val && val[0] ? `${color}08` : 'var(--bg-input)'); }}
+                      >
+                        <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: val && val[0] ? `${color}20` : `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color }}>{icon}</div>
+                        <div style={{ fontWeight: '800', fontSize: '0.85rem', color: 'var(--text-main)' }}>{title}</div>
+                        <div style={{ marginTop: '0.25rem', padding: '0.3rem 0.875rem', borderRadius: '6px', backgroundColor: val && val[0] ? `${color}25` : `${color}12`, fontSize: '0.72rem', fontWeight: '800', color, wordBreak: 'break-all', maxWidth: '100%' }}>
+                          {val && val[0] ? `✓ ${val[0].name}` : t('auth.register.chooseFile')}
+                        </div>
+                        <input id={`file-${field}`} type="file" accept={accept} {...register(field)} style={{ display: 'none' }} />
+                      </label>
+                    ))}
+                  </>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label htmlFor="file-logo" style={{
                       cursor: 'pointer',
                       display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
-                      padding: '1.75rem 1rem', borderRadius: '10px',
-                      border: '1.5px dashed var(--border)', backgroundColor: 'var(--bg-input)',
+                      padding: '2.5rem 1.5rem', borderRadius: '10px',
+                      border: `1.5px dashed ${errors.logo ? '#EF4444' : logo && logo[0] ? '#6366F1' : 'var(--border)'}`,
+                      backgroundColor: logo && logo[0] ? 'rgba(99,102,241,0.06)' : 'var(--bg-input)',
                       textAlign: 'center', transition: 'border-color 0.15s, background-color 0.15s',
+                      minHeight: '180px', justifyContent: 'center',
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.setProperty('background-color', 'var(--bg-card)'); }}
-                    onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', 'var(--border)'); e.currentTarget.style.setProperty('background-color', 'var(--bg-input)'); }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.setProperty('background-color', 'var(--bg-card)'); }}
+                    onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', errors.logo ? '#EF4444' : logo && logo[0] ? '#6366F1' : 'var(--border)'); e.currentTarget.style.setProperty('background-color', logo && logo[0] ? 'rgba(99,102,241,0.06)' : 'var(--bg-input)'); }}
                     >
-                      <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color }}>{icon}</div>
-                      <div style={{ fontWeight: '800', fontSize: '0.85rem', color: 'var(--text-main)' }}>{title}</div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>{hint}</div>
-                      <div style={{ marginTop: '0.25rem', padding: '0.3rem 0.875rem', borderRadius: '6px', backgroundColor: `${color}12`, fontSize: '0.72rem', fontWeight: '800', color }}>
-                        {t('auth.register.chooseFile')}
+                      <div style={{ width: '56px', height: '56px', borderRadius: '14px', backgroundColor: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6366F1' }}>
+                        <Building2 size={28} />
                       </div>
-                      <input id={`file-${field}`} type="file" accept={accept} {...register(field)} style={{ display: 'none' }} />
+                      <div style={{ fontWeight: '800', fontSize: '0.9rem', color: 'var(--text-main)' }}>{t('auth.register.logo')}</div>
+                      <div style={{ marginTop: '0.25rem', padding: '0.35rem 1rem', borderRadius: '6px', backgroundColor: logo && logo[0] ? 'rgba(99,102,241,0.2)' : 'rgba(99,102,241,0.1)', fontSize: '0.75rem', fontWeight: '800', color: '#6366F1', wordBreak: 'break-all', maxWidth: '100%' }}>
+                        {logo && logo[0] ? `✓ ${logo[0].name}` : t('auth.register.chooseFile')}
+                      </div>
+                      <input id="file-logo" type="file" accept="image/*"
+                        {...register('logo', { required: t('auth.register.errors.logoRequired') })}
+                        style={{ display: 'none' }} />
                     </label>
-                  ))}
-                </>
-              ) : (
-                <label htmlFor="file-logo" style={{
-                  cursor: 'pointer',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
-                  padding: '2.5rem 1.5rem', borderRadius: '10px',
-                  border: '1.5px dashed var(--border)', backgroundColor: 'var(--bg-input)',
-                  textAlign: 'center', transition: 'border-color 0.15s, background-color 0.15s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.setProperty('background-color', 'var(--bg-card)'); }}
-                onMouseLeave={e => { e.currentTarget.style.setProperty('border-color', 'var(--border)'); e.currentTarget.style.setProperty('background-color', 'var(--bg-input)'); }}
-                >
-                  <div style={{ width: '56px', height: '56px', borderRadius: '14px', backgroundColor: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6366F1' }}>
-                    <Building2 size={28} />
+                    {errors.logo && <span style={{ fontSize: '0.75rem', color: '#EF4444', fontWeight: '600', textAlign: 'center' }}>{errors.logo.message}</span>}
                   </div>
-                  <div style={{ fontWeight: '800', fontSize: '0.9rem', color: 'var(--text-main)' }}>{t('auth.register.logo')}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>{t('auth.register.logoHint')}</div>
-                  <div style={{ marginTop: '0.25rem', padding: '0.35rem 1rem', borderRadius: '6px', backgroundColor: 'rgba(99,102,241,0.1)', fontSize: '0.75rem', fontWeight: '800', color: '#6366F1' }}>
-                    {t('auth.register.chooseFile')}
-                  </div>
-                  <input id="file-logo" type="file" accept="image/*"
-                    {...register('logo', { required: t('auth.register.errors.logoRequired') })}
-                    style={{ display: 'none' }} />
-                </label>
-              )}
+                )}
+              </div>
             </div>
           )}
 
@@ -574,14 +603,14 @@ const Register = () => {
             )}
 
             {step < 3 ? (
-              <button type="button" onClick={nextStep}
-                style={{ flex: 1, padding: '0.875rem', borderRadius: '8px', background: '#6366F1', color: '#fff', fontWeight: '700', fontSize: '0.9375rem', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', boxShadow: '0 4px 14px rgba(99,102,241,0.4)' }}>
+              <button type="button" onClick={nextStep} disabled={isAdvancing}
+                style={{ flex: 1, padding: '0.875rem', borderRadius: '8px', background: isAdvancing ? '#94A3B8' : '#6366F1', color: '#fff', fontWeight: '700', fontSize: '0.9375rem', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: isAdvancing ? 'not-allowed' : 'pointer', boxShadow: isAdvancing ? 'none' : '0 4px 14px rgba(99,102,241,0.4)', opacity: isAdvancing ? 0.75 : 1 }}>
                 {t('auth.register.nextStep')}
                 {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
               </button>
             ) : (
-              <button type="submit" disabled={isLoading}
-                style={{ flex: 1, padding: '0.875rem', borderRadius: '8px', background: isLoading ? '#94A3B8' : '#6366F1', color: '#fff', fontWeight: '700', fontSize: '0.9375rem', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: isLoading ? 'not-allowed' : 'pointer', boxShadow: isLoading ? 'none' : '0 4px 14px rgba(99,102,241,0.4)', opacity: isLoading ? 0.75 : 1 }}>
+              <button type="submit" disabled={isLoading || isAdvancing}
+                style={{ flex: 1, padding: '0.875rem', borderRadius: '8px', background: (isLoading || isAdvancing) ? '#94A3B8' : '#6366F1', color: '#fff', fontWeight: '700', fontSize: '0.9375rem', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: (isLoading || isAdvancing) ? 'not-allowed' : 'pointer', boxShadow: (isLoading || isAdvancing) ? 'none' : '0 4px 14px rgba(99,102,241,0.4)', opacity: (isLoading || isAdvancing) ? 0.75 : 1 }}>
                 {isLoading ? t('auth.register.submitting') : t('auth.register.submit')}
                 {!isLoading && (isRTL ? <ArrowLeft size={16} /> : <ArrowRight size={16} />)}
               </button>

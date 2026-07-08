@@ -164,3 +164,155 @@ msgstr "المورد غير موجود."
 
 msgid "Requête invalide."
 msgstr "الطلب غير صالح."
+
+
+# ---------------------------------------------------------------------------
+# Notifications métier (absences, candidatures, conventions, évaluations, rapports)
+# ---------------------------------------------------------------------------
+msgid "Stage marqué comme abandonné"
+msgstr "تم وضع علامة على التدريب كمتروك"
+
+msgid "Absence clôturée — délai dépassé"
+msgstr "غياب مغلق — انتهت المهلة"
+
+msgid "Absence signalée"
+msgstr "تم الإبلاغ عن غياب"
+
+msgid "Absence à valider"
+msgstr "غياب بانتظار المراجعة"
+
+msgid "Justification à approuver"
+msgstr "مبرر بانتظار المراجعة"
+
+msgid "Justification soumise"
+msgstr "تم تقديم المبرر"
+
+msgid "Décision sur votre absence"
+msgstr "قرار بشأن غيابك"
+
+msgid "Nouvelle Candidature"
+msgstr "طلب ترشح جديد"
+
+msgid "Mise à jour de votre candidature"
+msgstr "تحديث بخصوص ترشحك"
+
+msgid "Candidature Acceptée - Action Requise"
+msgstr "تم قبول الترشح - إجراء مطلوب"
+
+msgid "Convention Expirée"
+msgstr "انتهت صلاحية الاتفاقية"
+
+msgid "Convention Expirée (Auto-Rejet)"
+msgstr "انتهت صلاحية الاتفاقية (رفض تلقائي)"
+
+msgid "Convention Validée"
+msgstr "تم التحقق من الاتفاقية"
+
+msgid "Convention Refusée"
+msgstr "تم رفض الاتفاقية"
+
+msgid "Signature Étudiant"
+msgstr "توقيع الطالب"
+
+msgid "Signature Entreprise"
+msgstr "توقيع الشركة"
+
+msgid "Évaluation Disponible"
+msgstr "التقييم متاح"
+
+msgid "Nouvelle Évaluation Déposée"
+msgstr "تقييم جديد تم إيداعه"
+
+msgid "Nouveau Rapport Soumis"
+msgstr "تقرير جديد تم إيداعه"
+
+msgid "Rapport Noté"
+msgstr "تم تقييم التقرير"
+
+msgid "acceptée"
+msgstr "مقبولة"
+
+msgid "refusée"
+msgstr "مرفوضة"
+
+msgid "mise en cours de convention"
+msgstr "قيد إعداد الاتفاقية"
+
+msgid "terminée"
+msgstr "منتهية"
+
+msgid "Votre stage pour '{offre}' a été automatiquement marqué comme abandonné suite à {count} absences non justifiées."
+msgstr "تم وضع علامة على تدريبك في '{offre}' تلقائياً كمتروك بعد {count} غيابات غير مبررة."
+
+msgid "Le stage de {etudiant} pour '{offre}' a été automatiquement marqué comme abandonné ({count} absences non justifiées)."
+msgstr "تم وضع علامة على تدريب {etudiant} في '{offre}' تلقائياً كمتروك ({count} غيابات غير مبررة)."
+
+msgid "Le délai de 3 jours pour justifier votre absence du {date} (stage '{offre}') est dépassé. Elle est désormais définitivement marquée comme non justifiée."
+msgstr "انتهت مهلة الثلاثة أيام لتبرير غيابك بتاريخ {date} (تدريب '{offre}'). أصبح الآن مصنفاً بشكل نهائي على أنه غير مبرر."
+
+msgid "Une absence a été signalée pour votre stage '{offre}' le {date}. Vous avez 3 jours pour la justifier."
+msgstr "تم الإبلاغ عن غياب في تدريبك '{offre}' بتاريخ {date}. لديك 3 أيام لتبريره."
+
+msgid "{etudiant} a été signalé absent le {date} (stage : '{offre}')."
+msgstr "تم الإبلاغ عن غياب {etudiant} بتاريخ {date} (التدريب: '{offre}')."
+
+msgid "{etudiant} a soumis une justification pour son absence du {date}. Une décision de votre part est attendue."
+msgstr "قدّم {etudiant} مبرراً لغيابه بتاريخ {date}. يُنتظر قرار منكم."
+
+msgid "{etudiant} a soumis une justification pour son absence du {date}. L'entreprise doit maintenant se prononcer."
+msgstr "قدّم {etudiant} مبرراً لغيابه بتاريخ {date}. يجب على الشركة الآن اتخاذ القرار."
+
+msgid "Votre justification pour l'absence du {date} a été approuvée par l'entreprise."
+msgstr "تمت الموافقة على مبررك للغياب بتاريخ {date} من قِبل الشركة."
+
+msgid "Votre justification pour l'absence du {date} a été refusée par l'entreprise. Cette absence est marquée comme non justifiée."
+msgstr "تم رفض مبررك للغياب بتاريخ {date} من قِبل الشركة. هذا الغياب مصنف على أنه غير مبرر."
+
+msgid "{etudiant} a postulé à votre offre '{offre}'."
+msgstr "تقدّم {etudiant} بترشحه لعرضكم '{offre}'."
+
+msgid "Une absence a été signalée pour votre stage '{offre}' le {date}."
+msgstr "تم الإبلاغ عن غياب في تدريبك '{offre}' بتاريخ {date}."
+
+msgid "Votre candidature pour '{offre}' a été {statut}."
+msgstr "أصبحت حالة ترشحك لـ '{offre}' : {statut}."
+
+msgid "La candidature de {etudiant} pour '{offre}' a été acceptée. Veuillez déposer la convention."
+msgstr "تم قبول ترشح {etudiant} لـ '{offre}'. يرجى إيداع الاتفاقية."
+
+msgid "Votre convention {numero} a été automatiquement rejetée car elle n'a pas été traitée dans le délai de 3 jours."
+msgstr "تم رفض اتفاقيتك {numero} تلقائياً لعدم معالجتها خلال مهلة 3 أيام."
+
+msgid "La convention {numero} pour {etudiant} a été rejetée automatiquement (délai de 3 jours dépassé)."
+msgstr "تم رفض الاتفاقية {numero} الخاصة بـ {etudiant} تلقائياً (تجاوز مهلة 3 أيام)."
+
+msgid "Votre convention {numero} a été validée par le département."
+msgstr "تم التحقق من اتفاقيتك {numero} من قِبل القسم."
+
+msgid "La convention {numero} ({etudiant}) a été validée."
+msgstr "تم التحقق من الاتفاقية {numero} ({etudiant})."
+
+msgid "Votre convention {numero} a été refusée. Motif : {motif}"
+msgstr "تم رفض اتفاقيتك {numero}. السبب: {motif}"
+
+msgid "La convention {numero} a été refusée par le département."
+msgstr "تم رفض الاتفاقية {numero} من قِبل القسم."
+
+msgid "L'étudiant {etudiant} a signé la convention {numero}."
+msgstr "وقّع الطالب {etudiant} على الاتفاقية {numero}."
+
+msgid "L'entreprise a signé votre convention {numero}."
+msgstr "وقّعت الشركة على اتفاقيتك {numero}."
+
+msgid "L'entreprise {entreprise} a publié votre évaluation de stage."
+msgstr "نشرت الشركة {entreprise} تقييم تدريبك."
+
+msgid "L'entreprise {entreprise} a évalué le stage de {etudiant}."
+msgstr "قيّمت الشركة {entreprise} تدريب {etudiant}."
+
+msgid "L'étudiant {etudiant} a soumis son rapport de stage pour '{offre}'."
+msgstr "قدّم الطالب {etudiant} تقرير تدريبه لـ '{offre}'."
+
+msgid "Votre rapport pour '{offre}' a été noté : {note}/20."
+msgstr "تم تقييم تقريرك لـ '{offre}' بعلامة: {note}/20."
+

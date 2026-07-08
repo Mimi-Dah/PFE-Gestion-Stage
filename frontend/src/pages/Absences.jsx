@@ -20,6 +20,19 @@ import api from '../services/api';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { dateLocale } from '../utils/dateLocale';
 
+/* ── shared field styles (mirrors OfferDetail's boxed-field language) ── */
+const fieldLabel = {
+  display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.75rem', fontWeight: '700',
+  color: 'var(--text-muted)', textTransform: 'uppercase',
+  letterSpacing: '0.05em', marginBottom: '0.4rem',
+};
+const inputBox = {
+  width: '100%', padding: '0.6rem 0.875rem', borderRadius: '6px',
+  border: '1px solid var(--surface-border)', backgroundColor: 'var(--surface-card)',
+  color: 'var(--text-main)', fontSize: '0.875rem', fontWeight: '500',
+  boxSizing: 'border-box', lineHeight: 1.5,
+};
+
 /* ── helpers ── */
 const getStatusStyle = (statut, t) => {
   switch (statut) {
@@ -105,6 +118,7 @@ const Absences = () => {
   );
 
   return (
+    <>
     <div className="animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
       <div style={{ marginBottom: '3rem' }}>
         <h1 style={{ marginBottom: '0.5rem', fontSize: '2rem', fontWeight: '800', color: 'var(--text-main)' }}>
@@ -225,41 +239,74 @@ const Absences = () => {
           })
         )}
       </div>
+    </div>
 
       {/* ── Justification modal ── */}
       {selectedAbsence && (
         <div
           onClick={e => e.target === e.currentTarget && setSelectedAbsence(null)}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: '1rem' }}
+          style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: '1.5rem' }}
         >
-          <div style={{ background: 'var(--bg-card)', borderRadius: '10px', width: '100%', maxWidth: '460px', boxShadow: '0 20px 60px rgba(0,0,0,0.15)', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: 'var(--surface-card)', borderRadius: '10px', width: '100%', maxWidth: '480px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px rgba(0,0,0,0.2)' }}>
 
-            <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-main)' }}>{t('pages.absences.modal.title')}</span>
-              <button onClick={() => setSelectedAbsence(null)} style={{ width: '26px', height: '26px', border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-                <X size={13} />
+            {/* ── Header ─────────────────────────────────────────── */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--surface-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Calendar size={18} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-main)' }}>{t('pages.absences.modal.title')}</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                    {new Date(selectedAbsence.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedAbsence(null)}
+                style={{ width: '32px', height: '32px', borderRadius: '6px', border: '1px solid var(--surface-border)', backgroundColor: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+              >
+                <X size={15} />
               </button>
             </div>
 
-            <div style={{ padding: '1rem' }}>
-              <p style={{ margin: '0 0 0.25rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                {t('pages.absences.modal.absenceDate')}{' '}
-                <strong style={{ color: 'var(--text-main)' }}>
-                  {new Date(selectedAbsence.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long' })}
-                </strong>.
-              </p>
-              {selectedAbsence.jours_restants !== null && (
-                <p style={{ margin: '0 0 0.85rem', fontSize: '0.78rem', color: selectedAbsence.jours_restants <= 1 ? '#b91c1c' : '#b45309', fontWeight: 600 }}>
-                  <Clock size={11} style={{ verticalAlign: 'middle', marginRight: 3 }} />
+            {/* ── Body ───────────────────────────────────────────── */}
+            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
+
+              {selectedAbsence.jours_restants !== null && selectedAbsence.jours_restants !== undefined && (
+                <span style={{
+                  display: 'inline-flex', alignSelf: 'flex-start', alignItems: 'center', gap: '4px',
+                  padding: '4px 12px', borderRadius: '9999px', fontSize: '11.5px', fontWeight: 700, letterSpacing: '0.02em',
+                  background: selectedAbsence.jours_restants <= 1 ? 'rgba(239,68,68,.12)' : 'rgba(245,158,11,.12)',
+                  color: selectedAbsence.jours_restants <= 1 ? '#b91c1c' : '#b45309',
+                }}>
+                  <Clock size={11} />
                   {selectedAbsence.jours_restants === 0
                     ? t('pages.absences.modal.lastDayWarning')
                     : t('pages.absences.modal.daysLeft', { count: selectedAbsence.jours_restants })}
-                </p>
+                </span>
               )}
 
-              <form onSubmit={handleJustify} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {/* Info fields */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem' }}>
+                  <label style={fieldLabel}><Calendar size={12} color="var(--primary)" />{t('pages.absences.modal.absenceDate')}</label>
+                  <div style={inputBox}>
+                    {new Date(selectedAbsence.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long' })}
+                  </div>
+                </div>
+                <div>
+                  <label style={fieldLabel}><Building2 size={12} color="var(--primary)" />{t('pages.absences.modal.company')}</label>
+                  <div style={inputBox}>{selectedAbsence.entreprise_nom}</div>
+                </div>
+              </div>
+
+              <hr style={{ border: 'none', borderTop: '1px solid var(--surface-border)', margin: 0 }} />
+
+              <form onSubmit={handleJustify} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
+                <div>
+                  <label style={fieldLabel}>
+                    <FileText size={12} color="var(--primary)" />
                     {t('pages.absences.modal.explanationLabel')} <span style={{ color: 'var(--error)' }}>*</span>
                   </label>
                   <textarea
@@ -268,15 +315,16 @@ const Absences = () => {
                     onChange={e => setJustMessage(e.target.value)}
                     placeholder={t('pages.absences.modal.explanationPlaceholder')}
                     required
-                    style={{ width: '100%', boxSizing: 'border-box', padding: '0.6rem 0.75rem', border: '1px solid var(--border)', borderRadius: '6px', fontSize: '0.82rem', color: 'var(--text-main)', background: 'var(--bg-card)', outline: 'none', resize: 'vertical' }}
+                    style={{ ...inputBox, resize: 'vertical', fontFamily: 'inherit', outline: 'none' }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '0.35rem' }}>
-                    <FileText size={12} /> {t('pages.absences.modal.docLabel')}
+                  <label style={fieldLabel}>
+                    <Upload size={12} color="var(--primary)" />
+                    {t('pages.absences.modal.docLabel')}
                   </label>
-                  <div style={{ border: '1px solid var(--border)', borderRadius: '6px', padding: '0.6rem 0.75rem', background: 'var(--surface-section)', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                  <div style={{ ...inputBox, display: 'flex', flexDirection: 'column', gap: '0.35rem', backgroundColor: 'var(--surface-section)' }}>
                     <input
                       type="file"
                       accept=".pdf,.jpg,.jpeg,.png"
@@ -288,25 +336,27 @@ const Absences = () => {
                 </div>
 
                 {submitError && (
-                  <div style={{ padding: '0.5rem 0.75rem', borderRadius: '6px', background: 'rgba(239,68,68,.1)', color: '#b91c1c', fontSize: '0.78rem', fontWeight: 600 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '7px', padding: '11px 14px', backgroundColor: 'var(--error-light)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '10px', fontSize: '13px', fontWeight: 600, color: 'var(--error)', lineHeight: 1.45 }}>
+                    <AlertCircle size={15} style={{ flexShrink: 0, marginTop: 1 }} />
                     {submitError}
                   </div>
                 )}
 
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.15rem' }}>
+                {/* ── Footer ─────────────────────────────────────────── */}
+                <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', borderTop: '1px solid var(--surface-border)', paddingTop: '1.125rem', marginTop: '0.1rem' }}>
                   <button
                     type="button"
                     onClick={() => setSelectedAbsence(null)}
-                    style={{ flex: 1, height: '36px', border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--bg-card)', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-color)' }}
+                    style={{ padding: '0.6rem 1.25rem', borderRadius: '6px', border: '1px solid var(--surface-border)', backgroundColor: 'transparent', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
                   >
                     {t('pages.absences.modal.cancel')}
                   </button>
                   <button
                     type="submit"
                     disabled={justifyMutation.isPending || !justMessage.trim()}
-                    style={{ flex: 2, height: '36px', border: 'none', borderRadius: '6px', background: '#1b6ef3', color: '#fff', cursor: justifyMutation.isPending ? 'not-allowed' : 'pointer', opacity: (justifyMutation.isPending || !justMessage.trim()) ? 0.65 : 1, fontSize: '0.82rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+                    style={{ padding: '0.6rem 1.375rem', borderRadius: '6px', border: 'none', backgroundColor: 'var(--primary)', color: '#fff', fontWeight: 700, fontSize: '0.875rem', cursor: justifyMutation.isPending ? 'not-allowed' : 'pointer', opacity: (justifyMutation.isPending || !justMessage.trim()) ? 0.5 : 1, display: 'flex', alignItems: 'center', gap: '6px' }}
                   >
-                    <Upload size={13} />
+                    <Upload size={14} />
                     {justifyMutation.isPending ? t('pages.absences.modal.submitting') : t('pages.absences.modal.submitBtn')}
                   </button>
                 </div>
@@ -315,7 +365,7 @@ const Absences = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

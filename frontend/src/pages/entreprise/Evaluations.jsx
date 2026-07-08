@@ -68,36 +68,39 @@ const TH = ({ children, col, sort, onSort, style = {} }) => {
   );
 };
 
-const InteractiveStars = ({ value, onChange }) => {
-  const [hover, setHover] = useState(0);
+const RatingPicker = ({ value, onChange, max = 5 }) => {
+  const [hovered, setHovered] = useState(0);
+  const display = hovered || value;
   return (
-    <div style={{ display: 'flex', gap: '0.2rem' }}>
-      {[1, 2, 3, 4, 5].map(star => (
-        <button key={star} type="button"
-          onClick={() => onChange(star)}
-          onMouseEnter={() => setHover(star)}
-          onMouseLeave={() => setHover(0)}
-          style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer' }}
-        >
-          <Star size={17}
-            fill={(hover || value) >= star ? '#f59e0b' : 'transparent'}
-            color={(hover || value) >= star ? '#f59e0b' : 'var(--border)'}
-          />
-        </button>
-      ))}
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.55rem' }}>
+      <div style={{ display: 'inline-flex', gap: '0.15rem' }} onMouseLeave={() => setHovered(0)}>
+        {Array.from({ length: max }, (_, i) => i + 1).map(n => (
+          <button key={n} type="button" onClick={() => onChange(n)} onMouseEnter={() => setHovered(n)}
+            style={{
+              padding: '2px', margin: 0, border: 'none', background: 'transparent',
+              cursor: 'pointer', lineHeight: 0, transition: 'transform 0.1s',
+              transform: n === display ? 'scale(1.12)' : 'scale(1)',
+            }}>
+            <Star
+              size={20}
+              fill={n <= display ? '#f59e0b' : 'none'}
+              color={n <= display ? '#f59e0b' : 'var(--text-subtle)'}
+              strokeWidth={1.75}
+            />
+          </button>
+        ))}
+      </div>
+      <span style={{ minWidth: '1rem', textAlign: 'center', fontWeight: 800, fontSize: '0.9rem', color: '#1b6ef3' }}>
+        {value}
+      </span>
     </div>
   );
 };
 
-const DisplayStars = ({ value }) => (
-  <div style={{ display: 'flex', gap: '0.15rem' }}>
-    {[1, 2, 3, 4, 5].map(star => (
-      <Star key={star} size={13}
-        fill={value >= star ? '#f59e0b' : 'transparent'}
-        color={value >= star ? '#f59e0b' : '#d1d5db'}
-      />
-    ))}
-  </div>
+const AvgScoreBadge = ({ value }) => (
+  <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.2rem', padding: '0.2rem 0.55rem', borderRadius: '6px', background: 'var(--surface-section)', color: 'var(--text-main)', fontWeight: 700, fontSize: '0.82rem' }}>
+    {value.toFixed(1)}<span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-muted)' }}>/5</span>
+  </span>
 );
 
 const DEFAULT_FORM = { comportement: 5, adaptabilite: 5, travail_equipe: 5, qualite_travail: 5, recommanderait: 'Oui', commentaires: '' };
@@ -154,7 +157,7 @@ const EvalModal = ({ student, onClose, onSubmit, isPending, errorMsg }) => {
               {CRITERIA.map(c => (
                 <div key={c.id} style={{ border: '1px solid var(--border)', borderRadius: '7px', padding: '0.6rem 0.75rem' }}>
                   <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.35rem' }}>{c.label}</div>
-                  <InteractiveStars value={form[c.id]} onChange={val => setForm(f => ({ ...f, [c.id]: val }))} />
+                  <RatingPicker value={form[c.id]} onChange={val => setForm(f => ({ ...f, [c.id]: val }))} />
                 </div>
               ))}
             </div>
@@ -587,7 +590,7 @@ const EntrepriseEvaluations = () => {
                       </span>
                     </td>
                     <td style={{ padding: '0.85rem 1rem' }}>
-                      <DisplayStars value={Math.round(avgCriteria)} />
+                      <AvgScoreBadge value={avgCriteria} />
                     </td>
                     <td style={{ padding: '0.85rem 1rem' }}>
                       <RecBadge value={ev.recommanderait} />

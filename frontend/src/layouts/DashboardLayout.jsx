@@ -67,6 +67,7 @@ const BottomNav = ({ user, location, t }) => {
       { to: '/espace/offres',       icon: Search,   label: t('nav.bottom.offers') },
       { to: '/espace/candidatures', icon: FileText, label: t('nav.bottom.applications') },
       { to: '/espace/mon-stage',    icon: Briefcase,label: t('nav.bottom.internship') },
+      { to: '/espace/absences',     icon: Clock,    label: t('nav.bottom.absences') },
       { to: '/espace/profil',       icon: UserIcon, label: t('nav.bottom.profile') },
     ] : user?.role === 'Entreprise' ? [
       { to: '/espace/entreprise/offres',         icon: Briefcase, label: t('nav.bottom.offers') },
@@ -179,6 +180,7 @@ const DashboardLayout = () => {
               <NavLink to="/espace/offres"          icon={Search}        >{t('nav.items.offers')}</NavLink>
               <NavLink to="/espace/candidatures"    icon={FileText}      >{t('nav.items.candidatures')}</NavLink>
               <NavLink to="/espace/mon-stage"       icon={Briefcase}     >{t('nav.items.internship')}</NavLink>
+              <NavLink to="/espace/absences"        icon={Clock}         >{t('nav.items.absences')}</NavLink>
               <NavLink to="/espace/favoris"         icon={Heart}         >{t('nav.items.favorites')}</NavLink>
               <NavLink to="/espace/evaluations"     icon={ClipboardCheck}>{t('nav.items.evaluations')}</NavLink>
               <div className="nav-section-divider">

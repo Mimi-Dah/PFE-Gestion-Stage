@@ -1,4 +1,6 @@
 ﻿from rest_framework import viewsets, permissions
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
 from .models import EvaluationDeStage, AutoEvaluation
 from .serializers import EvaluationDeStageSerializer, AutoEvaluationSerializer
 from notifications.utils import create_notification
@@ -60,8 +62,11 @@ class EvaluationDeStageViewSet(viewsets.ModelViewSet):
 
         create_notification(
             user=evaluation.etudiant.user,
-            titre="Évaluation Disponible",
-            message=f"L'entreprise {evaluation.entreprise.nom} a publié votre évaluation de stage.",
+            titre=_("Évaluation Disponible"),
+            message=format_lazy(
+                _("L'entreprise {entreprise} a publié votre évaluation de stage."),
+                entreprise=evaluation.entreprise.nom,
+            ),
             type_event="Evaluation_disponible",
             lien="/espace/evaluations",
         )
@@ -73,10 +78,11 @@ class EvaluationDeStageViewSet(viewsets.ModelViewSet):
         if chef:
             create_notification(
                 user=chef.user,
-                titre="Nouvelle Évaluation Déposée",
-                message=(
-                    f"L'entreprise {evaluation.entreprise.nom} a évalué le stage de "
-                    f"{evaluation.etudiant.prenom} {evaluation.etudiant.nom}."
+                titre=_("Nouvelle Évaluation Déposée"),
+                message=format_lazy(
+                    _("L'entreprise {entreprise} a évalué le stage de {etudiant}."),
+                    entreprise=evaluation.entreprise.nom,
+                    etudiant=f"{evaluation.etudiant.prenom} {evaluation.etudiant.nom}",
                 ),
                 type_event="Evaluation_disponible",
                 lien="/espace/chef/stagiaires",

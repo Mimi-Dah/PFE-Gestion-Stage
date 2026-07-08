@@ -164,3 +164,155 @@ msgstr "Resource not found."
 
 msgid "Requête invalide."
 msgstr "Invalid request."
+
+
+# ---------------------------------------------------------------------------
+# Notifications métier (absences, candidatures, conventions, évaluations, rapports)
+# ---------------------------------------------------------------------------
+msgid "Stage marqué comme abandonné"
+msgstr "Internship marked as abandoned"
+
+msgid "Absence clôturée — délai dépassé"
+msgstr "Absence closed — deadline passed"
+
+msgid "Absence signalée"
+msgstr "Absence reported"
+
+msgid "Absence à valider"
+msgstr "Absence to review"
+
+msgid "Justification à approuver"
+msgstr "Justification to review"
+
+msgid "Justification soumise"
+msgstr "Justification submitted"
+
+msgid "Décision sur votre absence"
+msgstr "Decision on your absence"
+
+msgid "Nouvelle Candidature"
+msgstr "New Application"
+
+msgid "Mise à jour de votre candidature"
+msgstr "Update on your application"
+
+msgid "Candidature Acceptée - Action Requise"
+msgstr "Application Accepted — Action Required"
+
+msgid "Convention Expirée"
+msgstr "Agreement Expired"
+
+msgid "Convention Expirée (Auto-Rejet)"
+msgstr "Agreement Expired (Auto-Rejected)"
+
+msgid "Convention Validée"
+msgstr "Agreement Validated"
+
+msgid "Convention Refusée"
+msgstr "Agreement Rejected"
+
+msgid "Signature Étudiant"
+msgstr "Student Signature"
+
+msgid "Signature Entreprise"
+msgstr "Company Signature"
+
+msgid "Évaluation Disponible"
+msgstr "Evaluation Available"
+
+msgid "Nouvelle Évaluation Déposée"
+msgstr "New Evaluation Submitted"
+
+msgid "Nouveau Rapport Soumis"
+msgstr "New Report Submitted"
+
+msgid "Rapport Noté"
+msgstr "Report Graded"
+
+msgid "acceptée"
+msgstr "accepted"
+
+msgid "refusée"
+msgstr "rejected"
+
+msgid "mise en cours de convention"
+msgstr "moved to agreement stage"
+
+msgid "terminée"
+msgstr "completed"
+
+msgid "Votre stage pour '{offre}' a été automatiquement marqué comme abandonné suite à {count} absences non justifiées."
+msgstr "Your internship for '{offre}' has been automatically marked as abandoned following {count} unjustified absences."
+
+msgid "Le stage de {etudiant} pour '{offre}' a été automatiquement marqué comme abandonné ({count} absences non justifiées)."
+msgstr "{etudiant}'s internship for '{offre}' has been automatically marked as abandoned ({count} unjustified absences)."
+
+msgid "Le délai de 3 jours pour justifier votre absence du {date} (stage '{offre}') est dépassé. Elle est désormais définitivement marquée comme non justifiée."
+msgstr "The 3-day deadline to justify your absence of {date} (internship '{offre}') has passed. It is now permanently marked as unjustified."
+
+msgid "Une absence a été signalée pour votre stage '{offre}' le {date}. Vous avez 3 jours pour la justifier."
+msgstr "An absence has been reported for your internship '{offre}' on {date}. You have 3 days to justify it."
+
+msgid "{etudiant} a été signalé absent le {date} (stage : '{offre}')."
+msgstr "{etudiant} was reported absent on {date} (internship: '{offre}')."
+
+msgid "{etudiant} a soumis une justification pour son absence du {date}. Une décision de votre part est attendue."
+msgstr "{etudiant} submitted a justification for their absence of {date}. A decision from you is expected."
+
+msgid "{etudiant} a soumis une justification pour son absence du {date}. L'entreprise doit maintenant se prononcer."
+msgstr "{etudiant} submitted a justification for their absence of {date}. The company must now decide."
+
+msgid "Votre justification pour l'absence du {date} a été approuvée par l'entreprise."
+msgstr "Your justification for the absence of {date} has been approved by the company."
+
+msgid "Votre justification pour l'absence du {date} a été refusée par l'entreprise. Cette absence est marquée comme non justifiée."
+msgstr "Your justification for the absence of {date} has been rejected by the company. This absence is marked as unjustified."
+
+msgid "{etudiant} a postulé à votre offre '{offre}'."
+msgstr "{etudiant} applied to your offer '{offre}'."
+
+msgid "Une absence a été signalée pour votre stage '{offre}' le {date}."
+msgstr "An absence has been reported for your internship '{offre}' on {date}."
+
+msgid "Votre candidature pour '{offre}' a été {statut}."
+msgstr "Your application for '{offre}' has been {statut}."
+
+msgid "La candidature de {etudiant} pour '{offre}' a été acceptée. Veuillez déposer la convention."
+msgstr "{etudiant}'s application for '{offre}' has been accepted. Please submit the agreement."
+
+msgid "Votre convention {numero} a été automatiquement rejetée car elle n'a pas été traitée dans le délai de 3 jours."
+msgstr "Your agreement {numero} has been automatically rejected as it was not processed within the 3-day deadline."
+
+msgid "La convention {numero} pour {etudiant} a été rejetée automatiquement (délai de 3 jours dépassé)."
+msgstr "The agreement {numero} for {etudiant} has been automatically rejected (3-day deadline exceeded)."
+
+msgid "Votre convention {numero} a été validée par le département."
+msgstr "Your agreement {numero} has been validated by the department."
+
+msgid "La convention {numero} ({etudiant}) a été validée."
+msgstr "The agreement {numero} ({etudiant}) has been validated."
+
+msgid "Votre convention {numero} a été refusée. Motif : {motif}"
+msgstr "Your agreement {numero} has been rejected. Reason: {motif}"
+
+msgid "La convention {numero} a été refusée par le département."
+msgstr "The agreement {numero} has been rejected by the department."
+
+msgid "L'étudiant {etudiant} a signé la convention {numero}."
+msgstr "Student {etudiant} signed the agreement {numero}."
+
+msgid "L'entreprise a signé votre convention {numero}."
+msgstr "The company signed your agreement {numero}."
+
+msgid "L'entreprise {entreprise} a publié votre évaluation de stage."
+msgstr "Company {entreprise} has published your internship evaluation."
+
+msgid "L'entreprise {entreprise} a évalué le stage de {etudiant}."
+msgstr "Company {entreprise} evaluated {etudiant}'s internship."
+
+msgid "L'étudiant {etudiant} a soumis son rapport de stage pour '{offre}'."
+msgstr "Student {etudiant} submitted their internship report for '{offre}'."
+
+msgid "Votre rapport pour '{offre}' a été noté : {note}/20."
+msgstr "Your report for '{offre}' has been graded: {note}/20."
+

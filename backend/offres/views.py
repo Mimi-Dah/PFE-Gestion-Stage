@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,6 +8,22 @@ from .models import OffreDeStage, Favori
 from .serializers import OffreDeStageSerializer, FavoriSerializer
 from internhub_backend.permissions import IsEnterprise, IsStudent, IsAdmin, IsOwnerOrReadOnly
 from internhub_backend.exceptions import PermissionDeniedError, BadRequestError, AuthorizationError
+import django_filters
+
+class OffreFilter(django_filters.FilterSet):
+    localisation = django_filters.CharFilter(lookup_expr='icontains')
+    entreprise__nom = django_filters.CharFilter(lookup_expr='icontains')
+    duree_semaines = django_filters.NumberFilter(method='filter_duree')
+
+    def filter_duree(self, queryset, name, value):
+        if value <= 8:
+            return queryset.filter(duree_semaines__lte=value)
+        else:
+            return queryset.filter(duree_semaines__gte=value)
+
+    class Meta:
+        model = OffreDeStage
+        fields = ['statut', 'domaine', 'teletravail', 'localisation', 'entreprise__nom', 'departement', 'departement__nom']
 
 logger = logging.getLogger(__name__)
 
@@ -123,9 +139,9 @@ class OffreDeStageViewSet(viewsets.ModelViewSet):
     serializer_class = OffreDeStageSerializer
     permission_classes = [permissions.IsAuthenticated, IsEntrepriseOwnerOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['statut', 'domaine', 'teletravail', 'localisation', 'entreprise__nom', 'duree_semaines', 'departement', 'departement__nom']
+    filterset_class = OffreFilter
     search_fields = ['titre', 'description']
-    ordering_fields = ['publie_le', 'gratification']
+    ordering_fields = ['publie_le', 'gratification', 'duree_semaines']
 
     def get_queryset(self):
         user = self.request.user

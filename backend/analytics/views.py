@@ -162,7 +162,7 @@ class AdminReportPDFView(views.APIView):
         from .utils import generate_admin_report_pdf
         try:
             pdf_bytes = generate_admin_report_pdf()
-            filename = f"stageflow_rapport_{timezone.now().strftime('%Y%m%d_%H%M')}.pdf"
+            filename = f"internhub_rapport_{timezone.now().strftime('%Y%m%d_%H%M')}.pdf"
             response = HttpResponse(pdf_bytes, content_type='application/pdf')
             response['Content-Disposition'] = f'attachment; filename="{filename}"'
             return response

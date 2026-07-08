@@ -378,6 +378,9 @@
   padding: 0;
   min-width: 0;
 }
+.offers-search-wrap input:focus {
+  box-shadow: none;
+}
 .offers-search-wrap input::placeholder { color: var(--text-subtle); }
 
 .offers-filter-btn {

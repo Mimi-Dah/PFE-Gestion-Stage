@@ -97,6 +97,7 @@ const GestionCandidatures = () => {
   const queryClient = useQueryClient();
   const [cvPreview, setCvPreview] = useState(null);
   const [filter, setFilter]       = useState('all');
+  const [actionError, setActionError] = useState('');
 
   const STATUS_LABELS = {
     En_attente:          t('pages.entreprise.gestionCandidatures.statusNew'),
@@ -119,8 +120,18 @@ const GestionCandidatures = () => {
   });
 
   const updateStatus = useMutation({
-    mutationFn: ({ id, statut }) => api.patch(`candidatures/${id}/statut/`, { statut }),
-    onSuccess: () => queryClient.invalidateQueries(['entreprise-candidatures']),
+    mutationFn: async ({ id, statut }) => {
+      const result = await api.safeRequest(api.patch(`candidatures/${id}/statut/`, { statut }));
+      if (result.ok) return result.value.data;
+      throw result.error;
+    },
+    onSuccess: () => {
+      setActionError('');
+      queryClient.invalidateQueries({ queryKey: ['entreprise-candidatures'] });
+    },
+    onError: (err) => {
+      setActionError(err.message || t('pages.entreprise.gestionCandidatures.errorUpdating'));
+    },
   });
 
   const all = Array.isArray(raw) ? raw : (raw?.results ?? []);
@@ -145,6 +156,12 @@ const GestionCandidatures = () => {
         title={t('pages.entreprise.gestionCandidatures.title')}
         subtitle={t('pages.entreprise.gestionCandidatures.subtitle')}
       />
+
+      {actionError && (
+        <div style={{ backgroundColor: 'var(--error-light)', color: 'var(--error)', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontWeight: '600', fontSize: '0.9rem' }}>
+          {actionError}
+        </div>
+      )}
 
       {/* CRUD card */}
       <div className="vl-card">
@@ -252,12 +269,14 @@ const GestionCandidatures = () => {
                           <>
                             <button className="vl-btn s-btn"
                               onClick={() => updateStatus.mutate({ id: cand.id_candidature, statut: 'Acceptée' })}
+                              disabled={updateStatus.isPending}
                               title={t('pages.entreprise.gestionCandidatures.titleAccept')}
                             >
                               <CheckCircle size={13} />
                             </button>
                             <button className="vl-btn danger"
                               onClick={() => updateStatus.mutate({ id: cand.id_candidature, statut: 'Refusée' })}
+                              disabled={updateStatus.isPending}
                               title={t('pages.entreprise.gestionCandidatures.titleReject')}
                             >
                               <XCircle size={13} />

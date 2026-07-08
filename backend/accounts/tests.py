@@ -1,4 +1,4 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -86,69 +86,17 @@ class UserRegistrationTests(TestCase):
         self.assertNotEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.filter(courriel='existing@test.com').count(), 1)
 
-    @override_settings(DEBUG=True)
-    def test_new_user_is_auto_verified_in_debug(self):
+    def test_new_user_is_verified_immediately(self):
         self.client.post(self.URL, {
-            'courriel': 'debug_user@test.com',
+            'courriel': 'new_user@test.com',
             'password': 'TestPass123!',
             'role': 'Étudiant',
         }, format='multipart')
-        user = User.objects.get(courriel='debug_user@test.com')
+        user = User.objects.get(courriel='new_user@test.com')
         self.assertTrue(user.is_verified)
-        self.assertIsNone(user.verification_token)
-
-    @override_settings(DEBUG=False, EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
-    def test_new_user_is_unverified_in_production(self):
-        self.client.post(self.URL, {
-            'courriel': 'prod_user@test.com',
-            'password': 'TestPass123!',
-            'role': 'Étudiant',
-        }, format='multipart')
-        user = User.objects.get(courriel='prod_user@test.com')
-        self.assertFalse(user.is_verified)
-        self.assertIsNotNone(user.verification_token)
 
 
-# ── 2. Email Verification ────────────────────────────────────────────────────
-
-class EmailVerificationTests(TestCase):
-    """VerifyEmailView: POST /api/v1/auth/verify/"""
-
-    URL = '/api/v1/auth/verify/'
-
-    def setUp(self):
-        self.client = APIClient()
-
-    def test_valid_token_marks_user_as_verified_and_clears_token(self):
-        user = User.objects.create_user(
-            courriel='unverified@test.com', password='TestPass123!',
-            role='Étudiant', is_verified=False, verification_token='valid-tok-abc',
-        )
-        response = self.client.post(self.URL, {'token': 'valid-tok-abc'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        user.refresh_from_db()
-        self.assertTrue(user.is_verified)
-        self.assertIsNone(user.verification_token)
-
-    def test_invalid_token_returns_400(self):
-        response = self.client.post(self.URL, {'token': 'not-a-real-token'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_missing_token_returns_400(self):
-        response = self.client.post(self.URL, {}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_token_from_already_verified_user_is_rejected(self):
-        # Verified users have verification_token=None; no unverified user matches.
-        User.objects.create_user(
-            courriel='verified@test.com', password='TestPass123!',
-            role='Étudiant', is_verified=True, verification_token=None,
-        )
-        response = self.client.post(self.URL, {'token': 'any-old-token'}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-
-# ── 3. JWT Authentication ────────────────────────────────────────────────────
+# ── 2. JWT Authentication ────────────────────────────────────────────────────
 
 class JWTAuthTests(TestCase):
     """TokenObtainPairView: POST /api/v1/auth/login/"""

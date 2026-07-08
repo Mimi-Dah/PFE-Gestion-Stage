@@ -6,18 +6,26 @@ const AuthService = {
     return await api.safeRequest(api.post('auth/login/', { courriel: email, password }));
   },
 
-  register: async ({ email, first_name, last_name, password, role, universite, departement, specialite, niveau, matricule }) => {
+  register: async ({ email, first_name, last_name, password, role, telephone, adresse, universite, departement_id, specialite, niveau, matricule, photo, cv }) => {
     const formData = new FormData();
     formData.append('courriel',          email);
     formData.append('prenom',            first_name);
     formData.append('nom',               last_name);
     formData.append('password',          password);
     formData.append('role',              role);
+    if (telephone)       formData.append('telephone',        telephone);
+    if (adresse)         formData.append('adresse',          adresse);
     if (universite)       formData.append('universite',       universite);
     if (specialite)       formData.append('specialite',       specialite);
     if (matricule)        formData.append('matricule',        matricule);
     if (niveau)           formData.append('niveau_academique', niveau);
-    if (departement)      formData.append('departement',      departement);
+    if (departement_id)   formData.append('departement_id',   departement_id);
+    if (photo) {
+      formData.append('photo', { uri: photo.uri, name: photo.fileName || 'photo.jpg', type: photo.mimeType || 'image/jpeg' });
+    }
+    if (cv) {
+      formData.append('cv', { uri: cv.uri, name: cv.name || 'cv.pdf', type: cv.mimeType || 'application/pdf' });
+    }
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10_000);

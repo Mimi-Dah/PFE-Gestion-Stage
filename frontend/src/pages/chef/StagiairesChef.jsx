@@ -22,12 +22,12 @@ const TH = ({ children, col, sort, onSort, style = {} }) => {
         padding: '0.75rem 1rem',
         fontSize: '0.7rem',
         fontWeight: 700,
-        color: active ? '#1b6ef3' : '#64748b',
+        color: active ? '#1b6ef3' : 'var(--text-muted)',
         textTransform: 'uppercase',
         letterSpacing: '0.07em',
         textAlign: 'left',
-        background: '#f1f5f9',
-        border: '1px solid #d1d9e0',
+        background: 'var(--surface-section)',
+        border: '1px solid var(--border)',
         whiteSpace: 'nowrap',
         cursor: col != null ? 'pointer' : 'default',
         userSelect: 'none',
@@ -70,24 +70,24 @@ const AbsencesModal = ({ data, onClose }) => {
       onClick={e => e.target === e.currentTarget && onClose()}
       style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.45)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: '1rem' }}
     >
-      <div style={{ background: '#fff', borderRadius: '14px', width: '100%', maxWidth: '460px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 24px 64px rgba(15,23,42,0.18)', overflow: 'hidden' }}>
-        <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+      <div className="glass-panel" style={{ borderRadius: '14px', width: '100%', maxWidth: '460px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 24px 64px rgba(15,23,42,0.18)', overflow: 'hidden' }}>
+        <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#fef2f2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <CalendarX size={17} />
             </div>
             <div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{t('pages.chefStagiaires.absencesTitle')} · {prenom} {nom}</div>
-              <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '0.1rem' }}>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)' }}>{t('pages.chefStagiaires.absencesTitle')} · {prenom} {nom}</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
                 {t('pages.chefStagiaires.absencesReported', { count: absences.length })}
               </div>
             </div>
           </div>
           <button
             onClick={onClose}
-            style={{ width: '28px', height: '28px', border: '1px solid #e2e8f0', borderRadius: '7px', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.color = '#334155'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#94a3b8'; }}
+            style={{ width: '28px', height: '28px', border: '1px solid var(--border)', borderRadius: '7px', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface-section)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
           >
             <X size={13} />
           </button>
@@ -113,8 +113,8 @@ const AbsencesModal = ({ data, onClose }) => {
           ))}
           <button
             onClick={onClose}
-            style={{ width: '100%', height: '36px', border: '1px solid #e2e8f0', borderRadius: '8px', background: 'transparent', cursor: 'pointer', fontSize: '0.845rem', fontWeight: 600, color: '#334155', marginTop: '0.25rem' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+            style={{ width: '100%', height: '36px', border: '1px solid var(--border)', borderRadius: '8px', background: 'transparent', cursor: 'pointer', fontSize: '0.845rem', fontWeight: 600, color: 'var(--text-color)', marginTop: '0.25rem' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-section)'}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
             {t('pages.chefStagiaires.close')}
@@ -212,14 +212,14 @@ const StagiairesChef = () => {
         {statCards.map(s => (
           <div
             key={s.label}
-            style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '10px', padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.875rem', transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.15s', cursor: 'default' }}
+            style={{ background: 'var(--bg-card)', border: '1.5px solid var(--border)', borderRadius: '10px', padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.875rem', transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.15s', cursor: 'default' }}
             onMouseEnter={e => {
               e.currentTarget.style.borderColor = s.color;
               e.currentTarget.style.boxShadow = `0 4px 16px rgba(0,0,0,0.08)`;
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.borderColor = '#e2e8f0';
+              e.currentTarget.style.borderColor = 'var(--border)';
               e.currentTarget.style.boxShadow = 'none';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
@@ -228,30 +228,30 @@ const StagiairesChef = () => {
               {s.icon}
             </div>
             <div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>{s.value}</div>
-              <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 500, marginTop: '0.15rem' }}>{s.label}</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.1 }}>{s.value}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 500, marginTop: '0.15rem' }}>{s.label}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.75rem' }}>
+      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.75rem' }}>
         {t('pages.chefStagiaires.sectionLabel')}
       </p>
 
-      <div style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 1px 4px rgba(15,23,42,0.06)' }}>
+      <div className="glass-panel" style={{ overflow: 'hidden' }}>
 
-        <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1.5px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem' }}>
+        <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem' }}>
           <div style={{ position: 'relative' }}>
-            <Search size={13} style={{ position: 'absolute', left: '0.7rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
+            <Search size={13} style={{ position: 'absolute', left: '0.7rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-subtle)', pointerEvents: 'none' }} />
             <input
               type="text"
               placeholder={t('pages.chefStagiaires.searchPlaceholder')}
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(1); }}
-              style={{ height: '36px', paddingLeft: '2.1rem', paddingRight: '0.875rem', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.82rem', outline: 'none', width: '240px', color: '#334155', boxSizing: 'border-box', background: '#ffffff' }}
+              style={{ height: '36px', paddingLeft: '2.1rem', paddingRight: '0.875rem', border: '1.5px solid var(--border)', borderRadius: '8px', fontSize: '0.82rem', outline: 'none', width: '240px', color: 'var(--text-color)', boxSizing: 'border-box', background: 'var(--bg-card)' }}
               onFocus={e => e.currentTarget.style.borderColor = '#93c5fd'}
-              onBlur={e => e.currentTarget.style.borderColor = '#e2e8f0'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--border)'}
             />
           </div>
         </div>
@@ -273,16 +273,16 @@ const StagiairesChef = () => {
                 Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i}>
                     {[180, 200, 50, 80, 80, 80].map((w, j) => (
-                      <td key={j} style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0' }}>
-                        <div style={{ height: '13px', width: `${w}px`, background: '#f1f5f9', borderRadius: '6px', animation: 'pulse 1.5s ease-in-out infinite' }} />
+                      <td key={j} style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)' }}>
+                        <div style={{ height: '13px', width: `${w}px`, background: 'var(--surface-section)', borderRadius: '6px', animation: 'pulse 1.5s ease-in-out infinite' }} />
                       </td>
                     ))}
                   </tr>
                 ))
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ padding: '4rem', textAlign: 'center', border: '1px solid #d1d9e0' }}>
-                    <div style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
+                  <td colSpan={6} style={{ padding: '4rem', textAlign: 'center', border: '1px solid var(--border)' }}>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
                       {search
                         ? t('pages.chefStagiaires.noSearchResults', { search })
                         : t('pages.chefStagiaires.noStagiaires')}
@@ -300,7 +300,7 @@ const StagiairesChef = () => {
 
                 return (
                   <tr key={cand.id_candidature}>
-                    <td style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0' }}>
+                    <td style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
                         <div style={{
                           width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
@@ -314,42 +314,42 @@ const StagiairesChef = () => {
                           <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1b6ef3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {prenom} {nom}
                           </div>
-                          <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '0.1rem' }}>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
                             {cand.etudiant_detail?.niveau_academique || t('pages.chefStagiaires.student')}
                           </div>
                         </div>
                       </div>
                     </td>
 
-                    <td style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0', minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.845rem', fontWeight: 600, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        <Building size={12} color="#94a3b8" style={{ flexShrink: 0 }} />
+                    <td style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)', minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.845rem', fontWeight: 600, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <Building size={12} color="var(--text-muted)" style={{ flexShrink: 0 }} />
                         {cand.offre_detail?.entreprise?.nom || '—'}
                       </div>
-                      <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '0.15rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.15rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {cand.offre_detail?.titre}
                       </div>
                     </td>
 
-                    <td style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0' }}>
+                    <td style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)' }}>
                       {studAbsences.length > 0 ? (
                         <Badge color="#b91c1c" dot="#f87171">
                           {studAbsences.length}
                         </Badge>
                       ) : (
-                        <span style={{ color: '#cbd5e1', fontSize: '0.9rem' }}>—</span>
+                        <span style={{ color: 'var(--text-subtle)', fontSize: '0.9rem' }}>—</span>
                       )}
                     </td>
 
-                    <td style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0' }}>
+                    <td style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)' }}>
                       {report ? (
                         <Badge color="#16a34a" dot="#22c55e">{t('pages.chefStagiaires.submitted')}</Badge>
                       ) : (
-                        <span style={{ color: '#cbd5e1', fontSize: '0.9rem' }}>—</span>
+                        <span style={{ color: 'var(--text-subtle)', fontSize: '0.9rem' }}>—</span>
                       )}
                     </td>
 
-                    <td style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0' }}>
+                    <td style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)' }}>
                       <Badge
                         color={isActif ? '#16a34a' : '#94a3b8'}
                         dot={isActif ? '#22c55e' : '#cbd5e1'}
@@ -358,16 +358,16 @@ const StagiairesChef = () => {
                       </Badge>
                     </td>
 
-                    <td style={{ padding: '0.875rem 1rem', border: '1px solid #d1d9e0' }}>
+                    <td style={{ padding: '0.875rem 1rem', border: '1px solid var(--border)' }}>
                       <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', justifyContent: 'center' }}>
 
                         {report ? (
                           <button
                             onClick={() => window.open(report.fichier, '_blank')}
                             title={t('pages.chefStagiaires.downloadReport')}
-                            style={{ height: '30px', width: '30px', border: '1.5px solid #e2e8f0', borderRadius: '7px', background: '#f8fafc', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', flexShrink: 0 }}
-                            onMouseEnter={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = '#1e293b'; }}
-                            onMouseLeave={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.color = '#64748b'; }}
+                            style={{ height: '30px', width: '30px', border: '1.5px solid var(--border)', borderRadius: '7px', background: 'var(--surface-section)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', flexShrink: 0 }}
+                            onMouseEnter={e => { e.currentTarget.style.background = 'var(--border)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface-section)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
                           >
                             <Download size={13} />
                           </button>
@@ -395,20 +395,20 @@ const StagiairesChef = () => {
         </div>
 
         {!isLoading && filtered.length > 0 && (
-          <div style={{ padding: '0.875rem 1.25rem', borderTop: '1.5px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', background: '#fafafa' }}>
+          <div style={{ padding: '0.875rem 1.25rem', borderTop: '1.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', background: 'var(--surface-section)' }}>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.78rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>{t('pages.chefStagiaires.rows')}</span>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{t('pages.chefStagiaires.rows')}</span>
               <select
                 value={pageSize}
                 onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}
-                style={{ height: '30px', padding: '0 0.5rem', border: '1.5px solid #e2e8f0', borderRadius: '6px', fontSize: '0.78rem', color: '#334155', background: '#ffffff', cursor: 'pointer', outline: 'none' }}
+                style={{ height: '30px', padding: '0 0.5rem', border: '1.5px solid var(--border)', borderRadius: '6px', fontSize: '0.78rem', color: 'var(--text-color)', background: 'var(--bg-card)', cursor: 'pointer', outline: 'none' }}
               >
                 {PAGE_SIZES.map(n => <option key={n} value={n}>{n}</option>)}
               </select>
             </div>
 
-            <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
               {((page - 1) * pageSize) + 1}–{Math.min(page * pageSize, filtered.length)} {t('pages.chefStagiaires.of')} {filtered.length}
             </span>
 
@@ -416,7 +416,7 @@ const StagiairesChef = () => {
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                style={{ height: '30px', width: '30px', border: '1.5px solid #e2e8f0', borderRadius: '6px', background: '#ffffff', cursor: page === 1 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === 1 ? '#e2e8f0' : '#64748b', opacity: page === 1 ? 0.5 : 1 }}
+                style={{ height: '30px', width: '30px', border: '1.5px solid var(--border)', borderRadius: '6px', background: 'var(--bg-card)', cursor: page === 1 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === 1 ? 'var(--border)' : 'var(--text-muted)', opacity: page === 1 ? 0.5 : 1 }}
               >
                 <ChevronLeft size={14} />
               </button>
@@ -433,7 +433,7 @@ const StagiairesChef = () => {
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    style={{ height: '30px', minWidth: '30px', padding: '0 0.3rem', border: `1.5px solid ${active ? '#1b6ef3' : '#e2e8f0'}`, borderRadius: '6px', background: active ? '#1b6ef3' : '#ffffff', cursor: 'pointer', fontSize: '0.78rem', fontWeight: active ? 700 : 400, color: active ? '#ffffff' : '#64748b' }}
+                    style={{ height: '30px', minWidth: '30px', padding: '0 0.3rem', border: `1.5px solid ${active ? '#1b6ef3' : 'var(--border)'}`, borderRadius: '6px', background: active ? '#1b6ef3' : 'var(--bg-card)', cursor: 'pointer', fontSize: '0.78rem', fontWeight: active ? 700 : 400, color: active ? '#ffffff' : 'var(--text-muted)' }}
                   >
                     {n}
                   </button>
@@ -443,7 +443,7 @@ const StagiairesChef = () => {
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                style={{ height: '30px', width: '30px', border: '1.5px solid #e2e8f0', borderRadius: '6px', background: '#ffffff', cursor: page === totalPages ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === totalPages ? '#e2e8f0' : '#64748b', opacity: page === totalPages ? 0.5 : 1 }}
+                style={{ height: '30px', width: '30px', border: '1.5px solid var(--border)', borderRadius: '6px', background: 'var(--bg-card)', cursor: page === totalPages ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: page === totalPages ? 'var(--border)' : 'var(--text-muted)', opacity: page === totalPages ? 0.5 : 1 }}
               >
                 <ChevronRight size={14} />
               </button>

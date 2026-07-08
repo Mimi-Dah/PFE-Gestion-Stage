@@ -191,9 +191,6 @@ export default function OffersScreen({ navigation }) {
         <Text style={[s.sectionTitle, { color: isDark ? C.textSub : '#64748B' }]}>
           {t('offers.categories')}
         </Text>
-        <TouchableOpacity activeOpacity={0.7} onPress={() => setFilter('Tous')}>
-          <Text style={[s.seeAll, { color: C.primary }]}>{t('offers.seeAll')}</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={s.catsRow}>
@@ -241,14 +238,6 @@ export default function OffersScreen({ navigation }) {
         <Text style={[s.sectionTitle, { color: isDark ? C.textSub : '#64748B' }]}>
           {filter === 'Favoris' ? t('offers.myFavorites') : t('offers.topOffers')}
         </Text>
-        {filter !== 'Favoris' && (
-          <View style={[s.newBadge, {
-            borderColor: isDark ? '#3B82F6' : '#BFDBFE',
-            backgroundColor: isDark ? 'rgba(59,130,246,0.15)' : '#EFF6FF',
-          }]}>
-            <Text style={[s.newBadgeText, { color: C.primary }]}>{t('offers.newBadge')}</Text>
-          </View>
-        )}
       </View>
 
     </View>
@@ -588,24 +577,6 @@ const s = StyleSheet.create({
     fontSize:      11,
     letterSpacing: 1.4,
   },
-  seeAll: {
-    fontFamily: F.semi,
-    fontSize:   13,
-  },
-
-  /* ── NOUVEAU badge ── */
-  newBadge: {
-    borderWidth:       1,
-    borderRadius:      999,
-    paddingHorizontal: 12,
-    paddingVertical:   4,
-  },
-  newBadgeText: {
-    fontFamily:    F.bold,
-    fontSize:      10,
-    letterSpacing: 0.8,
-  },
-
   /* ── Categories ── */
   catsRow: {
     flexDirection:     'row',

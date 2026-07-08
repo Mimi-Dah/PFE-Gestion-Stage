@@ -30,8 +30,8 @@ const StepItem = ({ icon: Icon, label, state }) => {
     <div className="vf-folder-item">
       <div className="vf-folder-item-left">
         <div className="vf-folder-icon" style={{
-          background: done ? '#eff6ff' : current ? '#fefce8' : '#f8fafc',
-          color:      done ? '#1b6ef3' : current ? '#b45309' : '#94a3b8',
+          background: done ? '#eff6ff' : current ? '#fefce8' : 'var(--surface-section)',
+          color:      done ? '#1b6ef3' : current ? '#b45309' : 'var(--text-muted)',
         }}>
           <Icon size={16} />
         </div>
@@ -46,7 +46,7 @@ const StepItem = ({ icon: Icon, label, state }) => {
           {t('pages.myInternship.stepCurrent')}
         </span>
       ) : (
-        <span style={{ fontSize: '0.7rem', color: '#cbd5e1', fontWeight: 600 }}>—</span>
+        <span style={{ fontSize: '0.7rem', color: 'var(--text-subtle)', fontWeight: 600 }}>—</span>
       )}
     </div>
   );
@@ -57,8 +57,8 @@ const IconBtn = ({ icon: Icon, title, onClick, color, border, bg }) => (
   <button
     title={title}
     onClick={onClick}
-    style={{ width: 30, height: 30, border: `1.5px solid ${border || '#e2e8f0'}`, borderRadius: 7, background: bg || 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: color || '#64748b' }}
-    onMouseEnter={e => e.currentTarget.style.background = '#f1f5f9'}
+    style={{ width: 30, height: 30, border: `1.5px solid ${border || 'var(--border)'}`, borderRadius: 7, background: bg || 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: color || 'var(--text-muted)' }}
+    onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-section)'}
     onMouseLeave={e => e.currentTarget.style.background = bg || 'transparent'}
   >
     <Icon size={13} />
@@ -174,7 +174,7 @@ const MyInternship = () => {
   /* ── Empty state ─────────────────────────────────────────────── */
   if (!activeConv) return (
     <div className="ms-empty">
-      <Briefcase size={52} color="#cbd5e1" />
+      <Briefcase size={52} color="var(--text-subtle)" />
       <h2>{t('pages.myInternship.emptyTitle')}</h2>
       <p>{t('pages.myInternship.emptySubtitle')}</p>
       <button className="vf-btn vf-btn-primary" style={{ marginTop: '0.5rem' }}
@@ -283,16 +283,16 @@ const MyInternship = () => {
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.875rem', flexShrink: 0 }}>
           <span className="ms-sign-row" style={{ gap: 5 }}>
-            <span className="ms-sign-dot" style={{ background: activeConv.signe_par_etudiant_le ? '#16a34a' : '#e2e8f0' }} />
-            <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{t('pages.myInternship.signedStudent')}</span>
-            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: activeConv.signe_par_etudiant_le ? '#16a34a' : '#94a3b8' }}>
+            <span className="ms-sign-dot" style={{ background: activeConv.signe_par_etudiant_le ? '#16a34a' : 'var(--border)' }} />
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t('pages.myInternship.signedStudent')}</span>
+            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: activeConv.signe_par_etudiant_le ? '#16a34a' : 'var(--text-muted)' }}>
               {activeConv.signe_par_etudiant_le ? fmt(activeConv.signe_par_etudiant_le) : t('pages.myInternship.waitingSignature')}
             </span>
           </span>
           <span className="ms-sign-row" style={{ gap: 5 }}>
-            <span className="ms-sign-dot" style={{ background: activeConv.signe_par_entreprise_le ? '#16a34a' : '#e2e8f0' }} />
-            <span style={{ fontSize: '0.78rem', color: '#64748b' }}>{t('pages.myInternship.signedCompany')}</span>
-            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: activeConv.signe_par_entreprise_le ? '#16a34a' : '#94a3b8' }}>
+            <span className="ms-sign-dot" style={{ background: activeConv.signe_par_entreprise_le ? '#16a34a' : 'var(--border)' }} />
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{t('pages.myInternship.signedCompany')}</span>
+            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: activeConv.signe_par_entreprise_le ? '#16a34a' : 'var(--text-muted)' }}>
               {activeConv.signe_par_entreprise_le ? fmt(activeConv.signe_par_entreprise_le) : t('pages.myInternship.waitingSignature')}
             </span>
           </span>
@@ -304,7 +304,7 @@ const MyInternship = () => {
 
         {/* Steps card */}
         <div className="vf-card">
-          <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid #f1f5f9' }}>
+          <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid var(--border)' }}>
             <div className="vf-card-title-row" style={{ margin: 0 }}>
               <h3 className="vf-card-title" style={{ margin: 0 }}>{t('pages.myInternship.stepsTitle')}</h3>
               <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#1b6ef3' }}>
@@ -326,7 +326,7 @@ const MyInternship = () => {
 
         {/* Documents card */}
         <div className="vf-card">
-          <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid #f1f5f9' }}>
+          <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid var(--border)' }}>
             <h3 className="vf-card-title" style={{ margin: 0 }}>{t('pages.myInternship.docsTitle')}</h3>
           </div>
           <div className="vf-file-table-header">
@@ -341,7 +341,7 @@ const MyInternship = () => {
               <div className="vf-file-icon"><FileCheck size={15} color="#1b6ef3" /></div>
               <div>
                 <div className="vf-file-text">{t('pages.myInternship.conventionDoc')}</div>
-                <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                   {activeConv.numero_convention || `#${activeConvId}`}
                 </div>
               </div>
@@ -367,13 +367,13 @@ const MyInternship = () => {
           {/* Rapport row */}
           <div className="vf-file-row">
             <div className="vf-file-name">
-              <div className="vf-file-icon" style={{ background: activeReport ? '#f0fdf4' : '#f8fafc' }}>
-                <FileText size={15} color={activeReport ? '#16a34a' : '#94a3b8'} />
+              <div className="vf-file-icon" style={{ background: activeReport ? '#f0fdf4' : 'var(--surface-section)' }}>
+                <FileText size={15} color={activeReport ? '#16a34a' : 'var(--text-muted)'} />
               </div>
               <div>
                 <div className="vf-file-text">{t('pages.myInternship.reportDoc')}</div>
                 {activeReport?.resume && (
-                  <div style={{ fontSize: '0.7rem', color: '#94a3b8', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {activeReport.resume}
                   </div>
                 )}
@@ -386,7 +386,7 @@ const MyInternship = () => {
                   {t('pages.myInternship.submitted')}
                 </span>
               ) : (
-                <span style={{ fontSize: '0.7rem', color: '#cbd5e1', fontWeight: 600 }}>{t('pages.myInternship.notSubmitted')}</span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-subtle)', fontWeight: 600 }}>{t('pages.myInternship.notSubmitted')}</span>
               )}
             </span>
             <div className="vf-file-actions">
@@ -402,7 +402,7 @@ const MyInternship = () => {
         {/* Convention upload */}
         {!activeConv.signe_par_etudiant_le && (
           <div className="vf-card">
-            <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid #f1f5f9' }}>
+            <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid var(--border)' }}>
               <div className="vf-card-title-row" style={{ margin: 0 }}>
                 <h3 className="vf-card-title" style={{ margin: 0 }}>{t('pages.myInternship.signTitle')}</h3>
                 <span className="v-tag v-tag-warning"><Clock size={11} /> {t('pages.myInternship.signPending')}</span>
@@ -431,7 +431,7 @@ const MyInternship = () => {
         {/* Rapport upload */}
         {!activeReport && canSubmit && (
           <div className="vf-card">
-            <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid #f1f5f9' }}>
+            <div style={{ padding: '1.125rem 1.375rem', borderBottom: '1.5px solid var(--border)' }}>
               <h3 className="vf-card-title" style={{ margin: 0 }}>{t('pages.myInternship.reportTitle')}</h3>
             </div>
             <form onSubmit={handleReportUpload} style={{ padding: '1.125rem 1.375rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -446,12 +446,12 @@ const MyInternship = () => {
                   required
                   style={{
                     width: '100%', padding: '0.75rem', borderRadius: '10px',
-                    border: '1.5px solid #e2e8f0', fontSize: '0.845rem',
-                    fontFamily: 'inherit', resize: 'none', background: '#ffffff',
-                    color: '#1e293b', outline: 'none', boxSizing: 'border-box',
+                    border: '1.5px solid var(--border)', fontSize: '0.845rem',
+                    fontFamily: 'inherit', resize: 'none', background: 'var(--bg-card)',
+                    color: 'var(--text-color)', outline: 'none', boxSizing: 'border-box',
                   }}
                   onFocus={e => e.currentTarget.style.borderColor = '#93c5fd'}
-                  onBlur={e  => e.currentTarget.style.borderColor = '#e2e8f0'}
+                  onBlur={e  => e.currentTarget.style.borderColor = 'var(--border)'}
                 />
               </div>
               <div className="ms-upload-zone">
@@ -477,10 +477,10 @@ const MyInternship = () => {
         {/* Évaluation card */}
         {activeEval && (
           <div className="vf-card">
-            <div className="ms-eval-header" style={{ padding: '1.125rem 1.375rem', borderBottom: '1px dashed #eaecf2' }}>
+            <div className="ms-eval-header" style={{ padding: '1.125rem 1.375rem', borderBottom: '1px dashed var(--border)' }}>
               <div className="vf-card-title-row" style={{ margin: 0 }}>
                 <h3 className="vf-card-title" style={{ margin: 0 }}>{t('pages.myInternship.evalTitle')}</h3>
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>{activeEval.entreprise_nom}</span>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{activeEval.entreprise_nom}</span>
               </div>
             </div>
 
@@ -492,7 +492,7 @@ const MyInternship = () => {
                   <span className="ms-serif" style={{ fontSize: '2.25rem', fontWeight: 700, color: '#1b6ef3', lineHeight: 1, letterSpacing: '-0.03em' }}>
                     {activeEval.note_globale}
                   </span>
-                  <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 500 }}>/20</span>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 500 }}>/20</span>
                 </div>
                 <div className="ms-score-track-v2" aria-label={`${activeEval.note_globale} / 20`}>
                   <svg viewBox="0 0 200 14" preserveAspectRatio="none">
@@ -502,7 +502,7 @@ const MyInternship = () => {
                         <stop offset="100%" stopColor="#6366f1" />
                       </linearGradient>
                     </defs>
-                    <line x1="4" y1="7" x2="196" y2="7" stroke="#e8edf5" strokeWidth="1.5" strokeLinecap="round" />
+                    <line x1="4" y1="7" x2="196" y2="7" style={{ stroke: 'var(--border)' }} strokeWidth="1.5" strokeLinecap="round" />
                     <line x1="4" y1="7" x2={4 + ((activeEval.note_globale / 20) * 192)} y2="7"
                       stroke="url(#sg)" strokeWidth="1.5" strokeLinecap="round"
                       style={{ transition: 'x2 0.8s cubic-bezier(0.4,0,0.2,1)' }} />
@@ -510,7 +510,7 @@ const MyInternship = () => {
                   </svg>
                 </div>
                 {activeEval.commentaires && (
-                  <p style={{ margin: 0, fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic', lineHeight: 1.5 }}>
+                  <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>
                     "{activeEval.commentaires}"
                   </p>
                 )}
@@ -527,18 +527,18 @@ const MyInternship = () => {
                   const val = rawVal > 5 ? +(rawVal / 4).toFixed(1) : rawVal;
                   return (
                     <div key={label} style={{
-                      background: '#f8fafc', borderRadius: 10,
-                      border: '1.5px solid #eaecf2',
+                      background: 'var(--surface-section)', borderRadius: 10,
+                      border: '1.5px solid var(--border)',
                       padding: '0.75rem 0.875rem',
                       display: 'flex', flexDirection: 'column', gap: '0.5rem',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <div style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0 }} />
-                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>{label}</span>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-color)' }}>{label}</span>
                         </div>
-                        <span className="ms-serif" style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b' }}>
-                          {val}<span style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: 400, fontFamily: 'Inter, sans-serif' }}>/5</span>
+                        <span className="ms-serif" style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                          {val}<span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 400, fontFamily: 'Inter, sans-serif' }}>/5</span>
                         </span>
                       </div>
                       <div className="ms-subscore-bar-track">

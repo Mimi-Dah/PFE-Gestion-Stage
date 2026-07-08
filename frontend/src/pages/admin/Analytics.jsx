@@ -312,7 +312,7 @@ const AdminAnalytics = () => {
       link.href = url;
       const disposition = response.headers['content-disposition'];
       const match = disposition && disposition.match(/filename="([^"]+)"/);
-      link.download = match ? match[1] : 'stageflow_rapport.pdf';
+      link.download = match ? match[1] : 'internhub_rapport.pdf';
       document.body.appendChild(link);
       link.click();
       link.remove();

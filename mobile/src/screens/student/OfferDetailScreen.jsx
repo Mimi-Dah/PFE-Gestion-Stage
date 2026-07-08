@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
   Modal, TextInput, ActivityIndicator, Alert, I18nManager,
+  KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as DocumentPicker from 'expo-document-picker';
@@ -164,7 +165,7 @@ export default function OfferDetailScreen({ navigation, route }) {
 
         {/* Details grid */}
         <View style={[styles.section, { backgroundColor: C.bgCard, borderColor: C.border }]}>
-          <Text style={[styles.sectionTitle, { color: C.text }]}>{t('offerDetail.location')}</Text>
+          <Text style={[styles.sectionTitle, { color: C.text }]}>{t('offerDetail.information')}</Text>
           <View style={styles.detailGrid}>
             <DetailRow icon={Calendar} label={t('offerDetail.startDate')} value={startDate} C={C} />
             <DetailRow icon={Calendar} label={t('offerDetail.endDate')} value={endDate} C={C} />
@@ -249,7 +250,10 @@ export default function OfferDetailScreen({ navigation, route }) {
 
       {/* Modal candidature */}
       <Modal visible={modalOpen} transparent animationType="slide" onRequestClose={() => { if (!candidatureMutation.isPending) setModalOpen(false); }}>
-        <View style={styles.modalOverlay}>
+        <KeyboardAvoidingView
+          style={styles.modalOverlay}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
           <View style={[styles.modalSheet, { backgroundColor: C.bgCard }]}>
             <View style={[styles.handle, { backgroundColor: C.border }]} />
 
@@ -304,7 +308,7 @@ export default function OfferDetailScreen({ navigation, route }) {
               </>
             )}
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );

@@ -9,11 +9,11 @@ def send_notification_email(self, user_email, titre, message, lien=None):
     body = message
     if lien:
         body += f"\n\n→ {frontend_url}{lien}"
-    body += "\n\n---\nL'équipe StageFlow — Ne pas répondre à cet email."
+    body += "\n\n---\nL'équipe internHub — Ne pas répondre à cet email."
 
     try:
         send_mail(
-            subject=f"StageFlow — {titre}",
+            subject=f"internHub — {titre}",
             message=body,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user_email],

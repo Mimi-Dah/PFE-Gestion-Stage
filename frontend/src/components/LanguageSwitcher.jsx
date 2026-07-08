@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import useLayoutStore from '../store/layoutStore';
+import useAuthStore from '../store/authStore';
+import api from '../services/api';
 
 const LANGS = [
   { code: 'fr', label: 'Français', flag: '🇫🇷' },
@@ -12,6 +14,7 @@ const LANGS = [
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const { language, setLanguage } = useLayoutStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -24,6 +27,12 @@ const LanguageSwitcher = () => {
     document.documentElement.setAttribute('lang', code);
     document.documentElement.setAttribute('dir', code === 'ar' ? 'rtl' : 'ltr');
     setOpen(false);
+
+    // Persist so future backend-generated notifications (email + in-app)
+    // are created in the language the user is actually reading the UI in.
+    if (isAuthenticated) {
+      api.patch('auth/language/', { preferred_language: code }).catch(() => {});
+    }
   };
 
   useEffect(() => {

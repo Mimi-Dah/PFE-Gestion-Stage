@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, ScrollView, TextInput, TouchableOpacity,
   StyleSheet, Alert, ActivityIndicator, Image,
@@ -13,6 +13,7 @@ import useAuthStore from '../../store/authStore';
 import useLayoutStore from '../../store/layoutStore';
 import { getColors } from '../../theme/colors';
 import api from '../../services/api';
+import AuthService from '../../services/auth';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '../../components/ui/PageHeader';
 
@@ -39,6 +40,28 @@ export default function ProfileEditScreen({ navigation }) {
   const [newPhoto, setNewPhoto] = useState(null);
   const [newCv,    setNewCv]   = useState(null);
   const [showNiveaux, setShowNiveaux] = useState(false);
+
+  /* ── Toujours charger les infos à jour depuis la base au montage ── */
+  useEffect(() => {
+    let active = true;
+    AuthService.getUserProfile().then((result) => {
+      if (!active || !result.ok) return;
+      const freshUser   = result.value.data;
+      const freshProfil = freshUser.profil_etudiant || {};
+      updateUser(freshUser);
+      setForm({
+        prenom:            freshProfil.prenom            || '',
+        nom:               freshProfil.nom               || '',
+        telephone:         freshProfil.telephone          || '',
+        adresse:           freshProfil.adresse            || '',
+        universite:        freshProfil.universite         || '',
+        specialite:        freshProfil.specialite         || '',
+        matricule:         freshProfil.matricule          || '',
+        niveau_academique: freshProfil.niveau_academique  || '',
+      });
+    });
+    return () => { active = false; };
+  }, []);
 
   const set = (key) => (val) => setForm((f) => ({ ...f, [key]: val }));
 
@@ -142,7 +165,7 @@ export default function ProfileEditScreen({ navigation }) {
         <Text style={[styles.avatarHint, { color: C.textMuted }]}>{t('profileEdit.changePhoto')}</Text>
 
         {/* ── Section: Infos personnelles ── */}
-        <SectionTitle title={t('auth.register.titleForm1').toUpperCase()} C={C} />
+        <SectionTitle title={t('profileEdit.personalInfoSection').toUpperCase()} C={C} />
         <View style={[styles.card, { backgroundColor: C.bgCard, borderColor: C.border }]}>
           <Field label={`${t('profileEdit.firstName')} *`} value={form.prenom}    onChange={set('prenom')}    C={C} />
           <Divider C={C} />
@@ -154,7 +177,7 @@ export default function ProfileEditScreen({ navigation }) {
         </View>
 
         {/* ── Section: Infos académiques ── */}
-        <SectionTitle title={t('auth.register.titleForm2').toUpperCase()} C={C} />
+        <SectionTitle title={t('profileEdit.academicInfoSection').toUpperCase()} C={C} />
         <View style={[styles.card, { backgroundColor: C.bgCard, borderColor: C.border }]}>
           <Field label={t('profileEdit.university')}  value={form.universite}  onChange={set('universite')}  C={C} />
           <Divider C={C} />
@@ -243,6 +266,9 @@ function Field({ label, value, onChange, C, keyboardType, multiline }) {
         placeholderTextColor={C.textMuted}
         placeholder="—"
         multiline={!!multiline}
+        textContentType="none"
+        autoComplete="off"
+        importantForAutofill="no"
       />
     </View>
   );

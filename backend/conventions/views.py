@@ -2,6 +2,8 @@
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
 from .models import ConventionDeStage
 from .serializers import ConventionDeStageSerializer
 from notifications.utils import create_notification
@@ -60,16 +62,23 @@ class ConventionDeStageViewSet(viewsets.ModelViewSet):
         # Notify Student
         create_notification(
             user=convention.candidature.etudiant.user,
-            titre="Convention Validée",
-            message=f"Votre convention {convention.numero_convention} a été validée par le département.",
+            titre=_("Convention Validée"),
+            message=format_lazy(
+                _("Votre convention {numero} a été validée par le département."),
+                numero=convention.numero_convention,
+            ),
             type_event="Convention_validee",
             lien="/espace/mon-stage"
         )
         # Notify Enterprise
         create_notification(
             user=convention.candidature.offre.entreprise.user,
-            titre="Convention Validée",
-            message=f"La convention {convention.numero_convention} ({convention.candidature.etudiant.prenom} {convention.candidature.etudiant.nom}) a été validée.",
+            titre=_("Convention Validée"),
+            message=format_lazy(
+                _("La convention {numero} ({etudiant}) a été validée."),
+                numero=convention.numero_convention,
+                etudiant=f"{convention.candidature.etudiant.prenom} {convention.candidature.etudiant.nom}",
+            ),
             type_event="Convention_validee",
             lien="/espace/entreprise/conventions"
         )
@@ -91,16 +100,23 @@ class ConventionDeStageViewSet(viewsets.ModelViewSet):
         # Notify Student
         create_notification(
             user=convention.candidature.etudiant.user,
-            titre="Convention Refusée",
-            message=f"Votre convention {convention.numero_convention} a été refusée. Motif : {motif}",
+            titre=_("Convention Refusée"),
+            message=format_lazy(
+                _("Votre convention {numero} a été refusée. Motif : {motif}"),
+                numero=convention.numero_convention,
+                motif=motif,
+            ),
             type_event="Convention_refusee",
             lien="/espace/mon-stage"
         )
         # Notify Enterprise
         create_notification(
             user=convention.candidature.offre.entreprise.user,
-            titre="Convention Refusée",
-            message=f"La convention {convention.numero_convention} a été refusée par le département.",
+            titre=_("Convention Refusée"),
+            message=format_lazy(
+                _("La convention {numero} a été refusée par le département."),
+                numero=convention.numero_convention,
+            ),
             type_event="Convention_refusee",
             lien="/espace/entreprise/conventions"
         )
@@ -122,8 +138,12 @@ class ConventionDeStageViewSet(viewsets.ModelViewSet):
         # Notify Enterprise
         create_notification(
             user=convention.candidature.offre.entreprise.user,
-            titre="Signature Étudiant",
-            message=f"L'étudiant {convention.candidature.etudiant.prenom} {convention.candidature.etudiant.nom} a signé la convention {convention.numero_convention}.",
+            titre=_("Signature Étudiant"),
+            message=format_lazy(
+                _("L'étudiant {etudiant} a signé la convention {numero}."),
+                etudiant=f"{convention.candidature.etudiant.prenom} {convention.candidature.etudiant.nom}",
+                numero=convention.numero_convention,
+            ),
             type_event="Convention_signee_etudiant",
             lien="/espace/entreprise/conventions"
         )
@@ -148,8 +168,11 @@ class ConventionDeStageViewSet(viewsets.ModelViewSet):
         # Notify Student
         create_notification(
             user=convention.candidature.etudiant.user,
-            titre="Signature Entreprise",
-            message=f"L'entreprise a signé votre convention {convention.numero_convention}.",
+            titre=_("Signature Entreprise"),
+            message=format_lazy(
+                _("L'entreprise a signé votre convention {numero}."),
+                numero=convention.numero_convention,
+            ),
             type_event="Convention_signee_entreprise",
             lien="/espace/mon-stage"
         )

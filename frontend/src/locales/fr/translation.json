@@ -124,10 +124,6 @@
       "submitting": "Réinitialisation...",
       "successMessage": "Votre mot de passe a été réinitialisé avec succès.",
       "backToLogin": "Retour à la connexion"
-    },
-    "verifyAccount": {
-      "title": "Vérifier votre compte",
-      "subtitle": "Consultez votre email pour le lien de vérification."
     }
   },
   "nav": {
@@ -183,7 +179,8 @@
       "interns": "Stagiaires",
       "overview": "Vue",
       "contracts": "Conventions",
-      "users": "Utilisateurs"
+      "users": "Utilisateurs",
+      "absences": "Absences"
     }
   },
   "topbar": {
@@ -668,7 +665,7 @@
     "chefAbsences": {
       "eyebrow": "Chef de département",
       "title": "Suivi des absences",
-      "subtitle": "Examinez et validez les justifications des étudiants pour les absences signalées.",
+      "subtitle": "Consultez les absences signalées et leur traitement par les entreprises.",
       "filterAll": "Toutes",
       "filterReported": "Signalées",
       "filterToApprove": "À approuver",
@@ -706,10 +703,9 @@
       "studentJustification": "Justification de l'étudiant",
       "seeDocument": "Voir le document",
       "noJustification": "Aucune justification soumise par l'étudiant.",
-      "pendingMessage": "L'étudiant a soumis une justification — examinez-la avant de décider.",
-      "reject": "Refuser",
-      "approveJustification": "Approuver la justification",
-      "excuseWithout": "Excuser sans justification",
+      "pendingMessage": "L'étudiant a soumis une justification, en attente de décision par l'entreprise.",
+      "awaitingStudent": "En attente de justification de l'étudiant.",
+      "awaitingCompanyDecision": "En attente de la décision de l'entreprise.",
       "absenceJustified": "Absence justifiée",
       "absenceUnjustified": "Absence non justifiée",
       "abandonWarning": "À 3 absences non justifiées, le stage est automatiquement marqué comme abandonné."
@@ -1151,6 +1147,7 @@
       "modal": {
         "title": "Soumettre une justification",
         "absenceDate": "Absence du",
+        "company": "Entreprise",
         "lastDayWarning": "Dernier jour pour justifier !",
         "daysLeft_one": "Il vous reste {{count}} jour pour justifier.",
         "daysLeft_other": "Il vous reste {{count}} jours pour justifier.",
@@ -1385,6 +1382,7 @@
         "results_one": "{{count}} résultat",
         "results_other": "{{count}} résultats",
         "noApps": "Aucune candidature trouvée.",
+        "errorUpdating": "Erreur lors de la mise à jour de la candidature.",
         "colCandidate": "Candidat",
         "colOffer": "Offre",
         "colContact": "Contact",

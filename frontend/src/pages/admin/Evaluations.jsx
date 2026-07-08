@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../../components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import {
-  Search, Star, Building2, X, MessageSquare,
+  Search, Building2, X, MessageSquare,
   ChevronLeft, ChevronRight, ArrowUpDown, ArrowUp, ArrowDown,
   ClipboardCheck, TrendingUp, ThumbsUp, Award,
 } from 'lucide-react';
@@ -45,15 +45,9 @@ const TH = ({ children, col, sort, onSort, style = {} }) => {
   );
 };
 
-const Stars = ({ value, max = 5, size = 13 }) => (
-  <span style={{ display: 'inline-flex', gap: '2px', alignItems: 'center' }}>
-    {Array.from({ length: max }).map((_, i) => (
-      <Star key={i} size={size}
-        fill={i < value ? '#f59e0b' : 'none'}
-        stroke={i < value ? '#f59e0b' : 'var(--border)'}
-      />
-    ))}
-    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-color)', marginLeft: '4px' }}>{value}/{max}</span>
+const Stars = ({ value, max = 5 }) => (
+  <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.2rem', padding: '0.2rem 0.6rem', borderRadius: '6px', background: 'var(--surface-section)', color: 'var(--text-color)', fontWeight: 700, fontSize: '0.8rem' }}>
+    {value}<span style={{ fontSize: '0.65rem', fontWeight: 500, color: 'var(--text-subtle)' }}>/{max}</span>
   </span>
 );
 

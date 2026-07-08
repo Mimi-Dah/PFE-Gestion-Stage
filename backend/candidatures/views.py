@@ -1,4 +1,6 @@
 ﻿from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -55,8 +57,12 @@ class CandidatureViewSet(viewsets.ModelViewSet):
             
             create_notification(
                 user=entreprise_user,
-                titre="Nouvelle Candidature",
-                message=f"{candidature.etudiant.prenom} {candidature.etudiant.nom} a postulé à votre offre '{candidature.offre.titre}'.",
+                titre=_("Nouvelle Candidature"),
+                message=format_lazy(
+                    _("{etudiant} a postulé à votre offre '{offre}'."),
+                    etudiant=f"{candidature.etudiant.prenom} {candidature.etudiant.nom}",
+                    offre=candidature.offre.titre,
+                ),
                 type_event="Nouvelle_candidature",
                 # Correct deep link for entreprise to see candidates of this offer
                 lien=f"/espace/entreprise/offres/{candidature.offre.id_offre}/candidatures"
@@ -110,10 +116,13 @@ class CandidatureViewSet(viewsets.ModelViewSet):
 
         create_notification(
             user=candidature.etudiant.user,
-            titre="Absence signalée",
-            message=(
-                f"Une absence a été signalée pour votre stage "
-                f"'{candidature.offre.titre}' le {absence.date_absence}."
+            titre=_("Absence signalée"),
+            message=format_lazy(
+                _(
+                    "Une absence a été signalée pour votre stage "
+                    "'{offre}' le {date}."
+                ),
+                offre=candidature.offre.titre, date=absence.date_absence,
             ),
             type_event="Absence_signalee",
             lien="/espace/absences",
@@ -125,11 +134,15 @@ class CandidatureViewSet(viewsets.ModelViewSet):
         if chef:
             create_notification(
                 user=chef.user,
-                titre="Absence à valider",
-                message=(
-                    f"{candidature.etudiant.prenom} {candidature.etudiant.nom} "
-                    f"a été signalé absent le {absence.date_absence} "
-                    f"(stage : '{candidature.offre.titre}')."
+                titre=_("Absence à valider"),
+                message=format_lazy(
+                    _(
+                        "{etudiant} a été signalé absent le {date} "
+                        "(stage : '{offre}')."
+                    ),
+                    etudiant=f"{candidature.etudiant.prenom} {candidature.etudiant.nom}",
+                    date=absence.date_absence,
+                    offre=candidature.offre.titre,
                 ),
                 type_event="Absence_signalee",
                 lien="/espace/chef/absences",
@@ -175,12 +188,20 @@ class CandidatureViewSet(viewsets.ModelViewSet):
 
         # If status changed, notify student
         if ancier_statut != nouveau_statut:
-            titre = "Mise à jour de votre candidature"
-            message = f"Votre candidature pour '{candidature.offre.titre}' a été {nouveau_statut.lower()}."
+            statut_labels = {
+                'Acceptée': _("acceptée"),
+                'Refusée': _("refusée"),
+                'Convention_en_cours': _("mise en cours de convention"),
+                'Terminé': _("terminée"),
+            }
             create_notification(
                 user=candidature.etudiant.user,
-                titre=titre,
-                message=message,
+                titre=_("Mise à jour de votre candidature"),
+                message=format_lazy(
+                    _("Votre candidature pour '{offre}' a été {statut}."),
+                    offre=candidature.offre.titre,
+                    statut=statut_labels.get(nouveau_statut, nouveau_statut),
+                ),
                 type_event=f"Candidature_{nouveau_statut}",
                 lien="/espace/candidatures"
             )
@@ -218,8 +239,15 @@ class CandidatureViewSet(viewsets.ModelViewSet):
                 if chef:
                     create_notification(
                         user=chef.user,
-                        titre="Candidature Acceptée - Action Requise",
-                        message=f"La candidature de {candidature.etudiant.prenom} {candidature.etudiant.nom} pour '{candidature.offre.titre}' a été acceptée. Veuillez déposer la convention.",
+                        titre=_("Candidature Acceptée - Action Requise"),
+                        message=format_lazy(
+                            _(
+                                "La candidature de {etudiant} pour '{offre}' a été acceptée. "
+                                "Veuillez déposer la convention."
+                            ),
+                            etudiant=f"{candidature.etudiant.prenom} {candidature.etudiant.nom}",
+                            offre=candidature.offre.titre,
+                        ),
                         type_event="Convention_A_Deposer",
                         lien="/espace/chef/conventions"
                     )

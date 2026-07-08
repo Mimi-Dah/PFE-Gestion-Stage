@@ -26,11 +26,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('Admin', 'Admin'),
     )
 
+    LANGUAGE_CHOICES = (
+        ('fr', 'Français'),
+        ('en', 'English'),
+        ('ar', 'العربية'),
+    )
+
     id_utilisateur    = models.AutoField(primary_key=True)
     courriel          = models.EmailField(unique=True)
     role              = models.CharField(max_length=20, choices=ROLE_CHOICES)
     is_verified       = models.BooleanField(default=False)
     verification_token = models.CharField(max_length=100, null=True, blank=True)
+    preferred_language = models.CharField(max_length=2, choices=LANGUAGE_CHOICES, default='fr')
     cree_le           = models.DateTimeField(auto_now_add=True)
     mis_a_jour_le     = models.DateTimeField(auto_now=True)
 

@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import PageHeader from '../../components/PageHeader';
 import {
   AlertCircle, CheckCircle, XCircle, FileText,
-  Calendar, Building2, Clock, Eye, Check, X,
+  Calendar, Building2, Clock, Eye, X,
   ClipboardList, Search, Hourglass, Lock,
 } from 'lucide-react';
 import api, { mediaUrl } from '../../services/api';
@@ -30,23 +30,22 @@ const AVT_TEXT = ['#1d4ed8', '#15803d', '#92400e', '#6d28d9', '#b91c1c', '#c2410
 
 const StatCard = ({ icon: Icon, label, value, iconBg, iconColor }) => (
   <div
-    style={{ background: '#ffffff', border: '1.5px solid #e2e8f0', borderRadius: '10px', padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.875rem', transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.15s' }}
+    style={{ background: 'var(--bg-card)', border: '1.5px solid var(--border)', borderRadius: '10px', padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: '0.875rem', transition: 'border-color 0.15s, box-shadow 0.15s, transform 0.15s' }}
     onMouseEnter={e => { e.currentTarget.style.borderColor = iconColor; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-    onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
+    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
   >
     <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: iconBg, color: iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
       <Icon size={17} />
     </div>
     <div>
-      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>{value}</div>
-      <div style={{ fontSize: '0.74rem', color: '#94a3b8', fontWeight: 500, marginTop: '0.15rem' }}>{label}</div>
+      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.1 }}>{value}</div>
+      <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 500, marginTop: '0.15rem' }}>{label}</div>
     </div>
   </div>
 );
 
 export default function AbsencesChef() {
   const { t, i18n } = useTranslation();
-  const queryClient = useQueryClient();
   const [selected, setSelected] = useState(null);
   const [filter, setFilter]     = useState('all');
   const [search, setSearch]     = useState('');
@@ -57,18 +56,6 @@ export default function AbsencesChef() {
       const r = await api.safeRequest(api.get('absences/'));
       if (r.ok) return r.value.data;
       throw r.error;
-    },
-  });
-
-  const mutation = useMutation({
-    mutationFn: async ({ id, statut }) => {
-      const r = await api.safeRequest(api.post(`absences/${id}/valider/`, { statut }));
-      if (r.ok) return r.value.data;
-      throw r.error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['chef-absences'] });
-      setSelected(null);
     },
   });
 
@@ -186,8 +173,8 @@ export default function AbsencesChef() {
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
                     {[160, 100, 130, 110, 40].map((w, j) => (
-                      <td key={j} style={{ padding: '1rem 1.25rem', borderBottom: '1px solid #f1f5f9' }}>
-                        <div style={{ height: 12, width: w, background: '#f1f5f9', borderRadius: 4 }} />
+                      <td key={j} style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border)' }}>
+                        <div style={{ height: 12, width: w, background: 'var(--surface-section)', borderRadius: 4 }} />
                       </td>
                     ))}
                   </tr>
@@ -210,15 +197,15 @@ export default function AbsencesChef() {
                   </td>
                 </tr>
               ) : rows.map(abs => {
-                const s   = STATUS[abs.statut] || { labelKey: null, bg: '#f3f4f6', color: 'var(--text-muted)', dot: '#d1d5db' };
+                const s   = STATUS[abs.statut] || { labelKey: null, bg: 'var(--surface-section)', color: 'var(--text-muted)', dot: 'var(--border)' };
                 const idx = (abs.etudiant_prenom?.charCodeAt(0) || 0) % AVT_BG.length;
                 const ini = ((abs.etudiant_prenom?.[0] || '') + (abs.etudiant_nom?.[0] || '')).toUpperCase() || '?';
                 const statusLabel = s.labelKey ? t(`pages.chefAbsences.${s.labelKey}`) : abs.statut;
                 return (
                   <tr key={abs.id_absence}
-                    onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-section)'}
                     onMouseLeave={e => e.currentTarget.style.background = ''}
-                    style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 0.12s' }}
+                    style={{ borderBottom: '1px solid var(--border)', transition: 'background 0.12s' }}
                   >
                     <td style={{ padding: '0.9rem 1.25rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -231,13 +218,13 @@ export default function AbsencesChef() {
                     </td>
                     <td style={{ padding: '0.9rem 1.25rem', whiteSpace: 'nowrap' }}>
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.83rem', color: 'var(--text-color)' }}>
-                        <Calendar size={13} color="#94a3b8" />
+                        <Calendar size={13} color="var(--text-muted)" />
                         {new Date(abs.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </td>
                     <td style={{ padding: '0.9rem 1.25rem', whiteSpace: 'nowrap' }}>
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.83rem', color: 'var(--text-color)' }}>
-                        <Building2 size={13} color="#94a3b8" />{abs.entreprise_nom}
+                        <Building2 size={13} color="var(--text-muted)" />{abs.entreprise_nom}
                       </span>
                     </td>
                     <td style={{ padding: '0.9rem 1.25rem' }}>
@@ -248,9 +235,9 @@ export default function AbsencesChef() {
                     <td style={{ padding: '0.9rem 1.25rem', textAlign: 'right' }}>
                       <button
                         onClick={() => setSelected(abs)}
-                        style={{ width: 32, height: 32, border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', transition: 'all 0.15s' }}
-                        onMouseEnter={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.borderColor = '#cbd5e1'; e.currentTarget.style.color = '#1e293b'; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#64748b'; }}
+                        style={{ width: 32, height: 32, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-card)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', transition: 'all 0.15s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface-section)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
                       >
                         <Eye size={14} />
                       </button>
@@ -265,10 +252,10 @@ export default function AbsencesChef() {
 
       {/* ── Modal ── */}
       {selected && (() => {
-        const s          = STATUS[selected.statut] || { labelKey: null, bg: '#f3f4f6', color: 'var(--text-muted)', dot: '#d1d5db' };
+        const s          = STATUS[selected.statut] || { labelKey: null, bg: 'var(--surface-section)', color: 'var(--text-muted)', dot: 'var(--border)' };
         const idx        = (selected.etudiant_prenom?.charCodeAt(0) || 0) % AVT_BG.length;
         const ini        = ((selected.etudiant_prenom?.[0] || '') + (selected.etudiant_nom?.[0] || '')).toUpperCase() || '?';
-        const canDecide  = selected.statut === 'Signaler' || selected.statut === 'En_attente_approbation';
+        const isPending  = selected.statut === 'Signaler' || selected.statut === 'En_attente_approbation';
         const isApproved = selected.statut === 'Justifiée';
         const statusLabel = s.labelKey ? t(`pages.chefAbsences.${s.labelKey}`) : selected.statut;
         return (
@@ -284,21 +271,21 @@ export default function AbsencesChef() {
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 2 }}>{selected.offre_titre || t('pages.chefAbsences.stageEntreprise')}</div>
                   </div>
                 </div>
-                <button onClick={() => setSelected(null)} style={{ width: 34, height: 34, borderRadius: 9, border: '1px solid #e2e8f0', background: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#f1f5f9'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                <button onClick={() => setSelected(null)} style={{ width: 34, height: 34, borderRadius: 9, border: '1px solid var(--border)', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-section)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
                 >
                   <X size={15} />
                 </button>
               </div>
 
               {/* Meta chips */}
-              <div style={{ borderTop: '1px solid #e2e8f0', padding: '0.75rem 1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0, background: '#f8fafc' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid #e2e8f0', background: '#fff', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
-                  <Calendar size={12} color="#94a3b8" />{new Date(selected.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
+              <div style={{ borderTop: '1px solid var(--border)', padding: '0.75rem 1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', flexShrink: 0, background: 'var(--surface-section)' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--bg-card)', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
+                  <Calendar size={12} color="var(--text-muted)" />{new Date(selected.date_absence).toLocaleDateString(dateLocale(i18n.language), { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid #e2e8f0', background: '#fff', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
-                  <Building2 size={12} color="#94a3b8" />{selected.entreprise_nom}
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.75rem', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--bg-card)', fontSize: '0.78rem', color: 'var(--text-color)', fontWeight: 500 }}>
+                  <Building2 size={12} color="var(--text-muted)" />{selected.entreprise_nom}
                 </span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 600, padding: '0.3rem 0.75rem', borderRadius: 999, background: s.bg, color: s.color }}>
                   <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.dot }} />{statusLabel}
@@ -308,13 +295,13 @@ export default function AbsencesChef() {
               {/* Body */}
               <div style={{ overflowY: 'auto', flex: 1, padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
-                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '1rem 1.25rem' }}>
-                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.chefAbsences.reportedReason')}</div>
+                <div style={{ background: 'var(--surface-section)', border: '1px solid var(--border)', borderRadius: 10, padding: '1rem 1.25rem' }}>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.chefAbsences.reportedReason')}</div>
                   <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--text-color)', lineHeight: 1.65, fontStyle: 'italic' }}>"{selected.motif_signalement}"</p>
-                  <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '0.4rem', textAlign: 'right' }}>— {selected.entreprise_nom}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.4rem', textAlign: 'right' }}>— {selected.entreprise_nom}</div>
                 </div>
 
-                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 10, padding: '1rem 1.25rem' }}>
+                <div style={{ background: 'var(--surface-section)', border: '1px solid var(--border)', borderRadius: 10, padding: '1rem 1.25rem' }}>
                   <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.5rem' }}>{t('pages.chefAbsences.studentJustification')}</div>
                   {selected.justification ? (
                     <>
@@ -342,28 +329,16 @@ export default function AbsencesChef() {
                 )}
               </div>
 
-              {/* Footer */}
-              <div style={{ borderTop: '1px solid #e2e8f0', padding: '1rem 1.5rem', flexShrink: 0 }}>
-                {canDecide ? (
-                  <div style={{ display: 'flex', gap: '0.75rem' }}>
-                    <button
-                      onClick={() => mutation.mutate({ id: selected.id_absence, statut: 'Non_justifiée' })}
-                      disabled={mutation.isPending}
-                      style={{ flex: 1, height: 40, border: '1px solid #fecaca', borderRadius: 9, background: '#fff', cursor: mutation.isPending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: '#dc2626', transition: 'background 0.15s' }}
-                      onMouseEnter={e => !mutation.isPending && (e.currentTarget.style.background = '#fff5f5')}
-                      onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
-                    >
-                      <X size={14} /> {t('pages.chefAbsences.reject')}
-                    </button>
-                    <button
-                      onClick={() => mutation.mutate({ id: selected.id_absence, statut: 'Justifiée' })}
-                      disabled={mutation.isPending}
-                      style={{ flex: 2, height: 40, border: 'none', borderRadius: 9, background: '#15803d', cursor: mutation.isPending ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: '#fff', transition: 'background 0.15s' }}
-                      onMouseEnter={e => !mutation.isPending && (e.currentTarget.style.background = '#166534')}
-                      onMouseLeave={e => (e.currentTarget.style.background = '#15803d')}
-                    >
-                      <Check size={14} /> {selected.justification ? t('pages.chefAbsences.approveJustification') : t('pages.chefAbsences.excuseWithout')}
-                    </button>
+              {/* Footer — read-only: only the entreprise decides on absences */}
+              <div style={{ borderTop: '1px solid var(--border)', padding: '1rem 1.5rem', flexShrink: 0 }}>
+                {isPending ? (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 9, background: 'var(--surface-section)', border: '1px solid var(--border)' }}>
+                    <Hourglass size={15} color="var(--text-muted)" />
+                    <span style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-color)' }}>
+                      {selected.statut === 'Signaler'
+                        ? t('pages.chefAbsences.awaitingStudent')
+                        : t('pages.chefAbsences.awaitingCompanyDecision')}
+                    </span>
                   </div>
                 ) : (
                   <>

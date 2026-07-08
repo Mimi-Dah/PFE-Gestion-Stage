@@ -316,7 +316,7 @@ const Offers = () => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginTop: '-1rem', marginBottom: '0.5rem' }}>
 
         {/* Chips + sort — left/center */}
-        <div className="offers-chips-bar" style={{ flex: 1 }}>
+        <div className="offers-chips-bar" style={{ flex: 1, minWidth: 0 }}>
           <button className={`offers-chip${isAllActive ? ' active' : ''}`} onClick={clearAll}>
             {t('pages.offers.chipAll')}
           </button>
@@ -342,33 +342,6 @@ const Offers = () => {
             {appliedFilters.duree_semaines === '12' && <span className="offers-chip-remove">×</span>}
           </button>
 
-          <div className="offers-divider" />
-
-          <select
-            value={appliedFilters.ordering}
-            onChange={e => {
-              const next = { ...appliedFilters, ordering: e.target.value };
-              setDraftFilters(next);
-              setAppliedFilters(next);
-            }}
-            style={{
-              width: 'auto',
-              padding: '6px 28px 6px 12px',
-              border: '1.5px solid var(--n200)',
-              borderRadius: '9999px',
-              fontSize: '12.5px',
-              fontWeight: '500',
-              color: 'var(--n600)',
-              background: 'var(--surface-card)',
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            <option value="-publie_le">{t('pages.offers.sortNewest')}</option>
-            <option value="publie_le">{t('pages.offers.sortOldest')}</option>
-            <option value="duree_semaines">{t('pages.offers.sortDurAsc')}</option>
-            <option value="-duree_semaines">{t('pages.offers.sortDurDesc')}</option>
-          </select>
         </div>
 
         {/* Search + filter button — right */}

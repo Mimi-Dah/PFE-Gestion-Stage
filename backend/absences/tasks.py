@@ -1,5 +1,7 @@
 from celery import shared_task
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
 from datetime import timedelta
 
 
@@ -25,11 +27,14 @@ def close_expired_absences():
 
         create_notification(
             user=absence.candidature.etudiant.user,
-            titre="Absence clôturée — délai dépassé",
-            message=(
-                f"Le délai de 3 jours pour justifier votre absence du {absence.date_absence} "
-                f"(stage '{absence.candidature.offre.titre}') est dépassé. "
-                f"Elle est désormais définitivement marquée comme non justifiée."
+            titre=_("Absence clôturée — délai dépassé"),
+            message=format_lazy(
+                _(
+                    "Le délai de 3 jours pour justifier votre absence du {date} "
+                    "(stage '{offre}') est dépassé. "
+                    "Elle est désormais définitivement marquée comme non justifiée."
+                ),
+                date=absence.date_absence, offre=absence.candidature.offre.titre,
             ),
             type_event="Absence_expiree",
             lien="/espace/absences",

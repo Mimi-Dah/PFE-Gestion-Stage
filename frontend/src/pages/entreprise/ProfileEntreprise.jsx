@@ -37,7 +37,7 @@ const iStyle = {
 
 const InfoChip = ({ icon, label, value, accent }) => (
   <div style={{
-    display: 'flex', alignItems: 'center', gap: '0.45rem',
+    display: 'flex', alignItems: 'center', gap: '0.45rem', flexShrink: 0,
     padding: '0.5rem 0.75rem', borderRadius: '8px',
     background: accent ? `${accent}12` : 'var(--surface-section)',
     border: `1px solid ${accent ? `${accent}30` : 'var(--border)'}`,
@@ -146,7 +146,7 @@ export default function ProfileEntreprise() {
       {/* ── Hero card ── */}
       <div style={{
         background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px',
-        padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0',
+        padding: '1.25rem 1.5rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap', rowGap: '1rem',
       }}>
         {/* Left: Logo + Identity */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0, minWidth: '240px' }}>
@@ -184,10 +184,10 @@ export default function ProfileEntreprise() {
         </div>
 
         {/* Vertical separator */}
-        <div style={{ width: '1px', background: 'var(--border)', alignSelf: 'stretch', margin: '0 1.5rem', flexShrink: 0 }} />
+        <div style={{ width: '1px', background: 'var(--border)', alignSelf: 'stretch', margin: '0 1.5rem', flexShrink: 0, minHeight: '2.5rem' }} />
 
         {/* Right: chips */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.65rem', flex: 1, minWidth: 0 }}>
           {p?.telephone && <InfoChip icon={<Phone size={15} />} label={t('pages.entrepriseProfil.chipPhone')} value={p.telephone} />}
           {siteHost && <InfoChip icon={<Globe size={15} />} label={t('pages.entrepriseProfil.chipWebsite')} value={siteHost} accent="#2563EB" />}
           <InfoChip icon={<Calendar size={15} />} label={t('pages.entrepriseProfil.chipMemberSince')} value={memberSince} />

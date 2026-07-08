@@ -245,7 +245,7 @@ export default function Profile() {
         <div style={{ width: '1px', background: 'var(--border)', alignSelf: 'stretch', margin: '0 1.5rem', flexShrink: 0 }} />
 
         {/* Right: chips */}
-        <div style={{ display: 'flex', gap: '0.65rem', flex: 1, flexWrap: 'nowrap', alignItems: 'center', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', gap: '0.65rem', flex: 1, flexWrap: 'wrap', alignItems: 'center' }}>
           {(isChef || deptName !== '—') && (
             <InfoChip icon={<GraduationCap size={15} />} label={t('pages.profile.department')} value={deptName} accent="#4F46E5" />
           )}

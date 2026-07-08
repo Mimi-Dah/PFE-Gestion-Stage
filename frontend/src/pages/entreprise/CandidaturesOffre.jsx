@@ -14,7 +14,8 @@ import {
   FileSignature,
   AlertCircle,
   Eye,
-  ExternalLink
+  ExternalLink,
+  X
 } from 'lucide-react';
 import api, { mediaUrl } from '../../services/api';
 
@@ -70,13 +71,99 @@ const CVModal = ({ url, name, onClose, downloadLabel }) => {
   );
 };
 
+const AbsenceModal = ({ onClose, onSubmit, isPending }) => {
+  const { t } = useTranslation();
+  const [form, setForm] = useState({
+    date_absence: new Date().toISOString().split('T')[0],
+    motif_signalement: '',
+  });
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.motif_signalement.trim()) { setError(t('pages.entreprise.absences.reasonRequired')); return; }
+    setError('');
+    onSubmit(form);
+  };
+
+  return (
+    <div
+      onClick={e => e.target === e.currentTarget && onClose()}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: '1rem' }}
+    >
+      <div style={{ background: 'var(--bg-card)', borderRadius: '10px', width: '100%', maxWidth: '460px', boxShadow: '0 20px 60px rgba(0,0,0,0.15)', overflow: 'hidden' }}>
+
+        {/* Header */}
+        <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-main)' }}>
+            {t('pages.entreprise.absences.modalTitle')}
+          </span>
+          <button onClick={onClose} style={{ width: '26px', height: '26px', border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+            <X size={13} />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div style={{ padding: '1rem' }}>
+          {error && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 0.85rem', borderRadius: '6px', marginBottom: '0.85rem', background: '#fee2e2', border: '1px solid #fecaca', color: '#b91c1c', fontSize: '0.78rem', fontWeight: 600 }}>
+              <AlertCircle size={13} /> {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '0.35rem' }}>
+                <Calendar size={12} /> {t('pages.entreprise.absences.dateLabel')}
+              </label>
+              <input
+                type="date"
+                value={form.date_absence}
+                max={new Date().toISOString().split('T')[0]}
+                onChange={e => setForm(f => ({ ...f, date_absence: e.target.value }))}
+                style={{ width: '100%', height: '34px', padding: '0 0.75rem', border: '1px solid var(--border)', borderRadius: '6px', fontSize: '0.82rem', color: 'var(--text-main)', background: 'var(--bg-card)', outline: 'none', boxSizing: 'border-box' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem' }}>
+                {t('pages.entreprise.absences.reasonLabel')}
+              </label>
+              <textarea
+                rows={3}
+                placeholder={t('pages.entreprise.absences.reasonPlaceholder')}
+                value={form.motif_signalement}
+                onChange={e => setForm(f => ({ ...f, motif_signalement: e.target.value }))}
+                style={{ width: '100%', boxSizing: 'border-box', padding: '0.6rem 0.75rem', border: '1px solid var(--border)', borderRadius: '6px', fontSize: '0.82rem', color: 'var(--text-main)', background: 'var(--bg-card)', outline: 'none', resize: 'vertical' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.15rem' }}>
+              <button type="button" onClick={onClose}
+                style={{ flex: 1, height: '36px', border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--bg-card)', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-color)' }}>
+                {t('pages.entreprise.absences.cancelBtn')}
+              </button>
+              <button type="submit" disabled={isPending}
+                style={{ flex: 1, height: '36px', border: 'none', borderRadius: '6px', background: '#1b6ef3', color: '#fff', cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.7 : 1, fontSize: '0.82rem', fontWeight: 600 }}>
+                {isPending ? t('pages.entreprise.absences.sendingBtn') : t('pages.entreprise.absences.reportBtnSubmit')}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const CandidaturesOffre = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [actionError, setActionError] = useState('');
+  const [actionSuccess, setActionSuccess] = useState('');
   const [cvPreview, setCvPreview] = useState(null);
+  const [absenceModalCand, setAbsenceModalCand] = useState(null);
 
   const { data: candidaturesData, isLoading, isError, error } = useQuery({
     queryKey: ['candidatures-offre', id],
@@ -101,6 +188,22 @@ const CandidaturesOffre = () => {
     },
     onError: (err) => {
       setActionError(err.message || t('pages.entreprise.candidaturesOffre.errorLoading'));
+    }
+  });
+
+  const signalAbsenceMutation = useMutation({
+    mutationFn: async ({ candId, date_absence, motif_signalement }) => {
+      const result = await api.safeRequest(api.post('absences/', { candidature: candId, date_absence, motif_signalement }));
+      if (result.ok) return result.value.data;
+      throw result.error;
+    },
+    onSuccess: () => {
+      setActionError('');
+      setActionSuccess(t('pages.entreprise.absences.toastAbsence'));
+      setAbsenceModalCand(null);
+    },
+    onError: (err) => {
+      setActionError(err.message || t('pages.entreprise.absences.toastError'));
     }
   });
 
@@ -143,6 +246,20 @@ const CandidaturesOffre = () => {
         <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--error)', padding: '1rem', borderRadius: 'var(--radius-md)', marginBottom: '2rem' }}>
           {actionError}
         </div>
+      )}
+
+      {actionSuccess && (
+        <div style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)', color: 'var(--success)', padding: '1rem', borderRadius: 'var(--radius-md)', marginBottom: '2rem' }}>
+          {actionSuccess}
+        </div>
+      )}
+
+      {absenceModalCand && (
+        <AbsenceModal
+          onClose={() => setAbsenceModalCand(null)}
+          isPending={signalAbsenceMutation.isPending}
+          onSubmit={(form) => signalAbsenceMutation.mutate({ candId: absenceModalCand, ...form })}
+        />
       )}
 
       {candidatures.length === 0 ? (
@@ -228,7 +345,7 @@ const CandidaturesOffre = () => {
                           </button>
                         )}
                         {cand.statut === 'Stage_actif' && (
-                          <button className="vl-btn danger" onClick={async () => { const m = prompt('Reason:'); if (!m) return; const r = await api.safeRequest(api.post('absences/', { candidature: cand.id || cand.id_candidature, date_absence: new Date().toISOString().split('T')[0], motif_signalement: m })); if (r.ok) alert('Reported.'); }} title={t('pages.entreprise.candidaturesOffre.titleAbsence')}>
+                          <button className="vl-btn danger" onClick={() => setAbsenceModalCand(cand.id || cand.id_candidature)} title={t('pages.entreprise.candidaturesOffre.titleAbsence')}>
                             <AlertCircle size={13} />
                           </button>
                         )}

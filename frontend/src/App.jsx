@@ -7,7 +7,6 @@ import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import VerifyAccount from './pages/VerifyAccount';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
@@ -59,6 +58,7 @@ import ErrorToast from './components/common/ErrorToast';
 import { errorBus } from './utils/errorBus';
 
 import useLayoutStore from './store/layoutStore';
+import useAuthStore from './store/authStore';
 import LandingPage from './pages/LandingPage';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -180,6 +180,8 @@ function App() {
   const [globalError, setGlobalError] = useState(null);
   const isDarkMode = useLayoutStore((state) => state.isDarkMode);
   const language   = useLayoutStore((state) => state.language);
+  const setLanguage = useLayoutStore((state) => state.setLanguage);
+  const user = useAuthStore((state) => state.user);
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
   const { i18n } = useTranslation();
@@ -199,6 +201,16 @@ function App() {
     if (i18n.language !== lang) i18n.changeLanguage(lang);
   }, [language]);
 
+  // Hydrate the UI language from the account's saved preference once per
+  // session (login or page reload with a persisted session) — this keeps
+  // future backend-generated notifications in sync with what's displayed
+  // here, without fighting a manual switch made later in the same session.
+  useEffect(() => {
+    if (user?.preferred_language && user.preferred_language !== language) {
+      setLanguage(user.preferred_language);
+    }
+  }, [user?.id_utilisateur]);
+
   useEffect(() => {
     const unsubscribe = errorBus.subscribe((error) => {
       setGlobalError(error);
@@ -215,7 +227,6 @@ function App() {
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/verify-account" element={<VerifyAccount />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>

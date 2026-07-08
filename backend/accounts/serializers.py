@@ -1,5 +1,4 @@
-﻿import secrets
-from rest_framework import serializers
+﻿from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -13,7 +12,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id_utilisateur', 'courriel', 'role', 'is_active', 'is_verified', 'cree_le')
+        fields = ('id_utilisateur', 'courriel', 'role', 'is_active', 'is_verified', 'preferred_language', 'cree_le')
 
 class RegisterSerializer(SanitizeMixin, serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -92,7 +91,7 @@ class RegisterSerializer(SanitizeMixin, serializers.ModelSerializer):
             courriel=validated_data['courriel'],
             password=validated_data['password'],
             role=validated_data['role'],
-            verification_token=secrets.token_urlsafe(32),
+            is_verified=True,
         )
 
         if user.role == 'Étudiant':

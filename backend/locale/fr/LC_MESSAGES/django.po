@@ -164,3 +164,155 @@ msgstr "Ressource introuvable."
 
 msgid "Requête invalide."
 msgstr "Requête invalide."
+
+
+# ---------------------------------------------------------------------------
+# Notifications métier (absences, candidatures, conventions, évaluations, rapports)
+# ---------------------------------------------------------------------------
+msgid "Stage marqué comme abandonné"
+msgstr "Stage marqué comme abandonné"
+
+msgid "Absence clôturée — délai dépassé"
+msgstr "Absence clôturée — délai dépassé"
+
+msgid "Absence signalée"
+msgstr "Absence signalée"
+
+msgid "Absence à valider"
+msgstr "Absence à valider"
+
+msgid "Justification à approuver"
+msgstr "Justification à approuver"
+
+msgid "Justification soumise"
+msgstr "Justification soumise"
+
+msgid "Décision sur votre absence"
+msgstr "Décision sur votre absence"
+
+msgid "Nouvelle Candidature"
+msgstr "Nouvelle Candidature"
+
+msgid "Mise à jour de votre candidature"
+msgstr "Mise à jour de votre candidature"
+
+msgid "Candidature Acceptée - Action Requise"
+msgstr "Candidature Acceptée - Action Requise"
+
+msgid "Convention Expirée"
+msgstr "Convention Expirée"
+
+msgid "Convention Expirée (Auto-Rejet)"
+msgstr "Convention Expirée (Auto-Rejet)"
+
+msgid "Convention Validée"
+msgstr "Convention Validée"
+
+msgid "Convention Refusée"
+msgstr "Convention Refusée"
+
+msgid "Signature Étudiant"
+msgstr "Signature Étudiant"
+
+msgid "Signature Entreprise"
+msgstr "Signature Entreprise"
+
+msgid "Évaluation Disponible"
+msgstr "Évaluation Disponible"
+
+msgid "Nouvelle Évaluation Déposée"
+msgstr "Nouvelle Évaluation Déposée"
+
+msgid "Nouveau Rapport Soumis"
+msgstr "Nouveau Rapport Soumis"
+
+msgid "Rapport Noté"
+msgstr "Rapport Noté"
+
+msgid "acceptée"
+msgstr "acceptée"
+
+msgid "refusée"
+msgstr "refusée"
+
+msgid "mise en cours de convention"
+msgstr "mise en cours de convention"
+
+msgid "terminée"
+msgstr "terminée"
+
+msgid "Votre stage pour '{offre}' a été automatiquement marqué comme abandonné suite à {count} absences non justifiées."
+msgstr "Votre stage pour '{offre}' a été automatiquement marqué comme abandonné suite à {count} absences non justifiées."
+
+msgid "Le stage de {etudiant} pour '{offre}' a été automatiquement marqué comme abandonné ({count} absences non justifiées)."
+msgstr "Le stage de {etudiant} pour '{offre}' a été automatiquement marqué comme abandonné ({count} absences non justifiées)."
+
+msgid "Le délai de 3 jours pour justifier votre absence du {date} (stage '{offre}') est dépassé. Elle est désormais définitivement marquée comme non justifiée."
+msgstr "Le délai de 3 jours pour justifier votre absence du {date} (stage '{offre}') est dépassé. Elle est désormais définitivement marquée comme non justifiée."
+
+msgid "Une absence a été signalée pour votre stage '{offre}' le {date}. Vous avez 3 jours pour la justifier."
+msgstr "Une absence a été signalée pour votre stage '{offre}' le {date}. Vous avez 3 jours pour la justifier."
+
+msgid "{etudiant} a été signalé absent le {date} (stage : '{offre}')."
+msgstr "{etudiant} a été signalé absent le {date} (stage : '{offre}')."
+
+msgid "{etudiant} a soumis une justification pour son absence du {date}. Une décision de votre part est attendue."
+msgstr "{etudiant} a soumis une justification pour son absence du {date}. Une décision de votre part est attendue."
+
+msgid "{etudiant} a soumis une justification pour son absence du {date}. L'entreprise doit maintenant se prononcer."
+msgstr "{etudiant} a soumis une justification pour son absence du {date}. L'entreprise doit maintenant se prononcer."
+
+msgid "Votre justification pour l'absence du {date} a été approuvée par l'entreprise."
+msgstr "Votre justification pour l'absence du {date} a été approuvée par l'entreprise."
+
+msgid "Votre justification pour l'absence du {date} a été refusée par l'entreprise. Cette absence est marquée comme non justifiée."
+msgstr "Votre justification pour l'absence du {date} a été refusée par l'entreprise. Cette absence est marquée comme non justifiée."
+
+msgid "{etudiant} a postulé à votre offre '{offre}'."
+msgstr "{etudiant} a postulé à votre offre '{offre}'."
+
+msgid "Une absence a été signalée pour votre stage '{offre}' le {date}."
+msgstr "Une absence a été signalée pour votre stage '{offre}' le {date}."
+
+msgid "Votre candidature pour '{offre}' a été {statut}."
+msgstr "Votre candidature pour '{offre}' a été {statut}."
+
+msgid "La candidature de {etudiant} pour '{offre}' a été acceptée. Veuillez déposer la convention."
+msgstr "La candidature de {etudiant} pour '{offre}' a été acceptée. Veuillez déposer la convention."
+
+msgid "Votre convention {numero} a été automatiquement rejetée car elle n'a pas été traitée dans le délai de 3 jours."
+msgstr "Votre convention {numero} a été automatiquement rejetée car elle n'a pas été traitée dans le délai de 3 jours."
+
+msgid "La convention {numero} pour {etudiant} a été rejetée automatiquement (délai de 3 jours dépassé)."
+msgstr "La convention {numero} pour {etudiant} a été rejetée automatiquement (délai de 3 jours dépassé)."
+
+msgid "Votre convention {numero} a été validée par le département."
+msgstr "Votre convention {numero} a été validée par le département."
+
+msgid "La convention {numero} ({etudiant}) a été validée."
+msgstr "La convention {numero} ({etudiant}) a été validée."
+
+msgid "Votre convention {numero} a été refusée. Motif : {motif}"
+msgstr "Votre convention {numero} a été refusée. Motif : {motif}"
+
+msgid "La convention {numero} a été refusée par le département."
+msgstr "La convention {numero} a été refusée par le département."
+
+msgid "L'étudiant {etudiant} a signé la convention {numero}."
+msgstr "L'étudiant {etudiant} a signé la convention {numero}."
+
+msgid "L'entreprise a signé votre convention {numero}."
+msgstr "L'entreprise a signé votre convention {numero}."
+
+msgid "L'entreprise {entreprise} a publié votre évaluation de stage."
+msgstr "L'entreprise {entreprise} a publié votre évaluation de stage."
+
+msgid "L'entreprise {entreprise} a évalué le stage de {etudiant}."
+msgstr "L'entreprise {entreprise} a évalué le stage de {etudiant}."
+
+msgid "L'étudiant {etudiant} a soumis son rapport de stage pour '{offre}'."
+msgstr "L'étudiant {etudiant} a soumis son rapport de stage pour '{offre}'."
+
+msgid "Votre rapport pour '{offre}' a été noté : {note}/20."
+msgstr "Votre rapport pour '{offre}' a été noté : {note}/20."
+

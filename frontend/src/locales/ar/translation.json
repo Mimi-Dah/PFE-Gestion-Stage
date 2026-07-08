@@ -124,10 +124,6 @@
       "submitting": "جارٍ الإعادة...",
       "successMessage": "تمت إعادة تعيين كلمة المرور بنجاح.",
       "backToLogin": "العودة إلى تسجيل الدخول"
-    },
-    "verifyAccount": {
-      "title": "تحقق من حسابك",
-      "subtitle": "تحقق من بريدك الإلكتروني للحصول على رابط التحقق."
     }
   },
   "nav": {
@@ -183,7 +179,8 @@
       "interns": "المتدربون",
       "overview": "نظرة عامة",
       "contracts": "العقود",
-      "users": "المستخدمون"
+      "users": "المستخدمون",
+      "absences": "الغيابات"
     }
   },
   "topbar": {
@@ -668,7 +665,7 @@
     "chefAbsences": {
       "eyebrow": "رئيس القسم",
       "title": "متابعة الغيابات",
-      "subtitle": "راجع مبررات الطلاب للغيابات المُبلَّغ عنها وتحقق منها.",
+      "subtitle": "اطّلع على الغيابات المُبلَّغ عنها وكيفية معالجتها من قِبل الشركات.",
       "filterAll": "الكل",
       "filterReported": "المُبلَّغ عنها",
       "filterToApprove": "للموافقة",
@@ -706,10 +703,9 @@
       "studentJustification": "مبرر الطالب",
       "seeDocument": "عرض المستند",
       "noJustification": "لم يقدم الطالب أي مبرر.",
-      "pendingMessage": "قدّم الطالب مبرراً — راجعه قبل اتخاذ القرار.",
-      "reject": "رفض",
-      "approveJustification": "الموافقة على المبرر",
-      "excuseWithout": "الإعذار دون مبرر",
+      "pendingMessage": "قدّم الطالب مبرراً، بانتظار قرار الشركة.",
+      "awaitingStudent": "بانتظار تبرير الطالب.",
+      "awaitingCompanyDecision": "بانتظار قرار الشركة.",
       "absenceJustified": "الغياب مبرر",
       "absenceUnjustified": "الغياب غير مبرر",
       "abandonWarning": "عند 3 غيابات غير مبررة، يُصنَّف التدريب تلقائياً على أنه متروك."
@@ -1151,6 +1147,7 @@
       "modal": {
         "title": "تقديم تبرير",
         "absenceDate": "غياب بتاريخ",
+        "company": "الشركة",
         "lastDayWarning": "آخر يوم للتبرير!",
         "daysLeft_one": "تبقّى لك يوم واحد للتبرير.",
         "daysLeft_other": "تبقّى لك {{count}} أيام للتبرير.",
@@ -1385,6 +1382,7 @@
         "results_one": "{{count}} نتيجة",
         "results_other": "{{count}} نتائج",
         "noApps": "لم يتم العثور على طلبات.",
+        "errorUpdating": "خطأ أثناء تحديث الطلب.",
         "colCandidate": "المرشح",
         "colOffer": "العرض",
         "colContact": "التواصل",

@@ -1,6 +1,8 @@
 .env
 .tmp/
 credentials.json
+credentials_mauritanie.pdf
+backup_before_mauritania_seed.json
 token.json
 __pycache__/
 *.pyc
@@ -9,8 +11,10 @@ venv/
 env/
 node_modules/
 db.sqlite3
+db.json
+test_db.sqlite3
 media/
 dist/
+.expo/
 *.log
 .DS_Store
-mobile/
